@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>One Move — Connected Health Prototype | BoRam Bae</title>
+  <meta name="description" content="One Move is a completed, non-commercial Android proof of concept translating connected health data into one practical next action.">
+  <meta property="og:title" content="One Move — Connected Health Prototype">
+  <meta property="og:description" content="A working experiment in turning connected health data into one realistic action for right now.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://bb-bk-tk.github.io/one-move.html">
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/one-move.css">
+</head>
+<body class="one-move-page">
+<main>
+  <nav class="nav">
+    <a class="wordmark" href="/">bo<span>ram</span></a>
+    <div class="nav-links">
+      <a href="/#lab">Back to the lab</a>
+      <a href="/binna">Binna ↗</a>
+    </div>
+  </nav>
+
+  <section class="move-case-hero">
+    <div class="move-case-copy">
+      <a class="move-back" href="/#lab">← Back to portfolio</a>
+      <span class="project-status">Completed technical PoC · Non-commercial</span>
+      <p class="section-label">Connected health · Android · 2026</p>
+      <h1>One<br><em>Move.</em></h1>
+      <p class="move-case-lede">A working experiment in turning connected health data into one clear, realistic action for right now.</p>
+      <div class="move-case-meta">
+        <div>
+          <span>My role</span>
+          <strong>Concept, product design, prototype development</strong>
+        </div>
+        <div>
+          <span>Platform</span>
+          <strong>Android + Samsung Health Data SDK 1.1.0</strong>
+        </div>
+        <div>
+          <span>Mode</span>
+          <strong>Read-only, real-device test</strong>
+        </div>
+        <div>
+          <span>Result</span>
+          <strong>Connection and step aggregation validated</strong>
+        </div>
+      </div>
+    </div>
+
+    <figure class="move-prototype move-prototype-large">
+      <div class="move-device">
+        <div class="move-notch" aria-hidden="true"></div>
+        <div class="move-screen">
+          <header class="move-app-header">
+            <div>
+              <small>Today</small>
+              <strong>One Move</strong>
+            </div>
+            <i title="Connected"></i>
+          </header>
+          <section class="move-insight">
+            <small>Your context</small>
+            <strong>Daily movement is still under a steady target range.</strong>
+            <p>Based on recent steps and available health signals.</p>
+          </section>
+          <div class="move-data-title">
+            <span>Connected health data</span>
+            <small>Read only</small>
+          </div>
+          <div class="move-metrics">
+            <div class="live">
+              <span>Steps</span>
+              <strong>2,443</strong>
+              <small>Connected</small>
+            </div>
+            <div>
+              <span>Sleep</span>
+              <strong>8.0 <b>h</b></strong>
+              <small>Prototype</small>
+            </div>
+            <div class="muted">
+              <span>Weight</span>
+              <strong>—</strong>
+              <small>No data</small>
+            </div>
+            <div class="muted">
+              <span>Water</span>
+              <strong>—</strong>
+              <small>No data</small>
+            </div>
+          </div>
+          <section class="move-action">
+            <small>One move for now</small>
+            <strong>Take a 5-minute walk</strong>
+            <p>A small action that fits the current gap.</p>
+            <span>Why this</span>
+          </section>
+        </div>
+      </div>
+      <figcaption>Public-safe reconstruction of the prototype UI</figcaption>
+    </figure>
+  </section>
+
+  <section class="move-case-section">
+    <p class="move-case-index">01 · The question</p>
+    <div>
+      <h2>What should happen after the data is collected?</h2>
+      <p class="move-case-large">Health platforms are good at showing numbers. The harder product problem is helping someone choose an action that feels relevant, possible, and worth doing today.</p>
+      <p>One Move started as a technical and product experiment: could live health data be connected safely, interpreted as a current context, and expressed as one small next move rather than another dashboard?</p>
+    </div>
+  </section>
+
+  <section class="move-thesis">
+    <div class="move-case-section move-case-section-inner">
+      <p class="move-case-index">02 · The product thesis</p>
+      <div>
+        <h2>Less dashboard. More direction.</h2>
+        <div class="move-thesis-grid">
+          <article>
+            <span>01</span>
+            <h3>Connect</h3>
+            <p>Read available health signals without writing back or changing the source data.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <h3>Understand</h3>
+            <p>Turn separate metrics into a concise statement about the person’s current context.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <h3>Act</h3>
+            <p>Recommend one right-sized action and explain why it fits now.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="move-case-section">
+    <p class="move-case-index">03 · What I built</p>
+    <div>
+      <h2>A real integration first, then the experience around it.</h2>
+      <div class="move-build-list">
+        <article>
+          <span>01</span>
+          <div>
+            <h3>Android foundation</h3>
+            <p>Built the app project with Samsung Health Data SDK 1.1.0 and confirmed a successful debug build.</p>
+          </div>
+        </article>
+        <article>
+          <span>02</span>
+          <div>
+            <h3>Read-only connection</h3>
+            <p>Connected to Samsung Health on a real device using developer mode and a deliberately read-only scope.</p>
+          </div>
+        </article>
+        <article>
+          <span>03</span>
+          <div>
+            <h3>Step aggregation</h3>
+            <p>Validated the aggregate query and received live step data; one test returned <code>steps = 3486</code>.</p>
+          </div>
+        </article>
+        <article>
+          <span>04</span>
+          <div>
+            <h3>Guidance prototype</h3>
+            <p>Designed the connected-data summary, contextual message, and a small library of possible next actions.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="move-validation">
+    <div class="move-validation-intro">
+      <p class="section-label">Validated</p>
+      <h2>The riskiest assumption became testable.</h2>
+    </div>
+    <div class="move-validation-grid">
+      <article>
+        <strong>Build</strong>
+        <span>Successful</span>
+        <p>Android debug build completed with the SDK included.</p>
+      </article>
+      <article>
+        <strong>Connect</strong>
+        <span>Successful</span>
+        <p>The prototype connected to Samsung Health on a real device.</p>
+      </article>
+      <article>
+        <strong>Read</strong>
+        <span>Successful</span>
+        <p>Aggregate step data was returned in the test flow.</p>
+      </article>
+    </div>
+  </section>
+
+  <section class="move-case-section move-outcome">
+    <p class="move-case-index">04 · Outcome</p>
+    <div>
+      <h2>Complete as a test product.</h2>
+      <p class="move-case-large">One Move reached the goal it was built for: proving that the idea could move beyond a slide into a working, real-device prototype.</p>
+      <div class="move-scope-grid">
+        <div>
+          <span>Status</span>
+          <strong>Completed technical proof of concept</strong>
+        </div>
+        <div>
+          <span>Commercialization</span>
+          <strong>Not pursued</strong>
+        </div>
+        <div>
+          <span>Distribution</span>
+          <strong>Not publicly released</strong>
+        </div>
+        <div>
+          <span>Source</span>
+          <strong>Private repository</strong>
+        </div>
+      </div>
+      <p class="move-disclaimer">Portfolio note: One Move is presented as a public-safe technical prototype. It is not an official Samsung Health product and contains no internal product strategy or confidential materials.</p>
+    </div>
+  </section>
+
+  <section class="move-case-close">
+    <p class="section-label">What this project demonstrates</p>
+    <h2>Product strategy becomes more credible when you can build the proof.</h2>
+    <a class="case-link" href="/#lab">Explore the portfolio <span>→</span></a>
+  </section>
+
+  <footer>
+    <a class="wordmark" href="/">bo<span>ram</span></a>
+    <a href="/#lab">Back to the lab ↑</a>
+  </footer>
+</main>
+</body>
+</html>
