@@ -76,12 +76,38 @@
   line-height: 1.12 !important;
 }
 
-.lab-feature-copy > p:not(.project-type):not(.lab-feature-lede) {
+.lab-feature-copy > p:not(.project-type):not(.lab-feature-lede):not(.project-disclosure) {
   max-width: 540px;
   margin: 0;
   color: #565a52;
   font-size: 15px;
   line-height: 1.55;
+}
+
+.project-disclosure {
+  max-width: 610px;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+  color: #454b59;
+  background: #fff7d6;
+  border: 1px solid #d8c77f;
+  border-radius: 12px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.project-disclosure strong {
+  display: block;
+  margin-bottom: 2px;
+  color: var(--ink);
+}
+
+.move-case-copy > .project-status {
+  margin-bottom: 14px;
+}
+
+.move-case-copy > .project-disclosure {
+  margin: 0 0 28px;
 }
 
 .lab-proof {
