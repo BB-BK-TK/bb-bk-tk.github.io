@@ -1,0 +1,2 @@
+[functions.team-boram-api]
+verify_jwt = false
