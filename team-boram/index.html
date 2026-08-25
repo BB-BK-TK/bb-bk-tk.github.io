@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#101827" />
+  <title>Team BoRam Control Tower</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main id="app" class="app-shell">
+    <section id="lockScreen" class="lock-screen">
+      <div class="lock-card">
+        <div class="eyebrow">TEAM BORAM</div>
+        <h1>Control Tower</h1>
+        <p>Notion Live Work와 연결된 private dashboard입니다.</p>
+        <label for="dashboardKey">Dashboard key</label>
+        <input id="dashboardKey" type="password" autocomplete="current-password" inputmode="text" placeholder="Enter key" />
+        <button id="unlockBtn" class="primary-btn" type="button">Open Control Tower</button>
+        <p id="lockMessage" class="message" aria-live="polite"></p>
+      </div>
+    </section>
+
+    <section id="dashboard" hidden>
+      <header class="topbar">
+        <div>
+          <div class="eyebrow">TEAM BORAM</div>
+          <h1>Control Tower</h1>
+          <div id="updatedAt" class="muted">Loading…</div>
+        </div>
+        <div class="top-actions">
+          <button id="refreshBtn" class="icon-btn" type="button" aria-label="Refresh">↻</button>
+          <button id="lockBtn" class="icon-btn" type="button" aria-label="Lock">⌁</button>
+        </div>
+      </header>
+
+      <section id="healthStrip" class="health-strip" aria-live="polite"></section>
+
+      <section class="stats" aria-label="Dashboard summary">
+        <article class="stat-card"><strong id="workingCount">–</strong><span>agents working</span></article>
+        <article class="stat-card"><strong id="decisionCount">–</strong><span>decisions open</span></article>
+        <article class="stat-card"><strong id="staleCount">–</strong><span>stale / blocked</span></article>
+      </section>
+
+      <nav class="tabs" aria-label="Dashboard sections">
+        <button class="tab active" data-tab="agentsPanel" type="button">Agents</button>
+        <button class="tab" data-tab="decisionsPanel" type="button">Decisions</button>
+        <button class="tab" data-tab="projectsPanel" type="button">Projects</button>
+        <button class="tab" data-tab="stalePanel" type="button">Stale</button>
+      </nav>
+
+      <section id="agentsPanel" class="panel">
+        <div class="section-heading"><h2>Agents</h2><span>Tap to inspect</span></div>
+        <div id="agentGrid" class="agent-grid"></div>
+        <article id="agentDetail" class="detail-card" hidden></article>
+      </section>
+
+      <section id="decisionsPanel" class="panel" hidden>
+        <div class="section-heading"><h2>Founder Queue</h2><span>Max 3</span></div>
+        <div id="decisionList" class="stack"></div>
+      </section>
+
+      <section id="projectsPanel" class="panel" hidden>
+        <div class="section-heading"><h2>Portfolio Map</h2><span>Now / Testing / Cadence / Parked</span></div>
+        <div id="projectGroups" class="stack"></div>
+      </section>
+
+      <section id="stalePanel" class="panel" hidden>
+        <div class="section-heading"><h2>Stale / Blocked</h2><span>Needs cleanup</span></div>
+        <div id="staleList" class="stack"></div>
+      </section>
+    </section>
+  </main>
+
+  <script src="./config.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
