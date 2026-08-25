@@ -9,8 +9,8 @@
 */
 
 (function () {
-  const SUPABASE_URL = "https://kwsrktcsthksnvgbquup.supabase.co";
-  const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_Qx-QIsbRqz1hcJebGzPgIw_PtePCnWl";
+ const SUPABASE_URL = "https://kacvynoegfpvgdpqtjdi.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_SeG92zfrAeh5zECaVbztkw_qb0C91D6";
   const ALLOWED_PATHS = new Set(["/", "/binna/"]);
 
   function pagePath() {
