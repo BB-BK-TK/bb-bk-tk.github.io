@@ -32,19 +32,25 @@ create or replace function public.record_site_event(
 returns void
 language plpgsql
 security definer
-set search_path = public
+set search_path = ''
 as $$
 begin
-  if p_event_name not in ('page_view', 'pixel_obby_click') then
-    raise exception 'invalid event';
+  if p_event_name is null
+     or char_length(p_event_name) > 64
+     or p_event_name not in ('page_view', 'pixel_obby_click') then
+    raise exception using errcode = '22023', message = 'invalid event_name';
   end if;
 
-  if p_page_path not in ('/', '/binna/') then
-    raise exception 'invalid page';
+  if p_page_path is null
+     or char_length(p_page_path) > 128
+     or p_page_path not in ('/', '/binna/') then
+    raise exception using errcode = '22023', message = 'invalid page_path';
   end if;
 
-  if p_source not in ('direct', 'internal', 'instagram', 'linkedin', 'other') then
-    raise exception 'invalid source';
+  if p_source is null
+     or char_length(p_source) > 32
+     or p_source not in ('direct', 'internal', 'instagram', 'linkedin', 'other') then
+    raise exception using errcode = '22023', message = 'invalid source';
   end if;
 
   insert into public.site_events (event_name, page_path, source)
