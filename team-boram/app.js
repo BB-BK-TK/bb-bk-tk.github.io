@@ -10,6 +10,39 @@
   const dashboard = $("dashboard");
   const lockMessage = $("lockMessage");
 
+  const roleMeta = {
+    "BoRam — Founder": {
+      avatar: "👑",
+      kicker: "FOUNDER",
+      mission: "Set direction, protect taste and priorities, and make the final calls that only BoRam should make."
+    },
+    "Team Orchestrator": {
+      avatar: "🎛️",
+      kicker: "ORCHESTRATOR",
+      mission: "Route work across Team BoRam, protect approval gates, keep autonomous work moving, and surface only real decisions or blockers."
+    },
+    "Founder Partner / CoS": {
+      avatar: "🧭",
+      mission: "Keep the founder focused on the highest-leverage decisions: what matters now, what should stop, and what deserves the next 10 hours."
+    },
+    "Venture & Build": {
+      avatar: "🛠️",
+      mission: "Move product ideas from hypothesis to prototype, QA, test, evidence, and the next decision without turning every idea into a project."
+    },
+    "Content & IP Studio": {
+      avatar: "🎨",
+      mission: "Build repeatable content and IP systems, test formats, and turn performance evidence into the next creative move."
+    },
+    "Personal Platform": {
+      avatar: "🌐",
+      mission: "Build and maintain BoRam's personal platform, Binna experiences, analytics, and the infrastructure behind public experiments."
+    },
+    "Opportunity & Insight Scout": {
+      avatar: "🔎",
+      mission: "Find external signals, benchmarks, and opportunities only when they can sharpen an active Team BoRam decision."
+    }
+  };
+
   function escapeHtml(value) {
     return String(value ?? "").replace(/[&<>'\"]/g, (ch) => ({"&":"&amp;","<":"&lt;",">":"&gt;","'":"&#39;",'\"':"&quot;"}[ch]));
   }
@@ -79,14 +112,6 @@
     renderStale();
   }
 
-  const avatarMap = {
-    "Founder Partner / CoS": "🧭",
-    "Venture & Build": "🛠️",
-    "Content & IP Studio": "🎨",
-    "Personal Platform": "🌐",
-    "Opportunity & Insight Scout": "🔎"
-  };
-
   function statusClass(status) {
     const s = String(status || "").toUpperCase();
     if (s === "ACTIVE") return "status-active";
@@ -95,36 +120,160 @@
     return "status-idle";
   }
 
+  function leadershipRoles() {
+    const d = state.data;
+    const founderQueue = d.founderQueue || [];
+    const founder = {
+      name: "BoRam — Founder",
+      status: founderQueue.length ? "WAITING" : "IDLE",
+      badge: founderQueue.length ? `${founderQueue.length} DECISION${founderQueue.length === 1 ? "" : "S"} NEEDED` : "CLEAR",
+      summary: founderQueue.length
+        ? `${founderQueue.length} decision${founderQueue.length === 1 ? "" : "s"} are waiting for your call.`
+        : "No founder decision required. The team can keep moving."
+    };
+    const activeCount = d.metrics.workingAgents || 0;
+    const pressureCount = (d.metrics.openDecisions || 0) + (d.metrics.staleOrBlocked || 0);
+    const orchestrator = {
+      name: "Team Orchestrator",
+      status: activeCount || pressureCount ? "ACTIVE" : "IDLE",
+      badge: activeCount || pressureCount ? "ACTIVE" : "IDLE",
+      summary: `${activeCount} specialist${activeCount === 1 ? "" : "s"} active · ${d.metrics.openDecisions || 0} founder decisions · ${d.metrics.staleOrBlocked || 0} stale/blocked.`
+    };
+    return [founder, orchestrator];
+  }
+
+  function renderLeadershipCard(targetId, role, extraClass) {
+    const target = $(targetId);
+    const meta = roleMeta[role.name] || {};
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = `leadership-card ${extraClass || ""}` + (state.selectedAgent === role.name ? " selected" : "");
+    button.innerHTML = `
+      <span class="status-dot ${statusClass(role.status)}"></span>
+      <div class="leadership-main">
+        <div class="agent-avatar leadership-avatar">${meta.avatar || "🤖"}</div>
+        <div class="leadership-copy">
+          <span class="role-kicker">${escapeHtml(meta.kicker || "LEADERSHIP")}</span>
+          <b>${escapeHtml(role.name)}</b>
+          <small>${escapeHtml(role.summary)}</small>
+        </div>
+      </div>
+      <span class="role-badge">${escapeHtml(role.badge)}</span>`;
+    button.addEventListener("click", () => {
+      state.selectedAgent = role.name;
+      renderAgents();
+      renderLeadershipDetail(role);
+    });
+    target.replaceChildren(button);
+  }
+
   function renderAgents() {
+    const [founder, orchestrator] = leadershipRoles();
+    renderLeadershipCard("founderSlot", founder, "founder-card");
+    renderLeadershipCard("orchestratorSlot", orchestrator, "orchestrator-card");
+
     const grid = $("agentGrid");
     grid.innerHTML = "";
     state.data.agents.forEach((agent) => {
+      const meta = roleMeta[agent.name] || {};
       const button = document.createElement("button");
       button.type = "button";
       button.className = "agent-card" + (state.selectedAgent === agent.name ? " selected" : "");
       button.innerHTML = `
         <span class="status-dot ${statusClass(agent.status)}"></span>
-        <div class="agent-avatar">${avatarMap[agent.name] || "🤖"}</div>
+        <div class="agent-avatar">${meta.avatar || "🤖"}</div>
         <b>${escapeHtml(agent.name)}</b>
         <small>${escapeHtml(agent.summary || "No active work")}</small>`;
-      button.addEventListener("click", () => { state.selectedAgent = agent.name; renderAgents(); renderAgentDetail(agent); });
+      button.addEventListener("click", () => {
+        state.selectedAgent = agent.name;
+        renderAgents();
+        renderSpecialistDetail(agent);
+      });
       grid.appendChild(button);
     });
+
     if (state.selectedAgent) {
-      const selected = state.data.agents.find((a) => a.name === state.selectedAgent);
-      if (selected) renderAgentDetail(selected);
+      const leadership = leadershipRoles().find((role) => role.name === state.selectedAgent);
+      if (leadership) renderLeadershipDetail(leadership);
+      else {
+        const selected = state.data.agents.find((a) => a.name === state.selectedAgent);
+        if (selected) renderSpecialistDetail(selected);
+      }
     }
   }
 
-  function renderAgentDetail(agent) {
+  function projectNames(items) {
+    const names = [];
+    items.forEach((item) => (item.projects || []).forEach((project) => {
+      if (project?.project && !names.includes(project.project)) names.push(project.project);
+    }));
+    return names;
+  }
+
+  function chipList(values, emptyText) {
+    if (!values.length) return `<div class="empty compact">${escapeHtml(emptyText)}</div>`;
+    return `<div class="chip-row">${values.map((value) => `<span class="chip">${escapeHtml(value)}</span>`).join("")}</div>`;
+  }
+
+  function renderLeadershipDetail(role) {
     const detail = $("agentDetail");
+    const meta = roleMeta[role.name] || {};
     detail.hidden = false;
-    const rows = agent.items.length ? agent.items.map((item) => `
-      <div class="mini-row"><b>${escapeHtml(item.workItem)}</b>${escapeHtml(item.output || "No recent output")}<br><span class="muted">${escapeHtml(item.executionMode || "Unassigned")} · next ${escapeHtml(item.nextCheckin || "not set")}</span></div>`).join("") : `<div class="empty">No Live Work assigned.</div>`;
+
+    if (role.name === "BoRam — Founder") {
+      const queue = state.data.founderQueue || [];
+      const queueText = queue.length
+        ? queue.map((item) => `<div class="mini-row"><b>${escapeHtml(item.workItem)}</b>${escapeHtml(item.recommended || item.output || "Decision needed")}</div>`).join("")
+        : `<div class="empty compact">Nothing needs your decision right now.</div>`;
+      detail.innerHTML = `
+        <div class="detail-title"><div class="agent-avatar">${meta.avatar}</div><div><h3>${escapeHtml(role.name)}</h3><div class="muted">Founder · final approval layer</div></div></div>
+        <div class="label">Mission</div><p class="copy">${escapeHtml(meta.mission)}</p>
+        <div class="label">What I'm working on now</div><p class="copy">${queue.length ? `Resolve ${queue.length} surfaced founder decision${queue.length === 1 ? "" : "s"}.` : "Stay out of the way unless taste, direction, spending, privacy, or a final approval is required."}</p>
+        <div class="label">Projects I own</div>${chipList([`Whole portfolio · ${state.data.portfolio.length} projects`], "No portfolio loaded")}
+        <div class="label">What I need to decide</div><div class="stack">${queueText}</div>
+        <div class="label">Next action</div><p class="copy">${queue.length ? "Approve, redirect, or park the highest-leverage item in Founder Queue." : "No action required. Let the team keep running."}</p>`;
+      return;
+    }
+
+    const activeAgents = state.data.agents.filter((agent) => agent.status === "ACTIVE");
+    const activeText = activeAgents.length
+      ? activeAgents.map((agent) => `<div class="mini-row"><b>${escapeHtml(agent.name)}</b>${escapeHtml(agent.summary || "Active work")}</div>`).join("")
+      : `<div class="empty compact">No specialist is actively executing right now.</div>`;
     detail.innerHTML = `
-      <div class="detail-title"><div class="agent-avatar">${avatarMap[agent.name] || "🤖"}</div><div><h3>${escapeHtml(agent.name)}</h3><div class="muted">${escapeHtml(agent.status)} · ${agent.items.length} work item(s)</div></div></div>
-      <div class="label">What is happening</div><p class="copy">${escapeHtml(agent.summary || "No current work.")}</p>
-      <div class="label">Live Work</div><div class="stack">${rows}</div>`;
+      <div class="detail-title"><div class="agent-avatar">${meta.avatar}</div><div><h3>${escapeHtml(role.name)}</h3><div class="muted">System manager · ${escapeHtml(role.status)}</div></div></div>
+      <div class="label">Mission</div><p class="copy">${escapeHtml(meta.mission)}</p>
+      <div class="label">What I'm working on now</div><p class="copy">${escapeHtml(role.summary)}</p>
+      <div class="label">Projects I coordinate</div>${chipList([`Portfolio · ${state.data.portfolio.length}`, `Live specialists · ${state.data.agents.length}`], "No work loaded")}
+      <div class="label">Latest team movement</div><div class="stack">${activeText}</div>
+      <div class="label">What I need from BoRam</div><p class="copy">${state.data.metrics.openDecisions ? `${state.data.metrics.openDecisions} item(s) are in Founder Queue.` : "Nothing right now. Approval gates are clear."}</p>
+      <div class="label">Next autonomous action</div><p class="copy">Continue Autonomous work, leave Parked work alone, and surface only a real decision, blocker, safety issue, or material recommendation change.</p>`;
+  }
+
+  function renderSpecialistDetail(agent) {
+    const detail = $("agentDetail");
+    const meta = roleMeta[agent.name] || {};
+    detail.hidden = false;
+    const projects = projectNames(agent.items || []);
+    const needs = (agent.items || []).filter((item) => item.executionMode === "Needs BoRam" || item.status === "Waiting for BoRam");
+    const active = (agent.items || []).find((item) => item.executionMode === "Autonomous" && item.status === "In progress") || agent.items?.[0];
+    const workRows = agent.items.length ? agent.items.map((item) => `
+      <div class="mini-row"><b>${escapeHtml(item.workItem)}</b>${escapeHtml(item.output || "No recent output")}<br><span class="muted">${escapeHtml(item.executionMode || "Unassigned")} · next ${escapeHtml(item.nextCheckin || "not set")}</span></div>`).join("") : `<div class="empty compact">No Live Work assigned.</div>`;
+    const needsText = needs.length
+      ? needs.map((item) => item.recommended || item.workItem).join(" · ")
+      : "Nothing right now.";
+    const nextAction = active && active.executionMode === "Autonomous" && active.status === "In progress"
+      ? `Continue “${active.workItem}”${active.nextCheckin ? ` · next check-in ${active.nextCheckin}` : ""}.`
+      : "No autonomous action is currently queued.";
+
+    detail.innerHTML = `
+      <div class="detail-title"><div class="agent-avatar">${meta.avatar || "🤖"}</div><div><h3>${escapeHtml(agent.name)}</h3><div class="muted">${escapeHtml(agent.status)} · ${agent.items.length} work item(s)</div></div></div>
+      <div class="label">Mission</div><p class="copy">${escapeHtml(meta.mission || "Own this specialist workstream and move it toward evidence and decisions.")}</p>
+      <div class="label">What I'm working on now</div><p class="copy">${escapeHtml(active?.workItem || "No current work.")}</p>
+      <div class="label">Projects I own</div>${chipList(projects, "No linked projects")}
+      <div class="label">Latest output</div><p class="copy">${escapeHtml(active?.output || agent.summary || "No recent output.")}</p>
+      <div class="label">What I need from BoRam</div><p class="copy">${escapeHtml(needsText)}</p>
+      <div class="label">Next autonomous action</div><p class="copy">${escapeHtml(nextAction)}</p>
+      <div class="label">Live Work</div><div class="stack">${workRows}</div>`;
   }
 
   function renderDecisions() {
