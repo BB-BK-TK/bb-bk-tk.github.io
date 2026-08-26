@@ -37,21 +37,28 @@
       <section id="healthStrip" class="health-strip" aria-live="polite"></section>
 
       <section class="stats" aria-label="Dashboard summary">
-        <article class="stat-card"><strong id="workingCount">–</strong><span>agents working</span></article>
+        <article class="stat-card"><strong id="workingCount">–</strong><span>specialists active</span></article>
         <article class="stat-card"><strong id="decisionCount">–</strong><span>decisions open</span></article>
         <article class="stat-card"><strong id="staleCount">–</strong><span>stale / blocked</span></article>
       </section>
 
       <nav class="tabs" aria-label="Dashboard sections">
-        <button class="tab active" data-tab="agentsPanel" type="button">Agents</button>
+        <button class="tab active" data-tab="agentsPanel" type="button">Team</button>
         <button class="tab" data-tab="decisionsPanel" type="button">Decisions</button>
         <button class="tab" data-tab="projectsPanel" type="button">Projects</button>
         <button class="tab" data-tab="stalePanel" type="button">Stale</button>
       </nav>
 
       <section id="agentsPanel" class="panel">
-        <div class="section-heading"><h2>Agents</h2><span>Tap to inspect</span></div>
-        <div id="agentGrid" class="agent-grid"></div>
+        <div class="section-heading"><h2>Team Structure</h2><span>Founder → Orchestrator → Specialists</span></div>
+        <div id="teamHierarchy" class="team-hierarchy">
+          <div id="founderSlot"></div>
+          <div class="hierarchy-connector"><span>sets direction & approvals</span></div>
+          <div id="orchestratorSlot"></div>
+          <div class="hierarchy-connector"><span>routes & coordinates work</span></div>
+          <div class="specialist-label"><span>5 SPECIALIST AGENTS</span><small>Tap any role to inspect</small></div>
+          <div id="agentGrid" class="agent-grid"></div>
+        </div>
         <article id="agentDetail" class="detail-card" hidden></article>
       </section>
 
