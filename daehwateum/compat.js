@@ -1,0 +1,1 @@
+document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-a="settings"]');if(b)b.setAttribute('data-a','home')},true);
