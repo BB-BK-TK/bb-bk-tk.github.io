@@ -4,13 +4,11 @@ function lang(){return (navigator.language||'ko').toLowerCase().indexOf('ko')===
 function copy(){return lang()==='ko'?{
   bannerTitle:'조금 더 자유롭게 대화해볼까요?',
   bannerBody:'직접 질문하고, 최대 5명과 더 많은 대화틈을 만들 수 있어요.',
-  bannerCta:'Premium 보기',
-  premiumWait:'다음 질문은 조금 뒤 열려요.'
+  bannerCta:'Premium 보기'
 }:{
   bannerTitle:'Want a little more freedom?',
   bannerBody:'Ask your own questions, invite up to 5 people, and create more spaces.',
-  bannerCta:'See Premium',
-  premiumWait:'Your next question opens a little later.'
+  bannerCta:'See Premium'
 }}
 function syncPremiumAcrossRooms(){
   if(syncing||!window.DT||!DT.state||!DT.isPremium)return;
@@ -22,9 +20,15 @@ function syncPremiumAcrossRooms(){
 function compactPremium(){
   if(!window.DT||!DT.state)return;
   var d=DT.state(),c=copy();
-  document.querySelectorAll('.next-gate h2').forEach(function(el){if(d&&d.is_premium)el.textContent=c.premiumWait});
   document.querySelectorAll('.premium-tools').forEach(function(el){
-    if(d&&d.is_premium){el.remove();return}
+    if(d&&d.is_premium){
+      el.classList.add('premium-room-tools');
+      var label=el.querySelector(':scope > .k');if(label)label.remove();
+      var intro=el.querySelector(':scope > p');if(intro)intro.remove();
+      var cal=document.querySelector('.cal');
+      if(cal&&cal.parentNode&&el.previousElementSibling!==cal)cal.parentNode.insertBefore(el,cal);
+      return;
+    }
     if(d&&d.me&&!d.me.is_creator){el.remove();return}
     if(el.classList.contains('premium-banner'))return;
     el.className='card premium-banner';
