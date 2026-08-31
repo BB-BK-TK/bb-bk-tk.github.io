@@ -11,6 +11,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: daehwateum-apk-publish
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -56,5 +60,6 @@ jobs:
             echo 'APK unchanged'
           else
             git commit -m 'Publish Daehwateum beta APK [skip ci]'
-            git push
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
