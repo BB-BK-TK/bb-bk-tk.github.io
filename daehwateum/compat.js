@@ -1,1 +1,5 @@
+(function(){'use strict';
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('[data-a="settings"]');if(b)b.setAttribute('data-a','home')},true);
+function ensureDay1GroupInvite(){if(!window.DT||!DT.state)return;var D=DT.state();if(!D||!D.is_premium||!D.me||!D.me.is_creator||D.round_sequence!==1||D.participant_count>=5)return;var grid=document.querySelector('.premium-tools .feature-grid');if(!grid||grid.querySelector('[data-group-invite-fix]'))return;var b=document.createElement('button');b.className='feature';b.setAttribute('data-a','share');b.setAttribute('data-group-invite-fix','1');var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0;b.innerHTML='<b>＋ '+(ko?'한 명 더 초대하기':'Invite another person')+'</b><small>'+D.participant_count+' / 5</small>';grid.appendChild(b)}
+var obs=new MutationObserver(function(){setTimeout(ensureDay1GroupInvite,0)});obs.observe(document.getElementById('app'),{childList:true,subtree:true});setTimeout(ensureDay1GroupInvite,300);
+})();
