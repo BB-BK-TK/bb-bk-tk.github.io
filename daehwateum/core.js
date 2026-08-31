@@ -1,6 +1,6 @@
 (function(){'use strict';
 var SUPA='https://kacvynoegfpvgdpqtjdi.supabase.co';
-var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXAiLCJyZWYiOiJrYWN2eW5vZWdmcHZnZHBxdGpkaiIsInJvbGUiOiJhbm9uIiwiaWF0IjoxNzg3NTM5NTYwLCJleHAiOjIxMDMxMTU2MH0.G9BzseV6w4uwni5lc9irAu0mSNT5MFmo1JpQIigPRhU';
+var KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImthY3Z5bm9lZ2ZwdmdkcHF0amRpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODc1Mzk1NjAsImV4cCI6MjEwMzExNTU2MH0.G9BzseV6w4uwni5lc9irAu0mSNT5MFmo1JpQIigPRhU';
 var LEGACY='dt.active.v3',REGKEY='dt.spaces.v1',PREMIUM='dt.premium.beta.v1';
 function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;')}
 function nl(v){return esc(v).replace(/\n/g,'<br>')}
