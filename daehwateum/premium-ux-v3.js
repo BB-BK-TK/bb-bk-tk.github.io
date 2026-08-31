@@ -26,7 +26,7 @@ function compactPremium(){
       var label=el.querySelector(':scope > .k');if(label)label.remove();
       var intro=el.querySelector(':scope > p');if(intro)intro.remove();
       var cal=document.querySelector('.cal');
-      if(cal&&cal.parentNode&&el.previousElementSibling!==cal)cal.parentNode.insertBefore(el,cal);
+      if(cal&&cal.parentNode&&el.nextElementSibling!==cal)cal.parentNode.insertBefore(el,cal);
       return;
     }
     if(d&&d.me&&!d.me.is_creator){el.remove();return}
