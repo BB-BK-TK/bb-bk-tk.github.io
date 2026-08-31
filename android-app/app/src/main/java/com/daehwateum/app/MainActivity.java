@@ -46,6 +46,17 @@ public class MainActivity extends Activity {
                 startActivity(new Intent(Intent.ACTION_VIEW, uri));
                 return true;
             }
+
+            @Override
+            public void onPageFinished(WebView view, String url) {
+                super.onPageFinished(view, url);
+                if (url != null && url.startsWith(HOME)) {
+                    String js = "(function(){try{" +
+                            "Object.defineProperty(navigator,'share',{configurable:true,value:function(d){AndroidShare.share((d&&d.url)||'');return Promise.resolve();}});" +
+                            "}catch(e){window.daehwateumNativeShare=function(u){AndroidShare.share(u);};}})();";
+                    view.evaluateJavascript(js, null);
+                }
+            }
         });
 
         if (savedInstanceState != null) {
