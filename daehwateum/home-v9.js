@@ -3,12 +3,12 @@ var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0,patching=false
 function esc(v){return window.DT&&DT.esc?DT.esc(v):String(v==null?'':v)}
 function copy(premium,returning){
   if(ko){
-    if(premium&&returning)return{eyebrow:'PREMIUM · ONGOING',title:'오늘도,<br><em>대화할 틈.</em>',body:'7일이 지나도 우리 대화는 계속돼요.',note:'이어가고 싶은 대화틈을 열어보세요.'};
+    if(premium&&returning)return{eyebrow:'PREMIUM · ONGOING',title:'오늘도,<br><em>대화할 틈.</em>',body:'원하는 만큼, 우리 속도로 대화를 계속 이어가요.',note:'이어가고 싶은 대화틈을 열어보세요.'};
     if(premium)return{eyebrow:'PREMIUM · YOUR CONVERSATION SPACE',title:'우리 사이에,<br><em>계속 대화할 틈.</em>',body:'기간 제한 없이, 우리 속도로 대화를 이어가요.',note:'첫 대화틈을 만들어 시작해보세요.',cta:'첫 대화틈 만들기 →'};
     if(returning)return{eyebrow:'7 DAYS · YOUR CONVERSATION',title:'오늘도,<br><em>대화할 틈.</em>',body:'하루 한 질문. 같이 답하고, 같이 열어봐요.',note:'이어가고 싶은 대화틈을 열어보세요.'};
   }else{
-    if(premium&&returning)return{eyebrow:'PREMIUM · ONGOING',title:'Make a little<br><em>space to talk.</em>',body:'Your conversations keep going beyond seven days.',note:'Open the space you want to continue.'};
-    if(premium)return{eyebrow:'PREMIUM · YOUR CONVERSATION SPACE',title:'A space to<br><em>keep talking.</em>',body:'Keep the conversation going at your pace, with no seven-day limit.',note:'Create your first space to begin.',cta:'Create my first space →'};
+    if(premium&&returning)return{eyebrow:'PREMIUM · ONGOING',title:'Make a little<br><em>space to talk.</em>',body:'Keep the conversation going at your own pace, for as long as you want.',note:'Open the space you want to continue.'};
+    if(premium)return{eyebrow:'PREMIUM · YOUR CONVERSATION SPACE',title:'A space to<br><em>keep talking.</em>',body:'Keep the conversation going at your pace, with no time limit.',note:'Create your first space to begin.',cta:'Create my first space →'};
     if(returning)return{eyebrow:'7 DAYS · YOUR CONVERSATION',title:'Make a little<br><em>space to talk.</em>',body:'One question a day. Answer separately. Open together.',note:'Open the space you want to continue.'};
   }
   return null;
