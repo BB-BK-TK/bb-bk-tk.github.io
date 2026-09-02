@@ -1,0 +1,25 @@
+.recovery-save-card{margin:16px 0;padding:20px;border:1px solid rgba(36,46,40,.12);border-radius:22px;background:rgba(255,255,255,.55)}
+.recovery-save-card h3{margin:7px 0 8px;font-size:21px;line-height:1.25}
+.recovery-save-card p{margin:0 0 14px;line-height:1.6;color:rgba(36,46,40,.72)}
+.recovery-save-actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.recovery-save-actions .btn{margin:0}
+.recovery-home-restore{margin-top:14px;text-align:center}
+.recovery-home-restore button{font:inherit}
+.recovery-restored-banner{margin:14px 16px;padding:13px 16px;border:1px solid rgba(36,46,40,.12);border-radius:16px;background:rgba(255,255,255,.55);font-size:14px;line-height:1.45}
+.recovery-overlay{position:fixed;inset:0;z-index:9998;background:#f6f1ea;overflow:auto;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+.recovery-sheet{width:min(100%,560px);min-height:100%;margin:0 auto;padding:18px 20px 36px;box-sizing:border-box}
+.recovery-sheet header{display:flex;align-items:center;gap:12px;min-height:44px}
+.recovery-sheet header button{border:0;background:transparent;font-size:24px;padding:6px 8px 6px 0}
+.recovery-sheet main{padding:24px 0}
+.recovery-sheet h1{font-size:34px;line-height:1.1;margin:8px 0 12px;letter-spacing:-.03em}
+.recovery-sheet h2{font-size:22px;line-height:1.25;margin:18px 0 8px}
+.recovery-sheet p{line-height:1.65;color:rgba(36,46,40,.72)}
+.recovery-form label{display:block;margin:18px 0 8px;font-weight:700}
+.recovery-form input{width:100%;box-sizing:border-box;border:1px solid rgba(36,46,40,.18);border-radius:14px;background:rgba(255,255,255,.75);padding:15px 14px;font:inherit;color:inherit;outline:none}
+.recovery-form input:focus{border-color:rgba(36,46,40,.45)}
+.recovery-form .btn{margin-top:14px}
+.recovery-note{font-size:13px;line-height:1.55;color:rgba(36,46,40,.62)}
+.recovery-code{margin:16px 0;padding:15px;border-radius:14px;background:rgba(36,46,40,.06);font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;line-height:1.55;word-break:break-all;user-select:all}
+.recovery-status{display:flex;align-items:center;gap:8px;margin:12px 0;padding:12px 14px;border-radius:14px;background:rgba(255,255,255,.6);font-size:14px}
+.recovery-error{margin:12px 0;color:#8b3b32;font-size:14px;line-height:1.5}
+.recovery-secondary{display:block;width:100%;border:0;background:transparent;padding:13px 4px;font:inherit;text-decoration:underline;text-underline-offset:3px}
