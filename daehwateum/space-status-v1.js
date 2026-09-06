@@ -5,14 +5,16 @@ function esc(v){return window.DT&&DT.esc?DT.esc(v):String(v==null?'':v)}
 function copy(){return ko?{active:'내 대화틈',waiting:'초대 대기 중',waitingBody:'상대방이 들어오면 대화가 시작돼요.',waitingState:'아직 시작 전 · 상대방 참여 대기',invite:'초대하기',newSpace:'새로운 대화틈 만들기'}:{active:'My spaces',waiting:'Waiting for someone to join',waitingBody:'The conversation starts when someone joins your invitation.',waitingState:'Not started · Waiting for someone to join',invite:'Invite',newSpace:'Create another space'}}
 function pending(s){var names=Array.isArray(s&&s.memberNames)?s.memberNames.filter(Boolean):[];if(names.length)return names.length<2;return !(s&&s.partnerName)}
 function signature(list){return list.map(function(s){var n=Array.isArray(s.memberNames)?s.memberNames.filter(Boolean).length:(s.partnerName?2:1);return s.room+':'+n+':'+(s.lastRound||1)+':'+(s.homeAnswerStatus||'')+':'+(s.homeAnswerArrived?'1':'0')}).join('|')}
+function hasAnswered(p){return !!(p&&(p.answered===true||(typeof p.answer==='string'&&p.answer.trim().length>0)))}
 function answerStatus(x){
   if(!x||Number(x.participant_count||0)<2)return{label:null,arrived:false};
-  var me=x.me||null,myName=me&&me.name?me.name:'',parts=Array.isArray(x.participants)?x.participants:[],myAnswered=me&&typeof me.answered!=='undefined'?!!me.answered:parts.some(function(p){return !!p.is_me&&!!p.answered});
-  if(myAnswered)return{label:null,arrived:false};
+  var me=x.me||null,myName=me&&me.name?me.name:'',parts=Array.isArray(x.participants)?x.participants:[];
   var others=parts.filter(function(p){if(p.is_me)return false;if(myName&&p.name===myName)return false;return true});
+  if(!others.length&&x.partner&&x.partner.name)others=[x.partner];
   if(!others.length)return{label:null,arrived:false};
-  var arrived=others.filter(function(p){return !!p.answered});
-  if(others.length===1){var name=others[0].name||'';return{label:arrived.length?(ko?name+'님의 답이 도착했어요':name+' has answered'):(ko?name+'님의 답을 기다리는 중':'Waiting for '+name+' to answer'),arrived:!!arrived.length}}
+  var arrived=others.filter(hasAnswered);
+  if(!arrived.length&&x.unlocked)arrived=others.slice();
+  if(others.length===1){var name=others[0].name|| (ko?'상대방':'Partner');return{label:arrived.length?(ko?name+'님의 답이 도착했어요':name+' has answered'):(ko?name+'님의 답을 기다리는 중':'Waiting for '+name+' to answer'),arrived:!!arrived.length}}
   return{label:arrived.length?(ko?arrived.length+'명의 답이 도착했어요':arrived.length+' answers have arrived'):(ko?'다른 사람의 답을 기다리는 중':'Waiting for others to answer'),arrived:!!arrived.length}
 }
 function persist(list){try{var r=JSON.parse(localStorage.getItem('dt.spaces.v1')||'{}');if(!r||!Array.isArray(r.spaces))return;r.spaces=r.spaces.map(function(old){var fresh=list.find(function(s){return s.room===old.room});return fresh?Object.assign({},old,{memberNames:fresh.memberNames,partnerName:fresh.partnerName,lastRound:fresh.lastRound,targetParticipants:fresh.targetParticipants,isPremium:fresh.isPremium,lastSeen:fresh.lastSeen,homeAnswerStatus:fresh.homeAnswerStatus||null,homeAnswerArrived:!!fresh.homeAnswerArrived,homeAnswerRound:fresh.homeAnswerRound||null}):old});localStorage.setItem('dt.spaces.v1',JSON.stringify(r))}catch(e){}}
