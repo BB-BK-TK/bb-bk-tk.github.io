@@ -1,0 +1,1 @@
+.home-answer-status{display:flex;align-items:center;gap:7px;margin-top:8px;font-size:11px;line-height:1.35;font-weight:750;color:#7b746c}.home-answer-dot{width:7px;height:7px;border-radius:999px;background:#b7b1aa;flex:0 0 auto}.home-answer-status.arrived{color:#3e6250}.home-answer-status.arrived .home-answer-dot{background:#6f9a7d;box-shadow:0 0 0 3px rgba(111,154,125,.12)}
