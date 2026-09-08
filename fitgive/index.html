@@ -437,7 +437,7 @@
         <header class="topbar workout-topbar"><button class="icon-button light-button" onclick="exitWorkout()" aria-label="Exit workout">×</button><span class="set-label">SET ${state.setIndex+1} OF ${config.sets}</span><button class="sound-button" onclick="toggleSound()" aria-label="${state.soundOn?'Mute music':'Unmute music'}" aria-pressed="${state.soundOn}">${state.soundOn?'♪':'—'}</button></header>
         <div class="setbar">${segs}</div>
         <div class="work-meta"><span><b id="overallDone">${state.totalReps}</b> / 30</span><span id="timeLeft">${mmss(remainingEstimate())} LEFT</span></div>
-        <section class="guide-stage"><div class="guide-sprite beat-driven ${state.paused?'paused':''}" id="guideSprite"><video id="guideVideo" class="guide-video" poster="assets/video/squat-poster.jpg?v=cat4" muted playsinline loop preload="auto" disablepictureinpicture aria-label="Squat demonstration"><source src="assets/video/squat-cycle.mp4?v=cat4" type="video/mp4"><source src="assets/video/squat-cycle.webm?v=cat4" type="video/webm"></video></div>${cues}<div class="rep-count"><strong id="repNow">${state.repInSet}</strong><span>/ ${config.reps}</span></div></section>
+        <section class="guide-stage"><div class="guide-sprite beat-driven ${state.paused?'paused':''}" id="guideSprite"><video id="guideVideo" class="guide-video" poster="assets/video/squat-poster.jpg?v=cat4" muted playsinline preload="auto" disablepictureinpicture aria-label="Squat demonstration"><source src="assets/video/squat-cycle.mp4?v=cat4" type="video/mp4"><source src="assets/video/squat-cycle.webm?v=cat4" type="video/webm"></video></div>${cues}<div class="rep-count"><strong id="repNow">${state.repInSet}</strong><span>/ ${config.reps}</span></div></section>
         <div class="workout-controls"><button class="round-control" onclick="togglePause()" aria-label="${state.paused?'Resume workout':'Pause workout'}">${state.paused?'▶':'Ⅱ'}</button><div><strong>${state.paused?'Ready when you are':'Move with the guide'}</strong><small>No camera. No judging. Just move.</small></div></div>
         ${DEV_MODE?'<button class="prototype-skip" onclick="finishSet()">Prototype: finish this set →</button>':''}`;
     }
@@ -617,38 +617,28 @@
        cycleLength/repSec so exactly one squat completes per rep, and drift is
        nudged back only at rep boundaries, and only when it exceeds a frame or
        two, so there is no visible hitch. */
-    const GUIDE_VIDEO={cycle:50/24, deep:28/24};   // 50 frames @24fps; bottom of the squat sits at phase 0.55
+    const GUIDE_VIDEO={cycle:50/24,key:[0,12/24,25/24]};
     const VideoGuide=(function(){
+      let lastFrame=-1;
       function el(){return document.getElementById('guideVideo')}
-      function rate(){const g=paceGrid();return GUIDE_VIDEO.cycle/g.repSec}
-      function tryPlay(v){const p=v.play();if(p&&p.catch)p.catch(function(){})}
-      function start(){
+      function frameFor(phase){
+        if(phase<0.14||phase>=0.86)return 0;
+        if(phase<0.40||phase>=0.60)return 1;
+        return 2;
+      }
+      function show(phase){
         const v=el();if(!v)return;
-        v.playbackRate=rate();
-        if(prefersReducedMotion){v.pause();return}
-        tryPlay(v);                                  // resync() puts it in phase
+        const idx=frameFor(phase);if(idx===lastFrame)return;
+        lastFrame=idx;v.pause();
+        const apply=function(){try{v.currentTime=GUIDE_VIDEO.key[idx]}catch(e){}};
+        if(v.readyState>=1)apply();
+        else v.addEventListener('loadedmetadata',apply,{once:true});
       }
-      function play(){const v=el();if(!v)return;v.playbackRate=rate();if(prefersReducedMotion){v.pause();return}tryPlay(v)}
+      function start(){lastFrame=-1;show(0)}
+      function play(){}
       function pause(){const v=el();if(v)v.pause()}
-      /* Align the clip to where the rep actually is. The grid does not start at
-         render -- it starts at the track's bar anchor a moment later -- so
-         starting the video at zero left it up to half a second out. Checked
-         every frame but only corrected past a tenth of a second, so it seeks
-         rarely rather than scrubbing continuously. */
-      function resync(phase){
-        const v=el();if(!v||prefersReducedMotion||!v.duration)return;
-        const c=GUIDE_VIDEO.cycle, want=phase*c;
-        let d=v.currentTime-want;
-        d=((d%c)+c)%c; if(d>c/2)d-=c;               // shortest way round the loop
-        if(Math.abs(d)>0.10){try{v.currentTime=want}catch(e){}}
-      }
-      /* Reduced motion: hold the two end poses rather than animating between
-         them, matching the build package's rule for the guide. */
-      function poseAt(phase){
-        const v=el();if(!v||!prefersReducedMotion)return;
-        const want=(phase>=0.25&&phase<0.75)?GUIDE_VIDEO.deep:0;
-        if(Math.abs(v.currentTime-want)>0.05){try{v.currentTime=want}catch(e){}}
-      }
+      function resync(phase){show(phase)}
+      function poseAt(phase){show(phase)}
       return {start:start,play:play,pause:pause,resync:resync,poseAt:poseAt};
     })();
 
