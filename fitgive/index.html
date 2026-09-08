@@ -522,8 +522,10 @@
       }
       { const rd=document.getElementById('cueReady'); if(rd&&rd.style.opacity!=='0')rd.style.opacity='0'; }
       const progress=elapsed/g.repSec;
-      const repIndex=Math.floor(progress);
-      const phase=progress-repIndex;
+      const cycleIndex=Math.floor(progress);
+      const phase=progress-cycleIndex;
+      // Count a rep as soon as the guide is fully standing again, not at the next cycle boundary.
+      const repIndex=Math.floor(progress+(1-GUIDE_PHASE.standingAgain));
 
       paintGuide(phase);
       VideoGuide.resync(phase);
@@ -563,7 +565,8 @@
        The video now carries the squat itself, so all that is left here is the
        down/up cue and, under reduced motion, holding the two end poses. */
     function paintGuide(phase){
-      const down=phase<0.5;
+      // Bottom pose cues standing up; fully upright cues the next squat down.
+      const down=phase<GUIDE_PHASE.bottom||phase>=GUIDE_PHASE.standingAgain;
       VideoGuide.poseAt(phase);
       const cd=document.getElementById('cueDown'),cu=document.getElementById('cueUp');
       if(cd)cd.style.opacity=down?'1':'0';
@@ -618,6 +621,7 @@
        nudged back only at rep boundaries, and only when it exceeds a frame or
        two, so there is no visible hitch. */
     const GUIDE_VIDEO={cycle:50/24,key:[0,12/24,25/24]};
+    const GUIDE_PHASE={bottom:0.40,standingAgain:0.86};
     const VideoGuide=(function(){
       let lastFrame=-1;
       function el(){return document.getElementById('guideVideo')}
