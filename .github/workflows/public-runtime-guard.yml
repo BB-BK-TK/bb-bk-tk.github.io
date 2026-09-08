@@ -1,0 +1,56 @@
+name: Public Runtime Guard
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Reject private/source-only files
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          forbidden=$(find . -type f \
+            ! -path './.git/*' \
+            ! -path './.github/workflows/public-runtime-guard.yml' \
+            \( -name '.env' -o -name '.env.*' -o -name '*.pem' -o -name '*.key' \
+               -o -name '*.jks' -o -name '*.keystore' -o -name 'google-services.json' \
+               -o -name '*adminsdk*.json' -o -name '*service-account*.json' \) -print)
+
+          if [ -n "$forbidden" ]; then
+            echo "::error::Private credential/config file found in public runtime repo:"
+            echo "$forbidden"
+            exit 1
+          fi
+
+          for dir in android android-app supabase migrations docs; do
+            if [ -e "./$dir" ]; then
+              echo "::error::Private/source-only top-level path is forbidden in public repo: $dir"
+              exit 1
+            fi
+          done
+
+      - name: Scan for obvious credential material
+        shell: bash
+        run: |
+          set -euo pipefail
+          matches=$(grep -RIlE \
+            --exclude-dir=.git \
+            --exclude='public-runtime-guard.yml' \
+            '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|github_pat_[A-Za-z0-9_]+|ghp_[A-Za-z0-9]+|SUPABASE_SERVICE_ROLE_KEY|"private_key"[[:space:]]*:' \
+            . || true)
+
+          if [ -n "$matches" ]; then
+            echo "::error::Potential credential material found in public repo:"
+            echo "$matches"
+            exit 1
+          fi
