@@ -15,7 +15,7 @@ document.addEventListener('click',function(e){
   if(!btn)return;
   e.preventDefault();
   e.stopPropagation();
-  location.href='./subscription/';
+  location.href='./subscription/?v=20260908-1429';
 },true);
 function start(){
   new MutationObserver(patch).observe(document.body,{childList:true,subtree:true});
