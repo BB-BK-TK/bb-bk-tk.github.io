@@ -1,0 +1,55 @@
+name: Repair FitGive cat guide
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/repair-fitgive-cat-guide.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install ffmpeg
+        run: |
+          sudo apt-get update -y
+          sudo apt-get install -y ffmpeg
+
+      - name: Re-encode live guide for Android WebView compatibility
+        run: |
+          set -euxo pipefail
+          mkdir -p /tmp/fitgive-guide
+          ffmpeg -y -i fitgive/assets/video/squat-cycle.mp4 \
+            -vf "scale=240:360:flags=lanczos,format=yuv420p" \
+            -r 24 -an -c:v libx264 -profile:v baseline -level 3.0 \
+            -preset medium -crf 22 -movflags +faststart -color_range tv \
+            /tmp/fitgive-guide/squat-cycle.mp4
+          ffmpeg -y -i fitgive/assets/video/squat-cycle.mp4 \
+            -vf "scale=240:360:flags=lanczos,format=yuv420p" \
+            -r 24 -an -c:v libvpx -b:v 300k -deadline good -cpu-used 4 \
+            /tmp/fitgive-guide/squat-cycle.webm
+          ffmpeg -y -ss 0 -i /tmp/fitgive-guide/squat-cycle.mp4 \
+            -frames:v 1 -q:v 2 /tmp/fitgive-guide/squat-poster.jpg
+          cp /tmp/fitgive-guide/squat-cycle.mp4 fitgive/assets/video/squat-cycle.mp4
+          cp /tmp/fitgive-guide/squat-cycle.webm fitgive/assets/video/squat-cycle.webm
+          cp /tmp/fitgive-guide/squat-poster.jpg fitgive/assets/video/squat-poster.jpg
+
+      - name: Commit repaired live media
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add fitgive/assets/video/squat-cycle.mp4 fitgive/assets/video/squat-cycle.webm fitgive/assets/video/squat-poster.jpg
+          if git diff --cached --quiet; then
+            echo "No media changes"
+            exit 0
+          fi
+          git commit -m "Fix FitGive cat guide playback compatibility"
+          git push origin HEAD:${GITHUB_REF_NAME}
