@@ -30,6 +30,7 @@
     .status.on{display:block}
     #betaCancelCard{display:none}
     #betaCancelCard.on{display:block}
+    #transferAfterCancel{display:none}
   </style>
 </head>
 <body>
@@ -42,14 +43,12 @@
     <section class="card">
       <strong id="cardTitle">Google Play에서 구독 관리</strong>
       <a class="btn" id="manageBtn" href="https://play.google.com/store/account/subscriptions">Google Play 열기</a>
-
       <h2 id="howTitle">취소 방법</h2>
       <ol id="steps">
         <li>구독에 사용한 Google 계정으로 Google Play를 열어주세요.</li>
         <li><b>결제 및 구독 → 구독</b>으로 이동하세요.</li>
         <li><b>대화틈</b>을 선택한 뒤 <b>구독 취소</b>를 눌러 안내를 따라주세요.</li>
       </ol>
-
       <div class="note" id="note">앱을 삭제하는 것만으로는 구독이 취소되지 않습니다. 구독을 취소한 뒤에도 현재 결제 기간이 끝날 때까지 Premium을 그대로 이용할 수 있습니다.</div>
       <a class="link" id="helpLink" href="https://support.google.com/googleplay/answer/7018481">Google Play 구독 취소 도움말 ↗</a>
     </section>
@@ -59,6 +58,7 @@
       <p id="betaCancelBody">현재 Beta에는 실제 결제가 연결되어 있지 않아, 테스트를 위해 여기서 Premium을 바로 해제할 수 있어요. 해제하면 내가 방장인 7일 초과 대화틈은 새 질문이 멈추고 기존 히스토리는 그대로 남아요.</p>
       <button class="btn danger" id="betaCancelBtn" type="button">Premium 해제하기</button>
       <div class="status" id="betaCancelStatus" role="status" aria-live="polite"></div>
+      <a class="btn" id="transferAfterCancel" href="../#transfer-host">방장 넘기기</a>
     </section>
 
     <section class="card" id="afterCard">
@@ -86,6 +86,8 @@
       var card=document.getElementById('betaCancelCard');
       var btn=document.getElementById('betaCancelBtn');
       var status=document.getElementById('betaCancelStatus');
+      var transfer=document.getElementById('transferAfterCancel');
+      var activeIsOwner=false;
 
       function setStatus(message){status.textContent=message;status.classList.add('on')}
       function guestId(){try{return localStorage.getItem(GUEST_KEY)||''}catch(e){return''}}
@@ -96,18 +98,18 @@
         try{var r=JSON.parse(localStorage.getItem(REGISTRY_KEY)||'null');if(r&&r.active&&Array.isArray(r.spaces)){for(var i=0;i<r.spaces.length;i++){if(r.spaces[i]&&r.spaces[i].room===r.active&&r.spaces[i].token)return r.spaces[i]}}}catch(e){}
         return null;
       }
+      function postRpc(fn,payload){return fetch(SUPA+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:API_KEY,'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null}catch(e){}if(!r.ok)throw Error(j&&j.message?j.message:'Something went wrong.');return j})})}
       function showCancel(on){card.classList.toggle('on',!!on);card.setAttribute('aria-hidden',on?'false':'true')}
       function checkPremium(){
         var s=activeSession();
         if(!s){showCancel(localPremium());return}
-        fetch(SUPA+'/rest/v1/rpc/dt_get_guest_premium_status',{
-          method:'POST',headers:{apikey:API_KEY,'Content-Type':'application/json'},
-          body:JSON.stringify({p_room_id:s.room,p_participant_token:s.token})
-        }).then(function(r){return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null}catch(e){}if(!r.ok)throw Error(j&&j.message?j.message:'Something went wrong.');return j})}).then(function(j){
+        postRpc('dt_get_guest_premium_status',{p_room_id:s.room,p_participant_token:s.token}).then(function(j){
           var premium=!!(j&&j.is_premium);
           if(premium){try{localStorage.setItem(PREMIUM_KEY,'1')}catch(e){}}else clearLocalPremium();
           showCancel(premium);
-        }).catch(function(){showCancel(localPremium())});
+          if(!premium)return null;
+          return postRpc('dt_get_state',{p_room_id:s.room,p_participant_token:s.token});
+        }).then(function(roomState){activeIsOwner=!!(roomState&&roomState.me&&roomState.me.is_owner)}).catch(function(){showCancel(localPremium())});
       }
       function downgrade(){
         var gid=guestId();
@@ -116,13 +118,11 @@
         if(!ok)return;
         btn.disabled=true;
         btn.textContent=ko?'해제 중…':'Turning off…';
-        fetch(SUPA+'/rest/v1/rpc/dt_set_guest_premium',{
-          method:'POST',headers:{apikey:API_KEY,'Content-Type':'application/json'},
-          body:JSON.stringify({p_app_user_id:gid,p_value:false})
-        }).then(function(r){return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null}catch(e){}if(!r.ok)throw Error(j&&j.message?j.message:'Something went wrong.');return j})}).then(function(){
+        postRpc('dt_set_guest_premium',{p_app_user_id:gid,p_value:false}).then(function(){
           clearLocalPremium();
           btn.textContent=ko?'Premium 해제 완료':'Premium turned off';
-          setStatus(ko?'Premium이 해제됐어요. 대화틈으로 돌아가면 방 상태가 새 정책에 맞게 다시 표시돼요. 방장을 넘기려면 해당 대화틈의 설정에서 “방장 넘기기”를 선택해 주세요.':'Premium is now off. Return to Daehwateum and room states will refresh. To transfer the host role, open that space and choose Transfer host in Settings.');
+          setStatus(ko?'Premium이 해제됐어요. 방장을 다른 사람에게 넘기려면 아래 버튼을 눌러주세요. 넘기지 않으면 기존 방장이 그대로 유지되고, 7일을 넘긴 방은 무료 상태로 잠시 쉬어요.':'Premium is now off. If you want someone else to continue as host, use the button below. Otherwise you remain the host and rooms older than seven days stay paused.');
+          if(activeIsOwner)transfer.style.display='flex';
         }).catch(function(e){
           btn.disabled=false;
           btn.textContent=ko?'Premium 해제하기':'Turn off Premium';
@@ -146,6 +146,7 @@
         document.getElementById('betaCancelTitle').textContent='Beta-only Premium switch';
         document.getElementById('betaCancelBody').textContent='Payments are not connected in the current beta, so Premium users can turn Premium off here for testing. Spaces older than seven days where you are the host will pause new questions while keeping all history.';
         document.getElementById('betaCancelBtn').textContent='Turn off Premium';
+        document.getElementById('transferAfterCancel').textContent='Transfer host';
         document.getElementById('afterTitle').textContent='What happens when Premium ends?';
         document.getElementById('afterList').innerHTML='<li>Premium stays active until the end of the current billing period.</li><li>After that, if a space where <b>you are the host</b> is older than seven days, only new questions pause.</li><li>Past questions, answers, reflections, and conversation history remain available.</li><li>If the other person wants to continue, use <b>Transfer host</b> in room Settings. The host changes only after they accept.</li><li>If they decline or do not respond, you remain the host and the room stays saved as a free, paused space.</li>';
         document.getElementById('backLink').textContent='← Back to Daehwateum';
