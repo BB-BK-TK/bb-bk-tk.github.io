@@ -46,6 +46,7 @@ jobs:
           matches=$(grep -RIlE \
             --exclude-dir=.git \
             --exclude='public-runtime-guard.yml' \
+            -- \
             '-----BEGIN (RSA |EC |OPENSSH )?PRIVATE KEY-----|github_pat_[A-Za-z0-9_]+|ghp_[A-Za-z0-9]+|SUPABASE_SERVICE_ROLE_KEY|"private_key"[[:space:]]*:' \
             . || true)
 
