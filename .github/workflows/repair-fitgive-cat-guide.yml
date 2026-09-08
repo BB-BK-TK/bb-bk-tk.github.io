@@ -37,19 +37,37 @@ jobs:
             -r 24 -an -c:v libvpx -b:v 300k -deadline good -cpu-used 4 \
             /tmp/fitgive-guide/squat-cycle.webm
           ffmpeg -y -ss 0 -i /tmp/fitgive-guide/squat-cycle.mp4 \
-            -frames:v 1 -q:v 2 /tmp/fitgive-guide/squat-poster.jpg
+            -frames:v 1 -q:v 2 -update 1 /tmp/fitgive-guide/squat-poster.jpg
           cp /tmp/fitgive-guide/squat-cycle.mp4 fitgive/assets/video/squat-cycle.mp4
           cp /tmp/fitgive-guide/squat-cycle.webm fitgive/assets/video/squat-cycle.webm
           cp /tmp/fitgive-guide/squat-poster.jpg fitgive/assets/video/squat-poster.jpg
 
-      - name: Commit repaired live media
+      - name: Prefer H264 and bust stale workout media cache
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          p = Path('fitgive/index.html')
+          s = p.read_text()
+          s = re.sub(r'poster="assets/video/squat-poster\.jpg(?:\?[^\"]*)?"', 'poster="assets/video/squat-poster.jpg?v=cat4"', s)
+          pattern = r'<source src="assets/video/squat-cycle\.(?:webm|mp4)(?:\?[^\"]*)?" type="video/(?:webm|mp4)"><source src="assets/video/squat-cycle\.(?:webm|mp4)(?:\?[^\"]*)?" type="video/(?:webm|mp4)">'
+          replacement = '<source src="assets/video/squat-cycle.mp4?v=cat4" type="video/mp4"><source src="assets/video/squat-cycle.webm?v=cat4" type="video/webm">'
+          s, n = re.subn(pattern, replacement, s, count=1)
+          if n != 1:
+              raise SystemExit('Could not find workout video source pair')
+          p.write_text(s)
+          PY
+
+      - name: Commit repaired live runtime
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add fitgive/assets/video/squat-cycle.mp4 fitgive/assets/video/squat-cycle.webm fitgive/assets/video/squat-poster.jpg
+          git add fitgive/index.html fitgive/assets/video/squat-cycle.mp4 fitgive/assets/video/squat-cycle.webm fitgive/assets/video/squat-poster.jpg
           if git diff --cached --quiet; then
-            echo "No media changes"
+            echo "No changes"
             exit 0
           fi
-          git commit -m "Fix FitGive cat guide playback compatibility"
-          git push origin HEAD:${GITHUB_REF_NAME}
+          git commit -m "Fix FitGive cat guide playback and cache"
+          git fetch origin main
+          git rebase origin/main
+          git push origin HEAD:main
