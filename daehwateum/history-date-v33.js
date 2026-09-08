@@ -16,18 +16,23 @@ function makeSummary(summary,data){
   summary.textContent='';var q=document.createElement('span');q.className='hist-question';q.textContent=data.question;summary.appendChild(q);
   if(data.custom){var pen=document.createElement('span');pen.className='hist-custom';pen.textContent='✎';pen.setAttribute('aria-label',lang()==='ko'?'직접 만든 질문':'Custom question');summary.appendChild(pen)}
 }
+function defaultVisible(hist){
+  var latest=hist.querySelector('.hist-day');if(!latest)return[];
+  return Array.prototype.slice.call(latest.querySelectorAll('details.item'),0,INITIAL_VISIBLE);
+}
 function setCollapsed(hist,expanded){
-  var items=Array.prototype.slice.call(hist.querySelectorAll('.hist-day details.item'));
-  items.forEach(function(item,index){item.classList.toggle('hist-hidden',!expanded&&index>=INITIAL_VISIBLE)});
+  var items=Array.prototype.slice.call(hist.querySelectorAll('.hist-day details.item')),visibleDefault=defaultVisible(hist);
+  items.forEach(function(item){item.classList.toggle('hist-hidden',!expanded&&visibleDefault.indexOf(item)<0)});
   Array.prototype.forEach.call(hist.querySelectorAll('.hist-day'),function(day){
     var visible=Array.prototype.some.call(day.querySelectorAll('details.item'),function(item){return!item.classList.contains('hist-hidden')});
     day.classList.toggle('hist-day-hidden',!expanded&&!visible);
   });
-  var button=hist.querySelector('.hist-more');if(!button)return;var hidden=Math.max(0,items.length-INITIAL_VISIBLE);
+  var button=hist.querySelector('.hist-more');if(!button)return;var hidden=Math.max(0,items.length-visibleDefault.length);
   button.setAttribute('aria-expanded',expanded?'true':'false');button.textContent=expanded?(lang()==='ko'?'이전 대화 접기':'Show less'):(lang()==='ko'?'이전 대화 '+hidden+'개 더 보기':'Show '+hidden+' earlier conversations');
 }
-function addExpand(hist,total){
-  if(total<=INITIAL_VISIBLE)return;var button=document.createElement('button');button.type='button';button.className='hist-more';button.setAttribute('aria-expanded','false');button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')==='true';setCollapsed(hist,!expanded)});hist.appendChild(button);setCollapsed(hist,false);
+function addExpand(hist){
+  var total=hist.querySelectorAll('.hist-day details.item').length,visible=defaultVisible(hist).length;if(total<=visible)return;
+  var button=document.createElement('button');button.type='button';button.className='hist-more';button.setAttribute('aria-expanded','false');button.addEventListener('click',function(){var expanded=button.getAttribute('aria-expanded')==='true';setCollapsed(hist,!expanded)});hist.appendChild(button);setCollapsed(hist,false);
 }
 function groupHistory(hist){
   if(!hist||hist.dataset.dateGrouped==='1')return;var items=Array.prototype.slice.call(hist.querySelectorAll('details.item'));if(!items.length)return;
@@ -36,7 +41,7 @@ function groupHistory(hist){
   var title=hist.firstElementChild&&hist.firstElementChild.tagName==='H2'?hist.firstElementChild:null;if(title){var base=(title.firstChild&&title.firstChild.textContent||title.textContent||'').trim().replace(/\s+\d+\s*$/,'');title.textContent=base+' ';var total=document.createElement('small');total.className='hist-total';total.textContent=items.length+(lang()==='ko'?'개':'');title.appendChild(total)}
   var groups=[],byKey={};parsed.forEach(function(x){var d=x.data;if(!byKey[d.key]){byKey[d.key]={month:d.month,day:d.day,rows:[]};groups.push(byKey[d.key])}byKey[d.key].rows.push(x)});
   groups.forEach(function(group){var section=document.createElement('section');section.className='hist-day';var head=document.createElement('header');head.className='hist-day-head';var date=document.createElement('b');date.textContent=dateLabel(group.month,group.day);head.appendChild(date);if(group.rows.length>1){var count=document.createElement('small');count.textContent=group.rows.length+(lang()==='ko'?'개의 대화':' conversations');head.appendChild(count)}section.appendChild(head);group.rows.forEach(function(row){makeSummary(row.item.querySelector('summary'),row.data);section.appendChild(row.item)});hist.appendChild(section)});
-  addExpand(hist,items.length);
+  addExpand(hist);
 }
 function run(){Array.prototype.forEach.call(app.querySelectorAll('.hist'),groupHistory)}
 var queued=false;function schedule(){if(queued)return;queued=true;requestAnimationFrame(function(){queued=false;run()})}
