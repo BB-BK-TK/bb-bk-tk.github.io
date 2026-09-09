@@ -13,18 +13,22 @@ function conversationStart(D){
   (D&&D.history||[]).forEach(function(x){var d=parse(x.completed_at);if(d)candidates.push(d)});
   return candidates.length?new Date(Math.min.apply(null,candidates.map(function(d){return d.getTime()}))):dayStart(new Date());
 }
-function displayWeek(start,today){
+function mondayOf(d){var x=new Date(d),dow=x.getDay();x.setDate(x.getDate()+(dow===0?-6:1-dow));return x}
+function displayWeek(D,start,today){
+  if(D&&D.free_period_ended===false){
+    var freeDay=Math.max(1,Math.min(7,parseInt(D.free_day||1,10)||1)),first=new Date(today);
+    first.setDate(first.getDate()-(freeDay-1));
+    return {start:first,mode:'first-seven'};
+  }
+  if(D&&D.free_period_ended===true)return {start:mondayOf(today),mode:'calendar-week'};
   var elapsed=Math.max(0,Math.floor((today-start)/86400000));
-  if(elapsed<7)return {start:new Date(start),mode:'first-seven'};
-  var monday=new Date(today),dow=monday.getDay();
-  monday.setDate(monday.getDate()+(dow===0?-6:1-dow));
-  return {start:monday,mode:'calendar-week'};
+  return elapsed<7?{start:new Date(start),mode:'first-seven'}:{start:mondayOf(today),mode:'calendar-week'};
 }
 function render(){
   if(patching||!window.DT||!DT.state)return;
   var grid=document.querySelector('.cal .weekgrid');if(!grid)return;
   var D=DT.state();if(!D||D.participant_count<2)return;
-  var start=conversationStart(D),today=dayStart(new Date()),week=displayWeek(start,today),st=week.start;
+  var start=conversationStart(D),today=dayStart(new Date()),week=displayWeek(D,start,today),st=week.start;
   var done={};(D.history||[]).forEach(function(x){var d=parse(x.completed_at);if(d)done[dayKey(d)]=1});
   var labels=(document.documentElement.lang||'ko').toLowerCase().indexOf('ko')===0?['일','월','화','수','목','금','토']:['S','M','T','W','T','F','S'];
   var html='',count=0;
