@@ -10,7 +10,7 @@ function patch(){
   }else if(pill){pill.remove()}
   var D=DT.state&&DT.state(),k=document.querySelector('.q .k');
   if(D&&k&&D.is_premium){var before=k.textContent||'',after=before.replace('★ PREMIUM',ko?'★ 방 PREMIUM':'★ ROOM PREMIUM');if(after!==before)k.textContent=after}
-  if(premium&&D&&!D.is_premium&&D.me&&!D.me.is_creator){document.querySelectorAll('.premium-banner,.premium-tools').forEach(function(el){el.remove()})}
+  if(premium&&D&&!D.is_premium&&D.me&&!D.me.is_owner){document.querySelectorAll('.premium-banner,.premium-tools').forEach(function(el){el.remove()})}
 }
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(function(){scheduled=false;patch()})}
 function start(){var app=document.getElementById('app');if(app)new MutationObserver(schedule).observe(app,{childList:true,subtree:true});schedule()}
