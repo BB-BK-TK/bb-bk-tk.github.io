@@ -54,14 +54,16 @@ function ensureMenu(){
   Array.from(m.querySelectorAll('button')).forEach(function(b){if(b!==danger)b.remove()});
   function add(label,attr,val){var b=document.createElement('button');b.type='button';b.setAttribute(attr,val||'1');b.textContent=label;m.insertBefore(b,danger||null)}
   add(c.notification,'data-settings-notification','1');
-  add(c.subscription,'data-subscription-management','1');
+  add(c.subscription,'data-settings-subscription','1');
+  var legacy=document.createElement('button');legacy.type='button';legacy.hidden=true;legacy.setAttribute('data-subscription-management','1');legacy.setAttribute('aria-hidden','true');m.insertBefore(legacy,danger||null);
   add(c.recovery,'data-recovery-settings','1');
   add(c.appInfo,'data-settings-app-info','1');
   m.setAttribute('data-settings-v37','1');
 }
 function patch(){if(patching)return;patching=true;requestAnimationFrame(function(){patching=false;ensureMenu()})}
 document.addEventListener('click',function(e){
-  var x=e.target.closest&&e.target.closest('[data-settings-notification]');if(x){e.preventDefault();var m=document.getElementById('settings-popover');if(m)m.remove();openNotifications();return}
+  var x=e.target.closest&&e.target.closest('[data-settings-subscription]');if(x){e.preventDefault();var sm=document.getElementById('settings-popover');if(sm)sm.remove();location.href='./subscription/manage/';return}
+  x=e.target.closest&&e.target.closest('[data-settings-notification]');if(x){e.preventDefault();var m=document.getElementById('settings-popover');if(m)m.remove();openNotifications();return}
   x=e.target.closest&&e.target.closest('[data-settings-app-info]');if(x){e.preventDefault();var mm=document.getElementById('settings-popover');if(mm)mm.remove();openAppInfo();return}
   x=e.target.closest&&e.target.closest('[data-settings-page-close]');if(x){e.preventDefault();closeSettingsPage();return}
   x=e.target.closest&&e.target.closest('[data-notification-request]');if(x){e.preventDefault();requestNotifications();return}
