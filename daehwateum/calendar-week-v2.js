@@ -13,11 +13,18 @@ function conversationStart(D){
   (D&&D.history||[]).forEach(function(x){var d=parse(x.completed_at);if(d)candidates.push(d)});
   return candidates.length?new Date(Math.min.apply(null,candidates.map(function(d){return d.getTime()}))):dayStart(new Date());
 }
+function displayWeek(start,today){
+  var elapsed=Math.max(0,Math.floor((today-start)/86400000));
+  if(elapsed<7)return {start:new Date(start),mode:'first-seven'};
+  var monday=new Date(today),dow=monday.getDay();
+  monday.setDate(monday.getDate()+(dow===0?-6:1-dow));
+  return {start:monday,mode:'calendar-week'};
+}
 function render(){
   if(patching||!window.DT||!DT.state)return;
   var grid=document.querySelector('.cal .weekgrid');if(!grid)return;
   var D=DT.state();if(!D||D.participant_count<2)return;
-  var start=conversationStart(D),today=dayStart(new Date()),elapsed=Math.max(0,Math.floor((today-start)/86400000)),block=Math.floor(elapsed/7),st=new Date(start);st.setDate(start.getDate()+block*7);
+  var start=conversationStart(D),today=dayStart(new Date()),week=displayWeek(start,today),st=week.start;
   var done={};(D.history||[]).forEach(function(x){var d=parse(x.completed_at);if(d)done[dayKey(d)]=1});
   var labels=(document.documentElement.lang||'ko').toLowerCase().indexOf('ko')===0?['일','월','화','수','목','금','토']:['S','M','T','W','T','F','S'];
   var html='',count=0;
@@ -27,9 +34,9 @@ function render(){
     if(isDone)count++;
     html+='<span class="day '+(isDone?'done ':'')+(isToday?'today ':'')+(future?'future ':'')+'"><small>'+labels[d.getDay()]+'</small><b>'+d.getDate()+'</b><i>✓</i></span>';
   }
-  var sig=dayKey(st)+'|'+Object.keys(done).sort().join(',')+'|'+dayKey(today);
+  var sig=week.mode+'|'+dayKey(st)+'|'+Object.keys(done).sort().join(',')+'|'+dayKey(today);
   if(grid.getAttribute('data-conversation-week')===sig)return;
-  patching=true;grid.innerHTML=html;grid.setAttribute('data-conversation-week',sig);
+  patching=true;grid.innerHTML=html;grid.setAttribute('data-conversation-week',sig);grid.setAttribute('data-week-mode',week.mode);
   var meta=document.querySelector('.cal .calmeta');if(meta)meta.textContent=count+(D.is_premium?'':' / 7');
   var cal=document.querySelector('.cal');if(cal)cal.classList.add('conversation-week');
   patching=false;
