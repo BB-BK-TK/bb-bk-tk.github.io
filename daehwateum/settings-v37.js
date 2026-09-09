@@ -9,7 +9,7 @@ function t(){return KO?{
   notificationTitle:'알림',notificationOn:'알림을 받고 있어요',notificationOff:'알림이 꺼져 있어요',
   notificationBodyOn:'새 질문이 열리거나 서로의 답을 볼 수 있게 되면 알려드려요.',
   notificationBodyOff:'새 질문과 답변 준비 소식을 놓치지 않도록 알림을 켤 수 있어요.',
-  notificationEnable:'알림 받기',notificationOpen:'알림 권한 확인',notificationHint:'알림 권한은 기기 설정에서도 언제든 변경할 수 있어요.',
+  notificationEnable:'알림 받기',notificationOpen:'알림 권한 확인',notificationDeviceSettings:'기기 알림 설정 열기',notificationHint:'알림 권한은 기기 설정에서도 언제든 변경할 수 있어요.',
   notificationChecking:'알림 상태를 확인하고 있어요…',notificationChecked:'알림 상태를 확인했어요.',notificationDenied:'기기 설정에서 대화틈 알림 권한을 허용해 주세요.',
   appInfoTitle:'앱 정보',version:'버전',how:'대화틈 사용 방법',terms:'이용약관',privacy:'개인정보처리방침'
 }:{
@@ -17,7 +17,7 @@ function t(){return KO?{
   notificationTitle:'Notifications',notificationOn:'Notifications are on',notificationOff:'Notifications are off',
   notificationBodyOn:'We’ll let you know when a new question opens or answers are ready to view.',
   notificationBodyOff:'Turn on notifications so you do not miss new questions or answer-ready updates.',
-  notificationEnable:'Enable notifications',notificationOpen:'Check notification permission',notificationHint:'You can also change notification permission anytime in your device settings.',
+  notificationEnable:'Enable notifications',notificationOpen:'Check notification permission',notificationDeviceSettings:'Open device notification settings',notificationHint:'You can also change notification permission anytime in your device settings.',
   notificationChecking:'Checking notification status…',notificationChecked:'Notification status checked.',notificationDenied:'Allow Daehwateum notifications in your device settings.',
   appInfoTitle:'App info',version:'Version',how:'How Daehwateum works',terms:'Terms of use',privacy:'Privacy policy'
 }}
@@ -25,11 +25,16 @@ function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){retur
 function closeSettingsPage(){var x=document.getElementById('settings-page-overlay');if(x)x.remove()}
 function page(title,body){closeSettingsPage();var x=document.createElement('div');x.id='settings-page-overlay';x.className='settings-page-overlay';x.innerHTML='<div class="settings-page-sheet"><header><button type="button" class="settings-page-back" data-settings-page-close aria-label="Back">←</button><b>'+esc(title)+'</b></header><main>'+body+'</main></div>';document.body.appendChild(x)}
 function pushEnabled(){try{return localStorage.getItem(PUSH_ENABLED)==='1'}catch(e){return false}}
-function notificationBody(feedback){var c=t(),on=pushEnabled();return '<section class="settings-page-card notification-settings-card"><span class="k">NOTIFICATIONS</span><h1>'+esc(on?c.notificationOn:c.notificationOff)+'</h1><p>'+esc(on?c.notificationBodyOn:c.notificationBodyOff)+'</p>'+(on?'<button type="button" class="settings-row-action" data-notification-request>'+esc(c.notificationOpen)+'</button>':'<button type="button" class="btn full" data-notification-request>'+esc(c.notificationEnable)+'</button>')+'<div class="settings-action-feedback" id="notification-feedback" aria-live="polite">'+esc(feedback||'')+'</div><small>'+esc(c.notificationHint)+'</small></section>'}
-function openNotifications(feedback){page(t().notificationTitle,notificationBody(feedback))}
+function nativeSettingsAvailable(){return !!(window.AndroidPush&&typeof AndroidPush.openSettings==='function')}
+function notificationBody(feedback){var c=t(),on=pushEnabled(),openLabel=nativeSettingsAvailable()?c.notificationDeviceSettings:c.notificationOpen;return '<section class="settings-page-card notification-settings-card"><span class="k">NOTIFICATIONS</span><h1>'+esc(on?c.notificationOn:c.notificationOff)+'</h1><p>'+esc(on?c.notificationBodyOn:c.notificationBodyOff)+'</p>'+(on?'<button type="button" class="settings-row-action" data-notification-request>'+esc(openLabel)+'</button>':'<button type="button" class="btn full" data-notification-request>'+esc(c.notificationEnable)+'</button>')+'<div class="settings-action-feedback" id="notification-feedback" aria-live="polite">'+esc(feedback||'')+'</div><small>'+esc(c.notificationHint)+'</small></section>'}
+function openNotifications(feedback){page(t().notificationTitle,notificationBody(feedback));try{if(window.AndroidPush&&typeof AndroidPush.sync==='function')AndroidPush.sync()}catch(e){}}
 function feedback(msg){var el=document.getElementById('notification-feedback');if(el)el.textContent=msg||''}
 function requestNotifications(){
-  var c=t();feedback(c.notificationChecking);
+  var c=t();
+  if(pushEnabled()&&nativeSettingsAvailable()){
+    try{AndroidPush.openSettings();return}catch(e){}
+  }
+  feedback(c.notificationChecking);
   try{localStorage.removeItem(PUSH_DISMISSED)}catch(e){}
   if(window.AndroidPush&&typeof AndroidPush.enable==='function'){
     try{AndroidPush.enable();setTimeout(function(){if(document.getElementById('settings-page-overlay'))openNotifications(pushEnabled()?c.notificationChecked:c.notificationDenied)},700);return}catch(e){feedback(c.notificationDenied);return}
@@ -60,6 +65,12 @@ function ensureMenu(){
   m.setAttribute('data-settings-v37','1');
 }
 function patch(){if(patching)return;patching=true;requestAnimationFrame(function(){patching=false;ensureMenu()})}
+var previousNativePushPermission=window.DaehwateumNativePushPermission;
+window.DaehwateumNativePushPermission=function(granted){
+  try{if(granted)localStorage.setItem(PUSH_ENABLED,'1');else localStorage.removeItem(PUSH_ENABLED)}catch(e){}
+  if(typeof previousNativePushPermission==='function')previousNativePushPermission(granted);
+  if(document.getElementById('settings-page-overlay'))openNotifications(granted?t().notificationChecked:t().notificationDenied);
+};
 document.addEventListener('click',function(e){
   var x=e.target.closest&&e.target.closest('[data-settings-subscription]');if(x){e.preventDefault();var sm=document.getElementById('settings-popover');if(sm)sm.remove();location.href='./subscription/manage/';return}
   x=e.target.closest&&e.target.closest('[data-settings-notification]');if(x){e.preventDefault();var m=document.getElementById('settings-popover');if(m)m.remove();openNotifications();return}
@@ -68,6 +79,9 @@ document.addEventListener('click',function(e){
   x=e.target.closest&&e.target.closest('[data-notification-request]');if(x){e.preventDefault();requestNotifications();return}
   x=e.target.closest&&e.target.closest('#settings-page-overlay [data-settings-action="about"]');if(x){closeSettingsPage();try{sessionStorage.setItem('dt.settings.return.appinfo','1')}catch(err){}}
 },true);
+function syncOnReturn(){if(!document.getElementById('settings-page-overlay'))return;try{if(window.AndroidPush&&typeof AndroidPush.sync==='function')AndroidPush.sync()}catch(e){}}
+window.addEventListener('focus',syncOnReturn,true);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)syncOnReturn()});
 function start(){new MutationObserver(patch).observe(document.body,{childList:true,subtree:true});var old=window.DaehwateumBack;window.DaehwateumBack=function(){if(document.getElementById('settings-page-overlay')){closeSettingsPage();return true}return old?old():false};patch();openPremiumFromQuery();try{if(sessionStorage.getItem('dt.settings.return.appinfo')==='1'){sessionStorage.removeItem('dt.settings.return.appinfo');setTimeout(openAppInfo,50)}}catch(e){}}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();

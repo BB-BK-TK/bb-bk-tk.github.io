@@ -3,15 +3,21 @@ var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0,patching=false
 function esc(v){return window.DT&&DT.esc?DT.esc(v):String(v==null?'':v)}
 function copy(premium,returning){
   if(ko){
-    if(premium&&returning)return{eyebrow:'',title:'오늘도,<br><em>대화할 틈.</em>',body:'원하는 만큼, 우리 속도로 대화를 계속 이어가요.',note:'이어가고 싶은 대화틈을 열어보세요.'};
-    if(premium)return{eyebrow:'',title:'우리 사이에,<br><em>계속 대화할 틈.</em>',body:'기간 제한 없이, 우리 속도로 대화를 이어가요.',note:'첫 대화틈을 만들어 시작해보세요.',cta:'첫 대화틈 만들기 →'};
-    if(returning)return{eyebrow:'7 DAYS · YOUR CONVERSATION',title:'오늘도,<br><em>대화할 틈.</em>',body:'하루 한 질문. 같이 답하고, 같이 열어봐요.',note:'이어가고 싶은 대화틈을 열어보세요.'};
-  }else{
-    if(premium&&returning)return{eyebrow:'',title:'Make a little<br><em>space to talk.</em>',body:'Keep the conversation going at your own pace, for as long as you want.',note:'Open the space you want to continue.'};
-    if(premium)return{eyebrow:'',title:'A space to<br><em>keep talking.</em>',body:'Keep the conversation going at your pace, with no time limit.',note:'Create your first space to begin.',cta:'Create my first space →'};
-    if(returning)return{eyebrow:'7 DAYS · YOUR CONVERSATION',title:'Make a little<br><em>space to talk.</em>',body:'One question a day. Answer separately. Open together.',note:'Open the space you want to continue.'};
+    return{
+      eyebrow:"QUESTIONS WE DON'T ALWAYS ASK",
+      title:'오늘도,<br><em>대화할 틈.</em>',
+      body:'평소엔 쉽게 묻지 못했던 것도, 여기선 조금 조심스럽게 꺼내봐요.',
+      note:'서로를 조금 더 알아가는 질문을 시작해보세요.',
+      cta:returning?'':'대화틈 만들기 →'
+    };
   }
-  return null;
+  return{
+    eyebrow:"QUESTIONS WE DON'T ALWAYS ASK",
+    title:'Make a little<br><em>space to talk.</em>',
+    body:'For the things that are not always easy to ask, start here gently.',
+    note:'Start a question that helps you know each other a little better.',
+    cta:returning?'':'Create a conversation space →'
+  };
 }
 function cleanPremiumNoise(premium){if(!premium)return;document.querySelectorAll('.spaces .premium-pill').forEach(function(el){el.remove()})}
 function patchHome(){
@@ -20,8 +26,7 @@ function patchHome(){
   if(!hero)return;
   var spaces=DT.spaces?DT.spaces():[],returning=!!(spaces&&spaces.length),premium=!!(DT.isPremium&&DT.isPremium()),c=copy(premium,returning);
   cleanPremiumNoise(premium);
-  if(!c){hero.classList.remove('returning-home','premium-home');hero.removeAttribute('data-home-v9');return}
-  var sig=(premium?'p':'f')+':' + (returning?'r':'n');
+  var sig=(premium?'p':'f')+':' + (returning?'r':'n')+':brand-copy-v39';
   if(hero.getAttribute('data-home-v9')===sig)return;
   hero.setAttribute('data-home-v9',sig);hero.classList.toggle('returning-home',returning);hero.classList.toggle('premium-home',premium);
   var inner=hero.firstElementChild||hero;

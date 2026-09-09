@@ -27,7 +27,15 @@ function normalizeLegacy(s){
   return true;
 }
 function pending(s){var names=Array.isArray(s&&s.memberNames)?s.memberNames.filter(Boolean):[];if(names.length)return names.length<2;return !(s&&s.partnerName)}
-function signature(list){return list.map(function(s){var n=Array.isArray(s.memberNames)?s.memberNames.filter(Boolean).length:(s.partnerName?2:1);return s.room+':'+n+':'+(s.lastRound||1)+':'+(s.homeAnswerStatus||'')+':'+(s.homeAnswerArrived?'1':'0')}).join('|')}
+function progressLabel(s){
+  var rounds=Math.max(1,Number(s&&s.lastRound||1));
+  if(s&&s.isPremium)return ko?rounds+'개의 대화':rounds+(rounds===1?' conversation':' conversations');
+  if(s&&s.freePeriodEnded)return ko?'첫 7일 완료':'First 7 days complete';
+  var freeDay=Math.max(0,Number(s&&s.freeDay||0));
+  if(freeDay)return ko?freeDay+'일째':'Day '+freeDay;
+  return ko?rounds+'개의 대화':rounds+(rounds===1?' conversation':' conversations');
+}
+function signature(list){return list.map(function(s){var n=Array.isArray(s.memberNames)?s.memberNames.filter(Boolean).length:(s.partnerName?2:1);return s.room+':'+n+':'+(s.lastRound||1)+':'+(s.freeDay||'')+':'+(s.freePeriodEnded?'1':'0')+':'+(s.isPremium?'1':'0')+':'+(s.homeAnswerStatus||'')+':'+(s.homeAnswerArrived?'1':'0')}).join('|')}
 function rememberCurrent(){
   if(!window.DT||!DT.state||!DT.session)return;
   var d=DT.state(),s=DT.session();if(!d||!s)return;
@@ -42,6 +50,8 @@ function persistSnapshot(snapshot){
   s.lastRound=d.round_sequence||s.lastRound;
   s.targetParticipants=d.max_participants||s.targetParticipants;
   s.isPremium=!!d.is_premium;
+  s.freeDay=d.free_day||s.freeDay;
+  s.freePeriodEnded=!!d.free_period_ended;
   s.lastSeen=new Date().toISOString();
   s.homeAnswerStatus=st.label;
   s.homeAnswerArrived=st.arrived;
@@ -54,7 +64,7 @@ function paint(card,s){
   if(!card)return;
   normalizeLegacy(s);
   var box=card.querySelector(':scope > div');if(!box)return;
-  var day=box.querySelector(':scope > p:not(.space-answer-status)');if(day)day.textContent='DAY '+(s.lastRound||1);
+  var day=box.querySelector(':scope > p:not(.space-answer-status)');if(day)day.textContent=progressLabel(s);
   var old=box.querySelector('.space-answer-status');
   if(pending(s)||!s.homeAnswerStatus){if(old)old.remove();return}
   if(!old){old=document.createElement('p');box.appendChild(old)}
