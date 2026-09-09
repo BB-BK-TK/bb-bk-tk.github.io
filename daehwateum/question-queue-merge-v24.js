@@ -2,7 +2,25 @@
 var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0,pending=false;
 function copy(){return ko?{title:'✎ 질문 예약하기',desc:'떠오른 질문을 미리 남겨두세요.',action:'질문 예약하기',manage:'질문 관리하기'}:{title:'✎ Reserve a question',desc:'Leave a question for later.',action:'Reserve question',manage:'Manage questions'}}
 function removeDuplicate(app){var duplicate=app.querySelector('.premium-tools [data-a="custom"]');if(!duplicate)return;var grid=duplicate.closest('.feature-grid'),tools=grid&&grid.closest('.premium-tools');duplicate.remove();if(grid&&!grid.children.length&&tools)tools.remove()}
-function merge(){var app=document.getElementById('app');if(!app)return;var card=app.querySelector('.queue-summary-card');if(!card)return;removeDuplicate(app);var cc=copy(),intro=card.querySelector('.queue-summary-intro'),state=card.querySelector('[data-queue-summary-state],.queue-summary-state'),button=card.querySelector('[data-a="custom"]');if(!intro){intro=document.createElement('div');intro.className='queue-summary-intro';intro.innerHTML='<b class="queue-module-title"></b><p></p>';card.insertBefore(intro,card.firstChild)}var title=intro.querySelector('.queue-module-title')||intro.querySelector('b'),desc=intro.querySelector('p'),status='',detail='';if(state&&!state.hidden){var sb=state.querySelector('b'),ss=state.querySelector('small');status=sb?String(sb.textContent||'').trim():'';detail=ss?String(ss.innerText||ss.textContent||'').trim():''}var hasReserved=!!status&&status.replace(/\s+/g,'')!==' ';var visualSig=(hasReserved?'reserved:':'empty:')+status+'|'+detail;if(card.getAttribute('data-queue-visual')!==visualSig){if(title)title.textContent=hasReserved?status:cc.title;if(desc)desc.textContent=hasReserved?detail:cc.desc;card.classList.toggle('has-reserved-questions',hasReserved);if(button)button.textContent=hasReserved?cc.manage:cc.action;card.setAttribute('data-queue-visual',visualSig)}if(state){state.style.display='none';state.setAttribute('aria-hidden','true')}}
+function merge(){
+  var app=document.getElementById('app');if(!app)return;
+  var card=app.querySelector('.queue-summary-card');if(!card)return;
+  removeDuplicate(app);
+  var cc=copy(),intro=card.querySelector('.queue-summary-intro'),state=card.querySelector('[data-queue-summary-state],.queue-summary-state'),button=card.querySelector('[data-a="custom"]');
+  if(!intro){intro=document.createElement('div');intro.className='queue-summary-intro';intro.innerHTML='<b class="queue-module-title"></b><p></p>';card.insertBefore(intro,card.firstChild)}
+  var title=intro.querySelector('.queue-module-title')||intro.querySelector('b'),desc=intro.querySelector('p'),status='',detail='';
+  if(state&&!state.hidden){var sb=state.querySelector('b'),ss=state.querySelector('small');status=sb?String(sb.textContent||'').trim():'';detail=ss?String(ss.innerText||ss.textContent||'').trim():''}
+  var hasReserved=!!status&&status.replace(/\s+/g,'')!==' ';
+  var visualSig=(hasReserved?'reserved:':'empty:')+status+'|'+detail;
+  if(card.getAttribute('data-queue-visual')!==visualSig){
+    if(title)title.textContent=hasReserved?status:cc.title;
+    if(desc)desc.textContent=hasReserved?detail:cc.desc;
+    card.classList.toggle('has-reserved-questions',hasReserved);
+    if(button)button.textContent=hasReserved?cc.manage:cc.action;
+    card.setAttribute('data-queue-visual',visualSig)
+  }
+  if(state){state.style.display='none';state.setAttribute('aria-hidden','true')}
+}
 function schedule(){if(pending)return;pending=true;requestAnimationFrame(function(){pending=false;merge()})}
 function start(){var app=document.getElementById('app');if(!app)return;new MutationObserver(schedule).observe(app,{childList:true,subtree:true});schedule()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();

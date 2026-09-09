@@ -1,0 +1,10 @@
+{
+  "name": "대화틈 · Daehwateum",
+  "short_name": "대화틈",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f6f1ea",
+  "theme_color": "#f6f1ea",
+  "description": "하루 한 질문, 같이 답하고 같이 열어보는 작은 관계 공간"
+}

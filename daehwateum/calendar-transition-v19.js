@@ -10,9 +10,11 @@ function freeWindow(D){var st=conversationStart(D),en=new Date(st);en.setDate(st
 function weekDates(D){var start=conversationStart(D),today=dayStart(new Date()),elapsed=Math.max(0,Math.floor((today-start)/86400000)),block=Math.floor(elapsed/7),st=new Date(start),out=[];st.setDate(start.getDate()+block*7);for(var i=0;i<7;i++){var d=new Date(st);d.setDate(st.getDate()+i);out.push(d)}return out}
 function monthDates(){var now=new Date(),first=new Date(now.getFullYear(),now.getMonth(),1),last=new Date(now.getFullYear(),now.getMonth()+1,0),pad=(first.getDay()+6)%7,out=[];for(var p=0;p<pad;p++)out.push(null);for(var j=1;j<=last.getDate();j++)out.push(new Date(now.getFullYear(),now.getMonth(),j));return out}
 function focusCalendar(cal){if(!cal)return;var rect=cal.getBoundingClientRect(),offset=Math.max(56,Math.min(96,window.innerHeight*.08)),top=Math.max(0,window.scrollY+rect.top-offset),reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;try{window.scrollTo({top:top,behavior:reduce?'auto':'smooth'})}catch(e){window.scrollTo(0,top)}}
+function lockScrollAnchor(){document.documentElement.classList.add('calendar-scroll-lock')}
+function unlockScrollAnchor(){document.documentElement.classList.remove('calendar-scroll-lock')}
 function render(mode){var cal=document.querySelector('.cal'),D=window.DT&&DT.state&&DT.state();if(!cal||!D)return;var grid=cal.querySelector('.weekgrid,.monthgrid');if(!grid)return;var active=cal.querySelector('[data-a="cal-'+mode+'"]');if(active&&active.classList.contains('on'))return;
   var oldH=cal.getBoundingClientRect().height,done=doneMap(D),today=dayStart(new Date()),labels=langKo()?['월','화','수','목','금','토','일']:['M','T','W','T','F','S','S'],fw=!D.is_premium?freeWindow(D):null,dates=mode==='week'?weekDates(D):monthDates();
-  busy=true;cal.classList.add('calendar-transitioning');cal.style.height=oldH+'px';cal.style.overflow='hidden';grid.classList.add('calendar-grid-out');
+  busy=true;lockScrollAnchor();cal.classList.add('calendar-transitioning');cal.style.height=oldH+'px';cal.style.overflow='hidden';grid.classList.add('calendar-grid-out');
   setTimeout(function(){
     cal.querySelectorAll('.switch [data-a]').forEach(function(b){b.classList.toggle('on',b.getAttribute('data-a')==='cal-'+mode)});
     var weekdays=cal.querySelector('.weekdays');
@@ -25,7 +27,7 @@ function render(mode){var cal=document.querySelector('.cal'),D=window.DT&&DT.sta
     grid.innerHTML=html;grid.classList.add('calendar-grid-in');
     var newH=cal.scrollHeight;cal.offsetHeight;cal.style.height=newH+'px';
     requestAnimationFrame(function(){grid.classList.remove('calendar-grid-in');grid.classList.remove('calendar-grid-out');if(mode==='month')focusCalendar(cal)});
-    setTimeout(function(){cal.style.height='';cal.style.overflow='';cal.classList.remove('calendar-transitioning');busy=false},260);
+    setTimeout(function(){cal.style.height='';cal.style.overflow='';cal.classList.remove('calendar-transitioning');busy=false;setTimeout(unlockScrollAnchor,120)},260);
   },70)
 }
 document.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.cal [data-a="cal-week"],.cal [data-a="cal-month"]');if(!b||busy)return;e.preventDefault();e.stopImmediatePropagation();render(b.getAttribute('data-a')==='cal-month'?'month':'week')},true);
