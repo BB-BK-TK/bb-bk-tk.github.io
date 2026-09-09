@@ -1,0 +1,22 @@
+{
+  "name": "Pause Pet",
+  "short_name": "Pause Pet",
+  "description": "앱을 열기 전, 잠깐 멈춰볼까요?",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0A0E2A",
+  "theme_color": "#0A0E2A",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
