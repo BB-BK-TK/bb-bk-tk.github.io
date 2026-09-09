@@ -7,7 +7,8 @@ function conversationStart(D){
   var candidates=[];
   var round=parse(D&&D.round_created_at);
   if(round){
-    if(!D.is_premium){var seq=Math.max(1,parseInt(D.round_sequence||1,10));round.setDate(round.getDate()-(seq-1))}
+    var seq=Math.max(1,parseInt(D.round_sequence||1,10));
+    round.setDate(round.getDate()-(seq-1));
     candidates.push(round);
   }
   (D&&D.history||[]).forEach(function(x){var d=parse(x.completed_at);if(d)candidates.push(d)});
@@ -15,13 +16,24 @@ function conversationStart(D){
 }
 function mondayOf(d){var x=new Date(d),dow=x.getDay();x.setDate(x.getDate()+(dow===0?-6:1-dow));return x}
 function displayWeek(D,start,today){
+  var seq=Math.max(1,parseInt(D&&D.round_sequence||1,10));
+  var elapsed=Math.max(0,Math.floor((today-start)/86400000));
+  var firstPeriodDone=seq>7||elapsed>=7||(D&&D.free_period_ended===true);
+
+  // Premium rooms still follow the same first-week UX: start-aware for the
+  // first seven days, then a familiar Monday-Sunday calendar week. Do not let
+  // free_period_ended=false pull an established Premium room back to a rolling
+  // seven-day window when switching month -> week.
+  if(D&&D.is_premium){
+    return firstPeriodDone?{start:mondayOf(today),mode:'calendar-week'}:{start:new Date(start),mode:'first-seven'};
+  }
+
   if(D&&D.free_period_ended===false){
     var freeDay=Math.max(1,Math.min(7,parseInt(D.free_day||1,10)||1)),first=new Date(today);
     first.setDate(first.getDate()-(freeDay-1));
     return {start:first,mode:'first-seven'};
   }
   if(D&&D.free_period_ended===true)return {start:mondayOf(today),mode:'calendar-week'};
-  var elapsed=Math.max(0,Math.floor((today-start)/86400000));
   return elapsed<7?{start:new Date(start),mode:'first-seven'}:{start:mondayOf(today),mode:'calendar-week'};
 }
 function render(){
