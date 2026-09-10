@@ -1,0 +1,26 @@
+(function(){'use strict';
+var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0,justRevealedRound=null,patchQueued=false;
+function state(){return window.DT&&DT.state&&DT.state()}
+function roundKey(d){return d&&d.round_id!=null?String(d.round_id):''}
+function questionText(d){if(!d)return'';return (!ko&&d.question_en)?d.question_en:(d.question||'')}
+function esc(v){return window.DT&&DT.esc?DT.esc(v):String(v==null?'':v).replace(/[&<>"']/g,function(x){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[x]})}
+function isRevealedRoom(d){return !!(d&&d.round_id&&d.me&&d.me.answered&&d.unlocked&&Number(d.participant_count||0)>1&&window.DT&&DT.revealed&&DT.revealed())}
+function currentSection(){var ans=document.querySelector('.group-answers');return ans&&ans.closest('section')}
+function gateIn(sec){if(!sec)return null;return sec.querySelector('.next-gate')||sec.querySelector('[data-a="next"]')}
+function hide(el){if(!el)return;el.hidden=true;el.style.setProperty('display','none','important')}
+function show(el){if(!el)return;el.hidden=false;el.style.removeProperty('display')}
+function setTop(){
+  try{window.scrollTo({left:0,top:0,behavior:'auto'})}catch(e){try{window.scrollTo(0,0)}catch(_e){}}
+  [document.scrollingElement,document.documentElement,document.body].forEach(function(el){try{if(el)el.scrollTop=0}catch(e){}})
+}
+function summaryHtml(d){var seq=Math.min(Number(d.round_sequence||1),7),q=questionText(d),done=ko?'오늘의 대화를 채웠어요 ✓':'Conversation complete ✓',review=ko?'답변 다시 보기 →':'Review answers →',label='ROUND '+seq+' OF 7 · '+(ko?'완료':'COMPLETE');return '<div><span class="k">'+label+'</span><b>'+done+'</b><small>“'+esc(q)+'”</small></div><button type="button" class="text" data-post-reveal-review>'+review+'</button>'}
+function ensureSummary(sec,d){var existing=sec.querySelector('.post-reveal-summary'),sig=roundKey(d)+':'+questionText(d);if(existing&&existing.getAttribute('data-round-sig')===sig){var currentGate=gateIn(sec);if(currentGate&&existing.nextElementSibling!==currentGate)currentGate.insertAdjacentElement('beforebegin',existing);return existing}if(!existing){existing=document.createElement('section');existing.className='card post-reveal-summary';var gate=gateIn(sec);if(gate)gate.insertAdjacentElement('beforebegin',existing);else sec.appendChild(existing)}existing.setAttribute('data-round-sig',sig);existing.innerHTML=summaryHtml(d);return existing}
+function collapse(){var app=document.getElementById('app'),d=state();if(!app||app.querySelector('.question-queue-screen')||!isRevealedRoom(d))return;if(justRevealedRound===roundKey(d))return;var sec=currentSection();if(!sec)return;var q=document.querySelector('.q'),head=sec.querySelector(':scope > .c'),answers=sec.querySelector(':scope > .group-answers');if(q)q.classList.add('post-reveal-hidden');hide(q);hide(head);hide(answers);sec.classList.add('post-reveal-current');var w=app.querySelector('.w');if(w)w.classList.add('post-reveal-home');ensureSummary(sec,d)}
+function revealFull(){var d=state(),sec=currentSection(),q=document.querySelector('.q'),head=sec&&sec.querySelector(':scope > .c'),answers=sec&&sec.querySelector(':scope > .group-answers'),sum=sec&&sec.querySelector('.post-reveal-summary');if(!d||!sec)return;justRevealedRound=roundKey(d);if(q)q.classList.remove('post-reveal-hidden');show(q);show(head);show(answers);if(sum)sum.remove();sec.classList.remove('post-reveal-current');var w=document.querySelector('#app .w');if(w)w.classList.remove('post-reveal-home');setTop();requestAnimationFrame(setTop)}
+function reviewCurrent(){revealFull()}
+function schedulePatch(){if(patchQueued)return;patchQueued=true;Promise.resolve().then(function(){patchQueued=false;collapse()})}
+document.addEventListener('click',function(ev){var review=ev.target.closest&&ev.target.closest('[data-post-reveal-review]');if(review){ev.preventDefault();ev.stopImmediatePropagation();reviewCurrent();return}var a=ev.target.closest&&ev.target.closest('[data-a]');if(!a)return;var action=a.getAttribute('data-a'),d=state();if(action==='reveal'&&d)justRevealedRound=roundKey(d);else if(action==='home'||action==='open-room'||action==='room'||action==='next')justRevealedRound=null},true);
+document.addEventListener('visibilitychange',function(){if(document.hidden)justRevealedRound=null;else schedulePatch()});
+function start(){var app=document.getElementById('app');if(app)new MutationObserver(schedulePatch).observe(app,{childList:true,subtree:true});schedulePatch()}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
+})();
