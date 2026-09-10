@@ -1,1 +1,1 @@
-Temporary marker for verified guide rollback.
+Verified guide rollback deployed.

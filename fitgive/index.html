@@ -104,9 +104,8 @@
     .ad-reward p{color:rgba(255,255,255,.75);font-size:13px;margin:0 0 20px}
     .ad-reward button{background:var(--lime);color:var(--ink);border:0;border-radius:99px;padding:14px 26px;font-size:13px;font-weight:900;cursor:pointer;min-height:46px}
     @media(prefers-reduced-motion:reduce){.ad-orb,.ad-shoe{animation:none!important}}
-    .guide-frame{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;background:#D3CEC8;opacity:0;pointer-events:none}
-    .guide-frame.active{opacity:1}
-    .guide-sprite.paused .guide-frame{filter:grayscale(.35) opacity(.72)}
+    .guide-video{width:100%;height:100%;object-fit:cover;display:block;background:transparent;-webkit-mask-image:linear-gradient(to right,transparent 0,#000 46px,#000 calc(100% - 46px),transparent 100%);mask-image:linear-gradient(to right,transparent 0,#000 46px,#000 calc(100% - 46px),transparent 100%)}
+    .guide-sprite.paused .guide-video{filter:grayscale(.35) opacity(.72)}
 
     .setbar{display:flex;gap:5px;margin:14px 24px 0}
     .setbar span{flex:1;height:6px;border-radius:99px;background:rgba(255,255,255,.15);overflow:hidden}
@@ -438,7 +437,7 @@
         <header class="topbar workout-topbar"><button class="icon-button light-button" onclick="exitWorkout()" aria-label="Exit workout">×</button><span class="set-label">SET ${state.setIndex+1} OF ${config.sets}</span><button class="sound-button" onclick="toggleSound()" aria-label="${state.soundOn?'Mute music':'Unmute music'}" aria-pressed="${state.soundOn}">${state.soundOn?'♪':'—'}</button></header>
         <div class="setbar">${segs}</div>
         <div class="work-meta"><span><b id="overallDone">${state.totalReps}</b> / 30</span><span id="timeLeft">${mmss(remainingEstimate())} LEFT</span></div>
-        <section class="guide-stage"><div class="guide-sprite beat-driven ${state.paused?'paused':''}" id="guideSprite"><img class="guide-frame active" data-guide-frame="0" src="assets/guide/cat0.webp?v=cat5" alt="Squat demonstration"><img class="guide-frame" data-guide-frame="1" src="assets/guide/cat1.webp?v=cat5" alt=""><img class="guide-frame" data-guide-frame="2" src="assets/guide/cat2.webp?v=cat5" alt=""><img class="guide-frame" data-guide-frame="3" src="assets/guide/cat3.webp?v=cat5" alt=""><img class="guide-frame" data-guide-frame="4" src="assets/guide/cat4.webp?v=cat5" alt=""></div>${cues}<div class="rep-count"><strong id="repNow">${state.repInSet}</strong><span>/ ${config.reps}</span></div></section>
+        <section class="guide-stage"><div class="guide-sprite beat-driven ${state.paused?'paused':''}" id="guideSprite"><video id="guideVideo" class="guide-video" poster="assets/video/squat-poster.jpg?v=cat4" muted playsinline preload="auto" disablepictureinpicture aria-label="Squat demonstration"><source src="assets/video/squat-cycle.mp4?v=cat4" type="video/mp4"><source src="assets/video/squat-cycle.webm?v=cat4" type="video/webm"></video></div>${cues}<div class="rep-count"><strong id="repNow">${state.repInSet}</strong><span>/ ${config.reps}</span></div></section>
         <div class="workout-controls"><button class="round-control" onclick="togglePause()" aria-label="${state.paused?'Resume workout':'Pause workout'}">${state.paused?'▶':'Ⅱ'}</button><div><strong>${state.paused?'Ready when you are':'Move with the guide'}</strong><small>No camera. No judging. Just move.</small></div></div>
         ${DEV_MODE?'<button class="prototype-skip" onclick="finishSet()">Prototype: finish this set →</button>':''}`;
     }
@@ -621,28 +620,27 @@
        cycleLength/repSec so exactly one squat completes per rep, and drift is
        nudged back only at rep boundaries, and only when it exceeds a frame or
        two, so there is no visible hitch. */
+    const GUIDE_VIDEO={cycle:50/24,key:[0,12/24,25/24]};
     const GUIDE_PHASE={bottom:0.40,standingAgain:0.86};
     const VideoGuide=(function(){
       let lastFrame=-1;
+      function el(){return document.getElementById('guideVideo')}
       function frameFor(phase){
-        if(phase<0.10||phase>=0.86)return 0;
-        if(phase<0.20||phase>=0.76)return 1;
-        if(phase<0.30||phase>=0.66)return 2;
-        if(phase<0.40||phase>=0.56)return 3;
-        return 4;
+        if(phase<0.14||phase>=0.86)return 0;
+        if(phase<0.40||phase>=0.60)return 1;
+        return 2;
       }
       function show(phase){
-        const idx=frameFor(phase);
-        const active=document.querySelector('[data-guide-frame="'+idx+'"]');
-        if(idx===lastFrame&&active&&active.classList.contains('active'))return;
-        lastFrame=idx;
-        document.querySelectorAll('[data-guide-frame]').forEach(function(frame,i){
-          frame.classList.toggle('active',i===idx);
-        });
+        const v=el();if(!v)return;
+        const idx=frameFor(phase);if(idx===lastFrame)return;
+        lastFrame=idx;v.pause();
+        const apply=function(){try{v.currentTime=GUIDE_VIDEO.key[idx]}catch(e){}};
+        if(v.readyState>=1)apply();
+        else v.addEventListener('loadedmetadata',apply,{once:true});
       }
       function start(){lastFrame=-1;show(0)}
       function play(){}
-      function pause(){}
+      function pause(){const v=el();if(v)v.pause()}
       function resync(phase){show(phase)}
       function poseAt(phase){show(phase)}
       return {start:start,play:play,pause:pause,resync:resync,poseAt:poseAt};
