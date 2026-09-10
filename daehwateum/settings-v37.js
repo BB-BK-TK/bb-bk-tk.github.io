@@ -55,7 +55,7 @@ function ensureMenu(){
   var m=document.getElementById('settings-popover');if(!m)return;
   if(m.getAttribute('data-settings-v37')==='1')return;
   var danger=m.querySelector('.danger-menu');var c=t();
-  Array.from(m.querySelectorAll('button')).forEach(function(b){if(b!==danger)b.remove()});
+  Array.from(m.querySelectorAll('button')).forEach(function(b){if(b!==danger&&!b.hasAttribute('data-owner-transfer-menu'))b.remove()});
   function add(label,attr,val){var b=document.createElement('button');b.type='button';b.setAttribute(attr,val||'1');b.textContent=label;m.insertBefore(b,danger||null)}
   add(c.notification,'data-settings-notification','1');
   add(c.subscription,'data-settings-subscription','1');
