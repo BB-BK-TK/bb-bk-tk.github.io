@@ -63,9 +63,10 @@ function captureCurrent(){rememberCurrent();if(lastSnapshot&&persistSnapshot(las
 function paint(card,s){
   if(!card)return;
   normalizeLegacy(s);
-  var box=card.querySelector(':scope > div');if(!box)return;
+  var box=card.querySelector(':scope > div:not(.space-avatars-v44)')||card.querySelector(':scope > div');if(!box)return;
   var day=box.querySelector(':scope > p:not(.space-answer-status)');if(day)day.textContent=progressLabel(s);
-  var old=box.querySelector('.space-answer-status');
+  var old=box.querySelector(':scope > .space-answer-status');
+  var stray=card.querySelector(':scope > .space-avatars-v44 > .space-answer-status');if(stray)stray.remove();
   if(pending(s)||!s.homeAnswerStatus){if(old)old.remove();return}
   if(!old){old=document.createElement('p');box.appendChild(old)}
   old.className='space-answer-status '+(s.homeAnswerArrived?'arrived':'waiting');
