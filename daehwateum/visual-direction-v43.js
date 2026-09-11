@@ -236,6 +236,7 @@ function decorate(){
   document.body.classList.toggle('visual-form-v44',form);
   if(queue){decorateQueueScreen(w);return}
   if(home){decorateHome(w);return}
+  if(form){decorateHome(w);return}
   if(!room)return;
   ensureRelationshipHero(d,w);
   decorateQuestion(d,w);
