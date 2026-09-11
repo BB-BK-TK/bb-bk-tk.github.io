@@ -1408,3 +1408,99 @@ body.v44-review-open{
     transition:none;
   }
 }
+
+/* Rhythm card polish: keep the collapsed state quiet and unmistakably tappable. */
+.visual-room-v43 .cal:not(.rhythm-expanded-v43){
+  min-height:184px;
+  padding:24px 20px 0;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .caltop>.switch,
+.visual-room-v43 .cal:not(.rhythm-expanded-v43)>.switch{
+  display:none!important;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .caltop h2{
+  margin-top:4px;
+  font-size:24px;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .caltop>div:first-child::after{
+  top:13px;
+  right:1px;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-art-v43{
+  inset:91px 0 0;
+  background:linear-gradient(180deg,#faf7f0 0%,#f0eee5 100%);
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-art-v43::before{
+  width:24px;
+  height:24px;
+  top:12px;
+  right:18%;
+  background:#f7d9af;
+  opacity:.72;
+  box-shadow:0 0 22px rgba(247,205,151,.22);
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-hill-v43{
+  left:-14%;
+  bottom:-58%;
+  width:66%;
+  aspect-ratio:1.7;
+  border-radius:55% 55% 0 0 / 100% 100% 0 0;
+  transform:rotate(5deg);
+  background:#90aa9a;
+  opacity:.68;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-hill-v43:nth-child(2){
+  left:20%;
+  bottom:-55%;
+  width:70%;
+  transform:rotate(-3deg);
+  background:#c9d4c8;
+  opacity:.82;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-hill-v43:nth-child(3){
+  left:58%;
+  bottom:-61%;
+  width:58%;
+  transform:rotate(4deg);
+  background:#6f917e;
+  opacity:.72;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-sprout-v43{
+  right:8%;
+  bottom:7px;
+  height:34px;
+  opacity:.72;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-sprout-v43::before,
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-sprout-v43::after{
+  width:15px;
+  height:9px;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-sprout-v43::before{
+  left:-14px;
+  top:10px;
+}
+
+.visual-room-v43 .cal:not(.rhythm-expanded-v43) .rhythm-sprout-v43::after{
+  top:3px;
+}
+
+.visual-room-v43 .cal.rhythm-expanded-v43 .caltop>.switch{
+  display:flex!important;
+}
+
+/* history-detail already adds semantics; the row's native chevron is enough */
+.visual-room-v43 .hist-open-label{
+  display:none!important;
+}
