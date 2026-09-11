@@ -7,6 +7,8 @@ function fixCard(card){
   if(!info)return;
   var misplaced=avatars&&avatars.querySelector(':scope > .space-answer-status');
   if(misplaced)info.appendChild(misplaced);
+  var stray=card.querySelector(':scope > .space-answer-status');
+  if(stray)info.appendChild(stray);
 }
 function patch(){
   queued=false;
@@ -17,6 +19,7 @@ function schedule(){
 }
 new MutationObserver(schedule).observe(app,{childList:true,subtree:true});
 schedule();
+setTimeout(schedule,100);
 setTimeout(schedule,500);
 setTimeout(schedule,1800);
 })();
