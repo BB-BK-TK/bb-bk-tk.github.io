@@ -1,0 +1,88 @@
+/* v48: keep the question and answer composer as one continuous surface. */
+
+/* Closed state keeps the approved question card + answer CTA treatment from v43. */
+
+/* When the user starts answering, the question becomes the top half of the same card. */
+.visual-room-v43 .q:has(+.stage.answer-open-v43 #af){
+  margin:0!important;
+  padding:28px 24px 17px!important;
+  border-bottom:0!important;
+  border-radius:25px 25px 0 0!important;
+  background:rgba(255,254,250,.98)!important;
+  box-shadow:none!important;
+}
+
+/* The form is the lower half of that same surface instead of a second card. */
+.visual-room-v43 .q+.stage.answer-open-v43:has(#af){
+  margin:0!important;
+  padding:0 24px 24px!important;
+  border:1px solid var(--v43-line)!important;
+  border-top:0!important;
+  border-radius:0 0 25px 25px!important;
+  background:rgba(255,254,250,.98)!important;
+  box-shadow:var(--v43-shadow)!important;
+}
+
+.visual-room-v43 .q+.stage.answer-open-v43:has(#af)::before{
+  content:"";
+  display:block;
+  height:1px;
+  margin:0 0 18px;
+  background:var(--v43-line);
+}
+
+.visual-room-v43 .q+.stage.answer-open-v43 #af{
+  display:grid!important;
+  gap:13px!important;
+}
+
+.visual-room-v43 .q+.stage.answer-open-v43 #af textarea{
+  min-height:142px!important;
+  margin:0!important;
+  padding:16px!important;
+  border:1px solid var(--v43-line)!important;
+  border-radius:17px!important;
+  background:#fff!important;
+  color:#202923!important;
+  font-size:15px!important;
+  line-height:1.55!important;
+  box-shadow:none!important;
+  resize:none!important;
+}
+
+.visual-room-v43 .q+.stage.answer-open-v43 #af textarea:focus{
+  border-color:#a9bdb2!important;
+  outline:0!important;
+  box-shadow:0 0 0 3px rgba(31,93,70,.08)!important;
+}
+
+.visual-room-v43 .q+.stage.answer-open-v43 #af .c{
+  margin:0!important;
+}
+
+.visual-room-v43 .q+.stage.answer-open-v43 #af .btn{
+  width:100%!important;
+  min-height:52px!important;
+  margin:0!important;
+  border-radius:16px!important;
+}
+
+/* Keep the whole compose surface together when the keyboard opens. */
+.visual-room-v43 .q:has(+.stage.answer-open-v43 #af),
+.visual-room-v43 .q+.stage.answer-open-v43:has(#af){
+  scroll-margin-top:84px;
+}
+
+@media(max-width:600px){
+  .visual-room-v43 .q:has(+.stage.answer-open-v43 #af){
+    padding:24px 20px 15px!important;
+  }
+
+  .visual-room-v43 .q+.stage.answer-open-v43:has(#af){
+    padding:0 20px 20px!important;
+  }
+
+  .visual-room-v43 .q+.stage.answer-open-v43 #af textarea{
+    min-height:132px!important;
+  }
+}
