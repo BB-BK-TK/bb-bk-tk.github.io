@@ -20,6 +20,29 @@ function compactRelationship(){
   hero.innerHTML='<button type="button" class="relationship-compact-button-v47" aria-label="'+(ko?'함께하는 사람 보기':'View people')+'"><span class="relationship-people-v47">'+ps.map(avatar).join('')+'</span><span class="relationship-compact-copy-v47"><b>'+esc(names(d))+'</b><small>'+(ko?'지금, 더 가까워지는 대화':'A conversation that brings us closer')+'</small></span><i aria-hidden="true">›</i></button>';
 }
 
+function polishHome(){
+  if(!document.body.classList.contains('visual-home-v44'))return;
+  Array.prototype.forEach.call(app.querySelectorAll('.spacecard'),function(card){
+    var info=card.querySelector(':scope > div:not(.space-avatars-v44)');
+    if(!info)return;
+    var status=info.querySelector(':scope > .space-answer-status');
+    if(status){
+      card.classList.add('home-active-v47');
+      Array.prototype.forEach.call(info.children,function(el){
+        if(el.tagName==='P'&&!el.classList.contains('space-answer-status'))el.classList.add('home-count-v47');
+      });
+    }
+  });
+  Array.prototype.forEach.call(app.querySelectorAll('button,a'),function(action){
+    var text=String(action.textContent||'').replace(/\s+/g,' ').trim();
+    if(text!=='초대하기'&&text!=='Invite')return;
+    action.classList.add('home-invite-action-v47');
+    action.setAttribute('aria-label',text);
+    var card=action.closest('.card,.spacecard');
+    if(card)card.classList.add('home-invite-pending-v47');
+  });
+}
+
 function releaseWhenReady(){
   if(released)return;
   var body=document.body,w=app.querySelector(':scope > .w');if(!body||!w)return;
@@ -36,7 +59,7 @@ function releaseWhenReady(){
   requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('app-boot-pending');document.documentElement.classList.add('app-boot-ready');released=true})});
 }
 
-function patch(){queued=false;compactRelationship();releaseWhenReady()}
+function patch(){queued=false;compactRelationship();polishHome();releaseWhenReady()}
 function schedule(){if(queued)return;queued=true;requestAnimationFrame(patch)}
 
 app.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.relationship-compact-button-v47');if(!b)return;var original=app.querySelector('.top .people[data-people-manage],.top .people');if(original&&typeof original.click==='function')original.click()},true);
