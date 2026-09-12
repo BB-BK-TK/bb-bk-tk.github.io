@@ -137,6 +137,53 @@
   border-radius:23px!important;
 }
 
+/* Home: identity + state only. Conversation count is not a primary signal here. */
+.visual-home-v44 .spacecard.home-active-v47>div:not(.space-avatars-v44)>.home-count-v47{
+  display:none!important;
+}
+
+.visual-home-v44 .spacecard.home-active-v47>div:not(.space-avatars-v44)>.space-answer-status{
+  grid-column:1 / -1!important;
+  max-width:100%;
+}
+
+/* Pending invite cards already live under an 'invite waiting' section. Keep the right affordance consistent with other cards. */
+.visual-home-v44 .home-invite-action-v47{
+  width:38px!important;
+  min-width:38px!important;
+  height:38px!important;
+  min-height:38px!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:50%!important;
+  display:grid!important;
+  place-items:center!important;
+  overflow:visible!important;
+  background:transparent!important;
+  color:var(--v43-green)!important;
+  box-shadow:none!important;
+  font-size:0!important;
+  line-height:1!important;
+  white-space:nowrap!important;
+}
+
+.visual-home-v44 .home-invite-action-v47::before,
+.visual-home-v44 .home-invite-action-v47::after{
+  content:"›"!important;
+  position:static!important;
+  width:auto!important;
+  height:auto!important;
+  margin:0!important;
+  transform:none!important;
+  background:none!important;
+  color:var(--v43-green)!important;
+  font-size:29px!important;
+  font-weight:400!important;
+  line-height:1!important;
+}
+
+.visual-home-v44 .home-invite-action-v47::before{display:none!important}
+
 @media(max-width:600px){
   .visual-room-v43 .relationship-hero-v43.relationship-compact-v47{padding-bottom:10px}
   .relationship-compact-v47 .relationship-avatar-v47{width:38px;height:38px}
