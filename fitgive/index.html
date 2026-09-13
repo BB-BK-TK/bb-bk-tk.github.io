@@ -59,7 +59,9 @@
     /* Beat-driven guide: JS owns frame + cue timing, so CSS animation is disabled on these nodes.
        The two sprite poses are stacked and crossfaded while the container travels
        continuously, so the squat reads as one motion instead of a two-frame flip. */
-    .guide-sprite.beat-driven{animation:none!important;background-image:none;transform:none!important;width:240px;height:360px}
+    .guide-sprite.beat-driven{animation:none!important;background-image:none;transform:none!important;width:320px;height:320px;border-radius:24px;overflow:hidden;filter:none}
+    .guide-sprite.beat-driven .guide-video{width:100%;height:100%;object-fit:cover;display:block;background:transparent;-webkit-mask-image:radial-gradient(ellipse at center,#000 0%,#000 70%,rgba(0,0,0,.96) 78%,transparent 100%);mask-image:radial-gradient(ellipse at center,#000 0%,#000 70%,rgba(0,0,0,.96) 78%,transparent 100%)}
+    .guide-sprite.beat-driven.paused .guide-video{filter:grayscale(.35) opacity(.72)}
     .movement-cues.beat-driven .cue-down,.movement-cues.beat-driven .cue-up{animation:none!important}
     
 
@@ -364,7 +366,7 @@
     function render(){clearFlow();phone.className='phone-screen';let html='';if(state.view==='onboarding')html=renderOnboarding();if(state.view==='home')html=renderHome();if(state.view==='setup')html=renderSetup();if(state.view==='countdown')html=renderCountdown();if(state.view==='workout')html=renderWorkout();if(state.view==='break')html=renderBreak();if(state.view==='complete')html=renderComplete();if(state.view==='impact')html=renderImpact();if(state.view==='me')html=renderMe();phone.innerHTML=html;
       if(lastRenderedView!==state.view){lastRenderedView=state.view;void phone.offsetWidth;phone.classList.add('view-in')}
       afterRender()}
-    function afterRender(){if(state.view==='countdown')scheduleCountdown();if(state.view==='workout'&&!state.paused&&!state.transitioning){startBeatLoop();VideoGuide.start()}if(state.view==='break'&&state.breakStage!=='offer'&&state.breakStage!=='ad')scheduleBreak()}
+    function afterRender(){if(state.view==='countdown')scheduleCountdown();if(state.view==='workout'){if(!state.paused&&!state.transitioning)startBeatLoop();VideoGuide.start()}if(state.view==='break'&&state.breakStage!=='offer'&&state.breakStage!=='ad')scheduleBreak()}
 
     function renderOnboarding(){
       const bars=[0,1,2].map(function(i){return '<span class="'+(i<=state.onboardingStep?'filled':'')+'"></span>'}).join('');
@@ -437,7 +439,7 @@
         <header class="topbar workout-topbar"><button class="icon-button light-button" onclick="exitWorkout()" aria-label="Exit workout">×</button><span class="set-label">SET ${state.setIndex+1} OF ${config.sets}</span><button class="sound-button" onclick="toggleSound()" aria-label="${state.soundOn?'Mute music':'Unmute music'}" aria-pressed="${state.soundOn}">${state.soundOn?'♪':'—'}</button></header>
         <div class="setbar">${segs}</div>
         <div class="work-meta"><span><b id="overallDone">${state.totalReps}</b> / 30</span><span id="timeLeft">${mmss(remainingEstimate())} LEFT</span></div>
-        <section class="guide-stage"><div class="guide-sprite beat-driven ${state.paused?'paused':''}" id="guideSprite"><video id="guideVideo" class="guide-video" poster="assets/video/squat-poster.jpg?v=cat4" muted playsinline preload="auto" disablepictureinpicture aria-label="Squat demonstration"><source src="assets/video/squat-cycle.mp4?v=cat4" type="video/mp4"><source src="assets/video/squat-cycle.webm?v=cat4" type="video/webm"></video></div>${cues}<div class="rep-count"><strong id="repNow">${state.repInSet}</strong><span>/ ${config.reps}</span></div></section>
+        <section class="guide-stage"><div class="guide-sprite beat-driven ${state.paused?'paused':''}" id="guideSprite"><video id="guideVideo" class="guide-video" muted playsinline loop preload="auto" disablepictureinpicture aria-label="Squat demonstration"></video></div>${cues}<div class="rep-count"><strong id="repNow">${state.repInSet}</strong><span>/ ${config.reps}</span></div></section>
         <div class="workout-controls"><button class="round-control" onclick="togglePause()" aria-label="${state.paused?'Resume workout':'Pause workout'}">${state.paused?'▶':'Ⅱ'}</button><div><strong>${state.paused?'Ready when you are':'Move with the guide'}</strong><small>No camera. No judging. Just move.</small></div></div>
         ${DEV_MODE?'<button class="prototype-skip" onclick="finishSet()">Prototype: finish this set →</button>':''}`;
     }
@@ -528,7 +530,6 @@
       const repIndex=Math.floor(progress+(1-GUIDE_PHASE.standingAgain));
 
       paintGuide(phase);
-      VideoGuide.resync(phase);
 
       // Audible tick per beat only when the music itself isn't carrying the pulse.
       const beatIndex=Math.floor(elapsed/g.beat);
@@ -620,29 +621,53 @@
        cycleLength/repSec so exactly one squat completes per rep, and drift is
        nudged back only at rep boundaries, and only when it exceeds a frame or
        two, so there is no visible hitch. */
-    const GUIDE_VIDEO={cycle:50/24,key:[0,12/24,25/24]};
+    const GUIDE_VIDEO={
+      fast:{src:'assets/video/squat-fast-veo.mp4?v=veo1',duration:1.75},
+      slow:{src:'assets/video/squat-slow-veo.mp4?v=veo1',duration:8.25}
+    };
     const GUIDE_PHASE={bottom:0.40,standingAgain:0.86};
     const VideoGuide=(function(){
-      let lastFrame=-1;
       function el(){return document.getElementById('guideVideo')}
-      function frameFor(phase){
-        if(phase<0.14||phase>=0.86)return 0;
-        if(phase<0.40||phase>=0.60)return 1;
-        return 2;
+      function spec(){return GUIDE_VIDEO[state.pace==='slow'?'slow':'fast']}
+      function phaseNow(){
+        const g=paceGrid();
+        if(!Number.isFinite(repBase))return 0;
+        const elapsed=Math.max(0,BeatEngine.time()-repBase);
+        return (elapsed/g.repSec)%1;
       }
-      function show(phase){
+      function circularDrift(now,expected,duration){
+        let d=now-expected;
+        if(d>duration/2)d-=duration;
+        if(d<-duration/2)d+=duration;
+        return d;
+      }
+      function sync(phase,force){
         const v=el();if(!v)return;
-        const idx=frameFor(phase);if(idx===lastFrame)return;
-        lastFrame=idx;v.pause();
-        const apply=function(){try{v.currentTime=GUIDE_VIDEO.key[idx]}catch(e){}};
-        if(v.readyState>=1)apply();
+        const s=spec(),g=paceGrid();
+        const wanted=s.src;
+        const apply=function(){
+          if(!v.isConnected)return;
+          try{v.playbackRate=s.duration/g.repSec}catch(e){}
+          const expected=Math.max(0,Math.min(.9999,phase))*s.duration;
+          const drift=circularDrift(v.currentTime||0,expected,s.duration);
+          const tolerance=state.pace==='slow'?0.28:0.14;
+          if(force||Math.abs(drift)>tolerance){try{v.currentTime=expected}catch(e){}}
+          if(prefersReducedMotion||state.paused||state.transitioning){try{v.pause()}catch(e){};return}
+          if(v.paused){const pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}
+        };
+        if(v.dataset.guideSrc!==wanted){
+          v.dataset.guideSrc=wanted;
+          v.src=wanted;
+          v.load();
+          v.addEventListener('loadedmetadata',apply,{once:true});
+        }else if(v.readyState>=1)apply();
         else v.addEventListener('loadedmetadata',apply,{once:true});
       }
-      function start(){lastFrame=-1;show(0)}
-      function play(){}
-      function pause(){const v=el();if(v)v.pause()}
-      function resync(phase){show(phase)}
-      function poseAt(phase){show(phase)}
+      function start(){sync(phaseNow(),true)}
+      function play(){sync(phaseNow(),true)}
+      function pause(){const v=el();if(v)try{v.pause()}catch(e){}}
+      function resync(phase){sync(phase,false)}
+      function poseAt(phase){sync(phase,false)}
       return {start:start,play:play,pause:pause,resync:resync,poseAt:poseAt};
     })();
 
