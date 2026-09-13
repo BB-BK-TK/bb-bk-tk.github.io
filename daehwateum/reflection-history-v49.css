@@ -1,11 +1,11 @@
 /* v49: completed reflections become a summary row on the room and a dedicated list/detail surface. */
 
 .visual-room-v43 .weekly-reflection-card.v49-reflection-summary-card{
-  min-height:112px;
+  min-height:92px;
   margin:0;
   padding:0!important;
   overflow:hidden;
-  border-radius:25px;
+  border-radius:24px;
 }
 
 .visual-room-v43 .weekly-reflection-card.v49-reflection-summary-card > :not(.v43-reflection-toggle){
@@ -14,13 +14,13 @@
 
 .visual-room-v43 .weekly-reflection-card.v49-reflection-summary-card > .v43-reflection-toggle.v49-reflection-summary{
   width:100%;
-  min-height:112px;
+  min-height:92px;
   margin:0;
-  padding:22px 24px;
+  padding:16px 20px;
   border:0;
   display:grid!important;
-  grid-template-columns:minmax(0,1fr) 30px;
-  gap:12px;
+  grid-template-columns:minmax(0,1fr) 28px;
+  gap:10px;
   align-items:center;
   background:transparent;
   color:inherit;
@@ -31,7 +31,7 @@
 .visual-room-v43 .v49-reflection-summary-copy{
   min-width:0;
   display:grid;
-  gap:7px;
+  gap:5px;
 }
 
 .visual-room-v43 .v49-reflection-summary-title{
@@ -43,7 +43,7 @@
 
 .visual-room-v43 .v49-reflection-summary-title b{
   color:#171d19;
-  font-size:24px;
+  font-size:22px;
   line-height:1.2;
   letter-spacing:-.05em;
 }
@@ -67,7 +67,7 @@
 
 .visual-room-v43 .v49-reflection-summary > i{
   color:var(--v43-green);
-  font-size:29px;
+  font-size:27px;
   font-style:normal;
   font-weight:400;
   text-align:right;
@@ -238,8 +238,8 @@ body.v49-reflection-open{
 
 @media(max-width:600px){
   .visual-room-v43 .weekly-reflection-card.v49-reflection-summary-card,
-  .visual-room-v43 .weekly-reflection-card.v49-reflection-summary-card > .v43-reflection-toggle.v49-reflection-summary{min-height:104px}
-  .visual-room-v43 .weekly-reflection-card.v49-reflection-summary-card > .v43-reflection-toggle.v49-reflection-summary{padding:20px}
-  .visual-room-v43 .v49-reflection-summary-title b{font-size:22px}
+  .visual-room-v43 .weekly-reflection-card.v49-reflection-summary-card > .v43-reflection-toggle.v49-reflection-summary{min-height:88px}
+  .visual-room-v43 .weekly-reflection-card.v49-reflection-summary-card > .v43-reflection-toggle.v49-reflection-summary{padding:15px 18px}
+  .visual-room-v43 .v49-reflection-summary-title b{font-size:21px}
   .v49-reflection-heading h1{font-size:31px}
 }
