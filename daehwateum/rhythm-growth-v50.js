@@ -21,7 +21,7 @@ function syncToggle(cal){
   toggle.setAttribute('aria-expanded',open?'true':'false');
   toggle.setAttribute('aria-label',open?(ko?'대화 리듬 접기':'Collapse conversation rhythm'):(ko?'대화 리듬 펼치기':'Expand conversation rhythm'));
   cal.setAttribute('aria-expanded',open?'true':'false');
-  if(open){cal.removeAttribute('role');cal.removeAttribute('tabindex')}else{cal.setAttribute('role','button');cal.setAttribute('tabindex','0')}
+  cal.removeAttribute('role');cal.removeAttribute('tabindex');cal.removeAttribute('aria-label');
 }
 function decorate(){
   queued=false;
