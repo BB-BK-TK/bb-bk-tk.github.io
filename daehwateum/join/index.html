@@ -1,1 +1,115 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f6f1ea"><title>대화틈 초대</title><style>*{box-sizing:border-box}html{word-break:keep-all}body{margin:0;background:#f6f1ea;color:#292521;font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;min-height:100vh;display:grid;place-items:center}.card{width:min(92%,480px);background:#fffdfa;border:1px solid #e5ddd3;border-radius:28px;padding:36px 24px;text-align:center;box-shadow:0 20px 60px #4a3b2e10}.mark{width:46px;height:46px;border:1.5px solid #405b52;border-radius:50%;display:grid;place-items:center;margin:0 auto 18px;color:#405b52;font-weight:900}.k{font-size:9px;letter-spacing:.14em;font-weight:900;color:#7b746c}h1{font-weight:850;letter-spacing:-.04em;font-size:32px;line-height:1.25;margin:12px 0;text-wrap:balance}p{color:#7b746c;line-height:1.7;font-size:13px}.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;border:0;border-radius:999px;background:#405b52;color:#fff;font-weight:900;text-decoration:none;margin-top:18px}.btn[disabled]{opacity:.45}</style></head><body><main class="card"><div class="mark">••</div><span class="k">7 DAYS · INVITATION</span><h1 id="title">대화틈에 초대받았어요.</h1><p id="body">초대 상태를 확인하고 있어요.</p><button class="btn" id="open" disabled>대화틈 열기</button></main><script>(function(){const p=new URLSearchParams(location.search);let t=p.get('invite')||'';if(!t&&location.hash){try{const hp=new URLSearchParams(location.hash.replace(/^#\??/,''));t=hp.get('invite')||''}catch(e){}}const ko=(navigator.language||'ko').toLowerCase().startsWith('ko'),title=document.getElementById('title'),body=document.getElementById('body'),open=document.getElementById('open'),ua=navigator.userAgent||'',isAndroid=/Android/i.test(ua),webUrl='../?invite='+encodeURIComponent(t)+'&web=1';function closed(h,b){title.textContent=h;body.textContent=b;open.style.display='none'}function openDaehwateum(){if(!isAndroid){location.href=webUrl;return}let left=false;const markLeft=()=>{if(document.hidden)left=true};document.addEventListener('visibilitychange',markLeft);location.href='daehwateum://join?invite='+encodeURIComponent(t);setTimeout(()=>{document.removeEventListener('visibilitychange',markLeft);if(!left&&!document.hidden)location.href=webUrl},1100)}if(!t){closed(ko?'초대 정보가 없어요.':'Invite not found.',ko?'링크를 다시 확인해 주세요.':'Please check the link.');return}fetch('https://kacvynoegfpvgdpqtjdi.supabase.co/rest/v1/rpc/dt_get_invite_status',{method:'POST',headers:{'Content-Type':'application/json','apikey':'sb_publishable_SeG92zfrAeh5zECaVbztkw_qb0C91D6'},body:JSON.stringify({p_invite_token:t})}).then(r=>r.json()).then(s=>{if(!s||!s.valid){closed(ko?'이 초대는 더 이상 열 수 없어요.':'This invite is no longer available.',ko?'링크가 만료되었거나 유효하지 않아요.':'The link has expired or is invalid.');return}if(s.full){closed(ko?'이 대화틈은 다 찼어요.':'This space is full.',ko?'최대 '+s.max_participants+'명까지 함께할 수 있어요.':'Up to '+s.max_participants+' people can join this space.');return}title.textContent=ko?'대화틈에 초대받았어요.':'You were invited to Daehwateum.';body.textContent=ko?'열면 이 대화틈으로 바로 연결돼요.':'Open to join this conversation space.';open.textContent=ko?'대화틈 열기':'Open Daehwateum';open.disabled=false;open.onclick=openDaehwateum}).catch(()=>{body.textContent=ko?'초대 상태를 확인하지 못했어요. 잠시 후 다시 시도해 주세요.':'Could not check this invite. Please try again.'})})();</script></body></html>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f6f1ea">
+<title>대화틈 초대</title>
+<link rel="stylesheet" href="./invite-v53.css?v=20260914-1620">
+<script src="../supabase-auth-v2.js?v=20260831-1548"></script>
+</head>
+<body>
+<div class="shell">
+  <main class="card">
+    <div class="brand"><span class="mark">••</span><span class="brand-name">대화틈</span></div>
+
+    <section id="loading" class="status">
+      <h1>초대장을 확인하고 있어요.</h1>
+      <p>잠시만 기다려 주세요.</p>
+    </section>
+
+    <section id="invite" class="hidden">
+      <div class="hero">
+        <span class="eyebrow" id="eyebrow">INVITATION</span>
+        <h1 id="title">대화틈에 초대받았어요.</h1>
+        <div class="conversation" aria-hidden="true">
+          <div class="bubble a"><span class="dots"><i></i><i></i><i></i></span></div>
+          <div class="bubble b"><span class="dots"><i></i><i></i><i></i></span></div>
+        </div>
+        <p id="body">하루에 질문 하나.<br>서로 답한 뒤, 함께 열어봐요.</p>
+      </div>
+      <div class="steps" aria-label="대화 방식">
+        <div class="step">질문 하나씩</div>
+        <div class="step">각자 답하기</div>
+        <div class="step">함께 열어보기</div>
+      </div>
+      <button class="btn" id="open" type="button" disabled>대화 시작하기</button>
+      <p class="fine">계정 없이 바로 시작할 수 있어요.</p>
+    </section>
+
+    <section id="closed" class="status hidden">
+      <h1 id="closedTitle">이 초대는 더 이상 열 수 없어요.</h1>
+      <p id="closedBody">링크가 만료되었거나 유효하지 않아요.</p>
+    </section>
+  </main>
+</div>
+<script>
+(function(){
+  var p=new URLSearchParams(location.search);
+  var token=p.get('invite')||'';
+  if(!token&&location.hash){try{var hp=new URLSearchParams(location.hash.replace(/^#\??/,''));token=hp.get('invite')||''}catch(e){}}
+  var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0;
+  var loading=document.getElementById('loading');
+  var invite=document.getElementById('invite');
+  var closed=document.getElementById('closed');
+  var title=document.getElementById('title');
+  var body=document.getElementById('body');
+  var open=document.getElementById('open');
+  var closedTitle=document.getElementById('closedTitle');
+  var closedBody=document.getElementById('closedBody');
+  var ua=navigator.userAgent||'';
+  var isAndroid=/Android/i.test(ua);
+
+  if(!ko){
+    document.documentElement.lang='en';
+    document.querySelector('.brand-name').textContent='Daehwateum';
+    document.querySelector('.steps').innerHTML='<div class="step">One question</div><div class="step">Answer separately</div><div class="step">Open together</div>';
+    document.querySelector('.fine').textContent='No account required.';
+  }
+
+  function showClosed(h,b){
+    loading.classList.add('hidden');invite.classList.add('hidden');closed.classList.remove('hidden');
+    closedTitle.textContent=h;closedBody.textContent=b;
+  }
+  function webUrl(){return '../?invite='+encodeURIComponent(token)+'&web=1'}
+  function openDaehwateum(){
+    if(!isAndroid){location.href=webUrl();return}
+    var left=false;
+    var markLeft=function(){if(document.hidden)left=true};
+    document.addEventListener('visibilitychange',markLeft);
+    location.href='daehwateum://join?invite='+encodeURIComponent(token);
+    setTimeout(function(){
+      document.removeEventListener('visibilitychange',markLeft);
+      if(!left&&!document.hidden)location.href=webUrl();
+    },1100);
+  }
+
+  if(!token){
+    showClosed(ko?'초대 정보가 없어요.':'Invite not found.',ko?'전달받은 링크를 다시 확인해 주세요.':'Please check the invitation link.');
+    return;
+  }
+
+  fetch('https://kacvynoegfpvgdpqtjdi.supabase.co/rest/v1/rpc/dt_get_invite_status',{
+    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_invite_token:token})
+  }).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error((j&&j.message)||'Invite check failed');return j})})
+    .then(function(s){
+      if(!s||!s.valid){showClosed(ko?'이 초대는 더 이상 열 수 없어요.':'This invite is no longer available.',ko?'링크가 만료되었거나 유효하지 않아요.':'The link has expired or is invalid.');return}
+      if(s.full){showClosed(ko?'이 대화틈은 다 찼어요.':'This space is full.',ko?'참여 가능한 인원이 모두 들어왔어요.':'All available spots have been filled.');return}
+      loading.classList.add('hidden');closed.classList.add('hidden');invite.classList.remove('hidden');
+      var inviter=s.inviter_name?String(s.inviter_name).trim():'';
+      if(ko){
+        title.textContent=inviter?inviter+'님이 대화틈에 초대했어요.':'대화틈에 초대받았어요.';
+        body.innerHTML='하루에 질문 하나.<br>서로 답한 뒤, 함께 열어봐요.';
+        open.textContent=inviter?inviter+'님과 대화 시작하기':'대화 시작하기';
+      }else{
+        title.textContent=inviter?inviter+' invited you to Daehwateum.':'You were invited to Daehwateum.';
+        body.innerHTML='One question at a time.<br>Answer separately, then open together.';
+        open.textContent=inviter?'Start with '+inviter:'Start the conversation';
+      }
+      open.disabled=false;open.onclick=openDaehwateum;
+    })
+    .catch(function(){showClosed(ko?'초대장을 확인하지 못했어요.':'Could not check this invite.',ko?'잠시 후 다시 링크를 열어 주세요.':'Please open the link again in a moment.')});
+})();
+</script>
+</body>
+</html>
