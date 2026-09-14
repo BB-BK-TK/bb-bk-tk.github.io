@@ -52,13 +52,9 @@
   display:none!important;
 }
 
-/* The rhythm card and history card should feel adjacent, not like separate pages. */
+/* The rhythm card and history card should feel adjacent, but history keeps its own internal breathing room. */
 .visual-room-v43 .cal:not(.rhythm-expanded-v43){
   margin-bottom:0!important;
-}
-
-.visual-room-v43 .hist:not(.weekly-reflection-history){
-  padding-top:0;
 }
 
 @media(max-width:600px){
