@@ -17,35 +17,19 @@
 <div class="shell">
   <main class="card">
     <div class="brand"><span class="mark">••</span><span class="brand-name">대화틈</span></div>
-
-    <section id="loading" class="status">
-      <h1>초대장을 확인하고 있어요.</h1>
-      <p>잠시만 기다려 주세요.</p>
-    </section>
-
+    <section id="loading" class="status"><h1>초대장을 확인하고 있어요.</h1><p>잠시만 기다려 주세요.</p></section>
     <section id="invite" class="hidden">
       <div class="hero">
         <span class="eyebrow" id="eyebrow">INVITATION</span>
         <h1 id="title">대화틈에 초대받았어요.</h1>
-        <div class="conversation" aria-hidden="true">
-          <div class="bubble a"><span class="dots"><i></i><i></i><i></i></span></div>
-          <div class="bubble b"><span class="dots"><i></i><i></i><i></i></span></div>
-        </div>
+        <div class="conversation" aria-hidden="true"><div class="bubble a"><span class="dots"><i></i><i></i><i></i></span></div><div class="bubble b"><span class="dots"><i></i><i></i><i></i></span></div></div>
         <p id="body">하루에 질문 하나.<br>서로 답한 뒤, 함께 열어봐요.</p>
       </div>
-      <div class="steps" aria-label="대화 방식">
-        <div class="step">질문 하나씩</div>
-        <div class="step">각자 답하기</div>
-        <div class="step">함께 열어보기</div>
-      </div>
+      <div class="steps" aria-label="대화 방식"><div class="step">질문 하나씩</div><div class="step">각자 답하기</div><div class="step">함께 열어보기</div></div>
       <button class="btn" id="open" type="button" disabled>대화 시작하기</button>
       <p class="fine">계정 없이 바로 시작할 수 있어요.</p>
     </section>
-
-    <section id="closed" class="status hidden">
-      <h1 id="closedTitle">이 초대는 더 이상 열 수 없어요.</h1>
-      <p id="closedBody">링크가 만료되었거나 유효하지 않아요.</p>
-    </section>
+    <section id="closed" class="status hidden"><h1 id="closedTitle">이 초대는 더 이상 열 수 없어요.</h1><p id="closedBody">링크가 만료되었거나 유효하지 않아요.</p></section>
   </main>
 </div>
 <script>
@@ -54,66 +38,20 @@
   var token=p.get('invite')||'';
   if(!token&&location.hash){try{var hp=new URLSearchParams(location.hash.replace(/^#\??/,''));token=hp.get('invite')||''}catch(e){}}
   var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0;
-  var loading=document.getElementById('loading');
-  var invite=document.getElementById('invite');
-  var closed=document.getElementById('closed');
-  var title=document.getElementById('title');
-  var body=document.getElementById('body');
-  var open=document.getElementById('open');
-  var closedTitle=document.getElementById('closedTitle');
-  var closedBody=document.getElementById('closedBody');
-  var ua=navigator.userAgent||'';
-  var isAndroid=/Android/i.test(ua);
-
-  if(!ko){
-    document.documentElement.lang='en';
-    document.querySelector('.brand-name').textContent='Daehwateum';
-    document.querySelector('.steps').innerHTML='<div class="step">One question</div><div class="step">Answer separately</div><div class="step">Open together</div>';
-    document.querySelector('.fine').textContent='No account required.';
-  }
-
-  function showClosed(h,b){
-    loading.classList.add('hidden');invite.classList.add('hidden');closed.classList.remove('hidden');
-    closedTitle.textContent=h;closedBody.textContent=b;
-  }
+  var loading=document.getElementById('loading'),invite=document.getElementById('invite'),closed=document.getElementById('closed'),title=document.getElementById('title'),body=document.getElementById('body'),open=document.getElementById('open'),closedTitle=document.getElementById('closedTitle'),closedBody=document.getElementById('closedBody');
+  if(!ko){document.documentElement.lang='en';document.querySelector('.brand-name').textContent='Daehwateum';document.querySelector('.steps').innerHTML='<div class="step">One question</div><div class="step">Answer separately</div><div class="step">Open together</div>';document.querySelector('.fine').textContent='No account required.'}
+  function showClosed(h,b){loading.classList.add('hidden');invite.classList.add('hidden');closed.classList.remove('hidden');closedTitle.textContent=h;closedBody.textContent=b}
   function webUrl(){return '../?invite='+encodeURIComponent(token)+'&web=1'}
-  function openDaehwateum(){
-    if(!isAndroid){location.href=webUrl();return}
-    var left=false;
-    var markLeft=function(){if(document.hidden)left=true};
-    document.addEventListener('visibilitychange',markLeft);
-    location.href='daehwateum://join?invite='+encodeURIComponent(token);
-    setTimeout(function(){
-      document.removeEventListener('visibilitychange',markLeft);
-      if(!left&&!document.hidden)location.href=webUrl();
-    },1100);
-  }
-
-  if(!token){
-    showClosed(ko?'초대 정보가 없어요.':'Invite not found.',ko?'전달받은 링크를 다시 확인해 주세요.':'Please check the invitation link.');
-    return;
-  }
-
-  fetch('https://kacvynoegfpvgdpqtjdi.supabase.co/rest/v1/rpc/dt_get_invite_status',{
-    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_invite_token:token})
-  }).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error((j&&j.message)||'Invite check failed');return j})})
-    .then(function(s){
-      if(!s||!s.valid){showClosed(ko?'이 초대는 더 이상 열 수 없어요.':'This invite is no longer available.',ko?'링크가 만료되었거나 유효하지 않아요.':'The link has expired or is invalid.');return}
-      if(s.full){showClosed(ko?'이 대화틈은 다 찼어요.':'This space is full.',ko?'참여 가능한 인원이 모두 들어왔어요.':'All available spots have been filled.');return}
-      loading.classList.add('hidden');closed.classList.add('hidden');invite.classList.remove('hidden');
-      var inviter=s.inviter_name?String(s.inviter_name).trim():'';
-      if(ko){
-        title.textContent=inviter?inviter+'님이 대화틈에 초대했어요.':'대화틈에 초대받았어요.';
-        body.innerHTML='하루에 질문 하나.<br>서로 답한 뒤, 함께 열어봐요.';
-        open.textContent=inviter?inviter+'님과 대화 시작하기':'대화 시작하기';
-      }else{
-        title.textContent=inviter?inviter+' invited you to Daehwateum.':'You were invited to Daehwateum.';
-        body.innerHTML='One question at a time.<br>Answer separately, then open together.';
-        open.textContent=inviter?'Start with '+inviter:'Start the conversation';
-      }
-      open.disabled=false;open.onclick=openDaehwateum;
-    })
-    .catch(function(){showClosed(ko?'초대장을 확인하지 못했어요.':'Could not check this invite.',ko?'잠시 후 다시 링크를 열어 주세요.':'Please open the link again in a moment.')});
+  function openDaehwateum(){location.href=webUrl()}
+  if(!token){showClosed(ko?'초대 정보가 없어요.':'Invite not found.',ko?'전달받은 링크를 다시 확인해 주세요.':'Please check the invitation link.');return}
+  fetch('https://kacvynoegfpvgdpqtjdi.supabase.co/rest/v1/rpc/dt_get_invite_status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_invite_token:token})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error((j&&j.message)||'Invite check failed');return j})}).then(function(s){
+    if(!s||!s.valid){showClosed(ko?'이 초대는 더 이상 열 수 없어요.':'This invite is no longer available.',ko?'링크가 만료되었거나 유효하지 않아요.':'The link has expired or is invalid.');return}
+    if(s.full){showClosed(ko?'이 대화틈은 다 찼어요.':'This space is full.',ko?'참여 가능한 인원이 모두 들어왔어요.':'All available spots have been filled.');return}
+    loading.classList.add('hidden');closed.classList.add('hidden');invite.classList.remove('hidden');
+    var inviter=s.inviter_name?String(s.inviter_name).trim():'';
+    if(ko){title.textContent=inviter?inviter+'님이 대화틈에 초대했어요.':'대화틈에 초대받았어요.';body.innerHTML='하루에 질문 하나.<br>서로 답한 뒤, 함께 열어봐요.';open.textContent=inviter?inviter+'님과 대화 시작하기':'대화 시작하기'}else{title.textContent=inviter?inviter+' invited you to Daehwateum.':'You were invited to Daehwateum.';body.innerHTML='One question at a time.<br>Answer separately, then open together.';open.textContent=inviter?'Start with '+inviter:'Start the conversation'}
+    open.disabled=false;open.onclick=openDaehwateum;
+  }).catch(function(){showClosed(ko?'초대장을 확인하지 못했어요.':'Could not check this invite.',ko?'잠시 후 다시 링크를 열어 주세요.':'Please open the link again in a moment.')});
 })();
 </script>
 </body>
