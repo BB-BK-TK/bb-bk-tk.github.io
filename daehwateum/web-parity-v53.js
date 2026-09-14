@@ -11,10 +11,11 @@ function addClasses(){
 }
 addClasses();
 
-/* Android's hardware back already delegates to DaehwateumBack. Give iPhone browser/PWA back gestures the same in-app behavior. */
+/* Android's hardware back delegates to DaehwateumBack. Once an iPhone is inside a clean app route, make browser/PWA back gestures do the same without trapping the invite landing history entry. */
 var guardArmed=false,leaving=false;
+function hasInviteQuery(){try{return !!new URLSearchParams(location.search).get('invite')}catch(e){return false}}
 function armBackGuard(){
-  if(!isIOS||guardArmed||leaving)return;
+  if(!isIOS||guardArmed||leaving||hasInviteQuery())return;
   try{history.pushState({dtIosBackGuard:1},'',location.href);guardArmed=true}catch(e){}
 }
 function handlePop(){
@@ -23,7 +24,7 @@ function handlePop(){
   var consumed=false;
   try{consumed=!!(window.DaehwateumBack&&window.DaehwateumBack())}catch(e){}
   if(consumed){setTimeout(armBackGuard,0);return}
-  /* We are already at the app home. Skip the duplicate same-document entry and leave normally. */
+  /* We are already at the app home. Skip the duplicate same-document guard entry and leave normally. */
   leaving=true;
   setTimeout(function(){
     try{history.back()}catch(e){}
@@ -54,17 +55,20 @@ function patchIOSNotificationSettings(){
   if(b)b.textContent=KO?'추가 방법 보기':'How to add it';
   if(small)small.textContent=KO?'Safari에서 열기 → 공유 버튼 → 홈 화면에 추가':'Open in Safari → Share → Add to Home Screen';
 }
-function patch(){patchAboutCopy();patchIOSNotificationSettings()}
+function patch(){
+  patchAboutCopy();
+  patchIOSNotificationSettings();
+  if(isIOS&&!guardArmed&&!hasInviteQuery())armBackGuard();
+}
 var queued=false;
 function schedulePatch(){if(queued)return;queued=true;requestAnimationFrame(function(){queued=false;patch()})}
 function start(){
-  if(isIOS)armBackGuard();
   patch();
   new MutationObserver(schedulePatch).observe(document.body,{childList:true,subtree:true});
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 
-/* Do not let regular iPhone browser tabs show a broken permission flow. */
+/* Do not let regular iPhone browser tabs show a permission path that only works from an installed Home Screen web app. */
 document.addEventListener('click',function(e){
   if(!isIOS||standalone())return;
   var b=e.target.closest&&e.target.closest('[data-notification-request]');
