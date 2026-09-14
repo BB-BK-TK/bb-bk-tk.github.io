@@ -1,10 +1,20 @@
 {
+  "id": "./",
   "name": "대화틈 · Daehwateum",
   "short_name": "대화틈",
+  "lang": "ko",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "background_color": "#f6f1ea",
   "theme_color": "#f6f1ea",
+  "icons": [
+    {
+      "src": "./app-icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
   "description": "하루 한 질문, 같이 답하고 같이 열어보는 작은 관계 공간"
 }
