@@ -21,6 +21,13 @@
   margin-top:14px!important;
 }
 
+/* A timing gate is intentionally invisible until timing state is resolved.
+   In the collapsed post-reveal home state it must not reserve layout height,
+   otherwise it creates a large blank gap between completion and the queue card. */
+.visual-room-v43 .post-reveal-current>.next-gate:not(.timing-ready){
+  display:none!important;
+}
+
 /* Ready-next is part of the completed conversation block, not a separate white card. */
 .visual-room-v43 .post-reveal-current .next-gate.v51-ready-gate{
   min-height:0!important;
