@@ -1,15 +1,15 @@
 (function(){'use strict';
 var params=new URLSearchParams(location.search);
-var invite=params.get('invite');
+var invite=params.get('invite')||params.get('i');
 var ua=navigator.userAgent||'';
 var isAndroid=/Android/i.test(ua);
 var isNative=/DaehwateumAndroid/i.test(ua);
 var isJoin=/\/join\/?$/.test(location.pathname);
 
-// Old invite URLs opened from Kakao/Android should never enter the web app runtime.
-// Route them to the lightweight join landing before guest identity is created.
+// Keep legacy root invite URLs working, but send browser users through
+// the lightweight invitation landing before any guest identity is created.
 if(invite&&isAndroid&&!isNative&&!isJoin&&params.get('web')!=='1'){
-  location.replace('./join/?invite='+encodeURIComponent(invite));
+  location.replace('./join/?i='+encodeURIComponent(invite));
   return;
 }
 
@@ -19,7 +19,7 @@ function install(){
     var s=DT.session&&DT.session();
     var token=s&&(s.invite||s.joinedInvite)?(s.invite||s.joinedInvite):'';
     if(!token)return '';
-    return location.origin+DT.base()+'join/?invite='+encodeURIComponent(token);
+    return location.origin+DT.base()+'join/?i='+encodeURIComponent(token);
   };
 }
 install();
