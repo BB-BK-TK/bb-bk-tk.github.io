@@ -9,7 +9,7 @@ var isJoin=/\/join\/?$/.test(location.pathname);
 // Browser invite URLs should enter the lightweight landing first so an
 // installed Android app can claim the invite before a web guest is created.
 if(invite&&isAndroid&&!isNative&&!isJoin&&params.get('web')!=='1'){
-  location.replace('./join/?invite='+encodeURIComponent(invite));
+  location.replace('./join/#invite='+encodeURIComponent(invite));
   return;
 }
 
@@ -19,7 +19,7 @@ function install(){
     var s=DT.session&&DT.session();
     var token=s&&(s.invite||s.joinedInvite)?(s.invite||s.joinedInvite):'';
     if(!token)return '';
-    return location.origin+DT.base()+'join/?invite='+encodeURIComponent(token);
+    return location.origin+DT.base()+'join/#invite='+encodeURIComponent(token);
   };
 }
 install();
