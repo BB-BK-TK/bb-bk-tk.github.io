@@ -13,28 +13,7 @@
 <link rel="icon" href="./app-icon.svg" type="image/svg+xml">
 <title>대화틈 · Daehwateum</title>
 <script>(function(){document.documentElement.classList.add('app-boot-pending');var ua=navigator.userAgent||'',ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);if(/DaehwateumAndroid/.test(ua))document.documentElement.classList.add('native-app');if(ios){document.documentElement.classList.add('ios-device');var standalone=navigator.standalone===true||(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);document.documentElement.classList.add(standalone?'ios-standalone':'ios-browser')}if(/DaehwateumInsets\/2/.test(ua)){document.documentElement.classList.add('native-insets','native-insets-v2')}else if(/DaehwateumInsets\/1/.test(ua)){document.documentElement.classList.add('native-insets','native-insets-v1')}})();</script>
-<script>(function(){
-  var p=new URLSearchParams(location.search);
-  if(p.get('premium')!=='1')return;
-  document.documentElement.classList.add('premium-route-pending');
-  document.addEventListener('DOMContentLoaded',function(){
-    try{
-      var app=document.getElementById('app');
-      if(app){
-        var b=document.createElement('button');
-        b.type='button';
-        b.hidden=true;
-        b.setAttribute('data-a','premium');
-        b.setAttribute('data-feature','bundle');
-        app.appendChild(b);
-        b.click();
-        b.remove();
-      }
-      history.replaceState({},'',location.pathname+location.hash);
-    }catch(e){}
-    document.documentElement.classList.remove('premium-route-pending');
-  },{once:true});
-})();</script>
+<script>(function(){var p=new URLSearchParams(location.search);if(p.get('premium')!=='1')return;document.documentElement.classList.add('premium-route-pending');document.addEventListener('DOMContentLoaded',function(){try{var app=document.getElementById('app');if(app){var b=document.createElement('button');b.type='button';b.hidden=true;b.setAttribute('data-a','premium');b.setAttribute('data-feature','bundle');app.appendChild(b);b.click();b.remove()}history.replaceState({},'',location.pathname+location.hash)}catch(e){}document.documentElement.classList.remove('premium-route-pending')},{once:true})})();</script>
 <style>html.app-boot-pending #app,html.premium-route-pending #app{visibility:hidden}</style>
 <link rel="stylesheet" href="./style.css?v=20260903-1235">
 <link rel="stylesheet" href="./premium-v2.css">
@@ -121,7 +100,7 @@
 <script defer src="./reflection-history-v49.js?v=20260913-0738"></script>
 <script defer src="./rhythm-growth-v50.js?v=20260913-1411"></script>
 <script defer src="./room-spacing-v51.js?v=20260914-1203"></script>
-<script defer src="./release-beta-v54.js?v=20260914-1715"></script>
+<script defer src="./release-beta-v54.js?v=20260914-1745"></script>
 </head>
 <body>
 <div id="app"><div class="w"><header class="top"><b class="brand">대화틈</b></header></div></div>
