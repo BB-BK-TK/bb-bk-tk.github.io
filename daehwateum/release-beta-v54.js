@@ -31,10 +31,33 @@ function patchActivePremium(){
     if(/Premium 활성화됨|Premium active/i.test(v))el.textContent=text('★ Beta Premium 이용 중','★ Beta Premium active');
   });
 }
-function patchSettings(){
-  document.querySelectorAll('[data-settings-subscription]').forEach(function(el){el.textContent=text('Premium','Premium')});
+function patchSettings(){document.querySelectorAll('[data-settings-subscription]').forEach(function(el){el.textContent='Premium'})}
+function patchConversationLabels(){
+  if(!window.DT||typeof DT.state!=='function')return;
+  var d=DT.state();if(!d)return;
+  var n=Math.max(1,Number(d.round_sequence||1));
+  var q=document.querySelector('.visual-room-v43 .q .k');
+  if(q){var v=(q.textContent||'').trim();if(KO&&/^오늘의\s+\d+번째\s+질문$/.test(v))q.textContent=n+'번째 대화';else if(!KO&&/^Today.?s question\s+\d+$/i.test(v))q.textContent='Conversation '+n}
+  var waiting=document.querySelector('.visual-room-v43 .card.stage[data-v43-state="waiting"] h2');
+  if(waiting)waiting.textContent=text('내 답변을 남겼어요','Your answer is in');
+  var review=document.querySelector('#v44-answer-review .v44-review-question .k');
+  if(review)review.textContent=text(n+'번째 대화','Conversation '+n);
 }
-function patch(){scheduled=false;patchPremiumGate();patchPremiumBanner();patchActivePremium();patchSettings()}
+function patchQuestionQueue(){
+  var summary=document.querySelector('.queue-summary-card');
+  if(summary&&!summary.classList.contains('has-reserved-questions')){
+    var title=summary.querySelector('.queue-module-title'),desc=summary.querySelector('.queue-summary-intro p');
+    if(title)title.textContent=text('물어보고 싶은 질문을 예약해보세요','Reserve a question you want to ask');
+    if(desc)desc.textContent=text('지금 떠오른 질문을 미리 남겨둘 수 있어요.','Save a question now and use it later.');
+  }
+  var screen=document.querySelector('.question-queue-screen');
+  if(screen){
+    var h=screen.querySelector(':scope > h1'),p=screen.querySelector(':scope > h1 + p');
+    if(h)h.textContent=text('질문 예약하기','Reserve a question');
+    if(p)p.textContent=text('물어보고 싶은 질문을 미리 예약해보세요. 예약한 질문은 대화 흐름에 맞춰 하나씩 열려요.','Save questions you want to ask. Reserved questions open one at a time with the conversation flow.');
+  }
+}
+function patch(){scheduled=false;patchPremiumGate();patchPremiumBanner();patchActivePremium();patchSettings();patchConversationLabels();patchQuestionQueue()}
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(patch)}
 function start(){new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});schedule()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
