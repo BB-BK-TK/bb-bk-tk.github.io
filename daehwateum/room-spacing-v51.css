@@ -1,0 +1,80 @@
+/* v51: one vertical rhythm for room modules and a compact ready-next CTA. */
+
+/* Waiting/current action -> queue -> rhythm -> history/reflection all use the same module gap. */
+.visual-room-v43 #app>.w>.stage[data-v43-state="waiting"]{
+  margin-bottom:0!important;
+}
+
+.visual-room-v43 #app>.w>.queue-summary-card,
+.visual-room-v43 #app>.w>.cal,
+.visual-room-v43 #app>.w>.hist:not(.weekly-reflection-history),
+.visual-room-v43 #app>.w>#weekly-reflection-v35-root{
+  margin-top:14px!important;
+  margin-bottom:0!important;
+}
+
+/* When the room modules are nested after the current-conversation section, keep the same spacing. */
+.visual-room-v43 .queue-summary-card+.cal,
+.visual-room-v43 .cal+.hist:not(.weekly-reflection-history),
+.visual-room-v43 .hist:not(.weekly-reflection-history)+#weekly-reflection-v35-root,
+.visual-room-v43 .cal+#weekly-reflection-v35-root{
+  margin-top:14px!important;
+}
+
+/* Ready-next is part of the completed conversation block, not a separate white card. */
+.visual-room-v43 .post-reveal-current .next-gate.v51-ready-gate{
+  min-height:0!important;
+  margin:10px 0 0!important;
+  padding:0!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+.visual-room-v43 .post-reveal-current .post-reveal-summary+.next-gate.v51-ready-gate{
+  margin-top:10px!important;
+  border:0!important;
+  border-radius:0!important;
+}
+
+.visual-room-v43 .next-gate.v51-ready-gate .btn.next-question-primary{
+  width:100%!important;
+  min-height:58px!important;
+  margin:0!important;
+  border-radius:20px!important;
+  box-shadow:0 8px 20px rgba(31,93,70,.14)!important;
+}
+
+/* No detached prompt above the completed card. */
+.visual-room-v43 .post-reveal-current>.next-question-prompt,
+.visual-room-v43 .post-reveal-current .next-gate.v51-ready-gate>.next-question-prompt{
+  display:none!important;
+}
+
+/* The rhythm card and history card should feel adjacent, not like separate pages. */
+.visual-room-v43 .cal:not(.rhythm-expanded-v43){
+  margin-bottom:0!important;
+}
+
+.visual-room-v43 .hist:not(.weekly-reflection-history){
+  padding-top:0;
+}
+
+@media(max-width:600px){
+  .visual-room-v43 #app>.w>.queue-summary-card,
+  .visual-room-v43 #app>.w>.cal,
+  .visual-room-v43 #app>.w>.hist:not(.weekly-reflection-history),
+  .visual-room-v43 #app>.w>#weekly-reflection-v35-root,
+  .visual-room-v43 .queue-summary-card+.cal,
+  .visual-room-v43 .cal+.hist:not(.weekly-reflection-history),
+  .visual-room-v43 .hist:not(.weekly-reflection-history)+#weekly-reflection-v35-root,
+  .visual-room-v43 .cal+#weekly-reflection-v35-root{
+    margin-top:12px!important;
+  }
+
+  .visual-room-v43 .post-reveal-current .next-gate.v51-ready-gate,
+  .visual-room-v43 .post-reveal-current .post-reveal-summary+.next-gate.v51-ready-gate{
+    margin-top:10px!important;
+  }
+}
