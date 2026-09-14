@@ -1,15 +1,15 @@
 (function(){'use strict';
 var params=new URLSearchParams(location.search);
-var invite=params.get('invite')||params.get('i');
+var invite=params.get('invite');
 var ua=navigator.userAgent||'';
 var isAndroid=/Android/i.test(ua);
 var isNative=/DaehwateumAndroid/i.test(ua);
 var isJoin=/\/join\/?$/.test(location.pathname);
 
-// Keep legacy root invite URLs working, but send browser users through
-// the lightweight invitation landing before any guest identity is created.
+// Browser invite URLs should enter the lightweight landing first so an
+// installed Android app can claim the invite before a web guest is created.
 if(invite&&isAndroid&&!isNative&&!isJoin&&params.get('web')!=='1'){
-  location.replace('./join/?i='+encodeURIComponent(invite));
+  location.replace('./join/?invite='+encodeURIComponent(invite));
   return;
 }
 
@@ -19,7 +19,7 @@ function install(){
     var s=DT.session&&DT.session();
     var token=s&&(s.invite||s.joinedInvite)?(s.invite||s.joinedInvite):'';
     if(!token)return '';
-    return location.origin+DT.base()+'join/?i='+encodeURIComponent(token);
+    return location.origin+DT.base()+'join/?invite='+encodeURIComponent(token);
   };
 }
 install();
