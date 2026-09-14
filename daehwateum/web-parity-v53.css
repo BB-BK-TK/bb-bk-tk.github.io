@@ -1,0 +1,68 @@
+/* v53: keep iPhone Safari/PWA interaction and spacing aligned with the Android app shell. */
+html.ios-device{
+  background:var(--b,#f6f1ea);
+  -webkit-text-size-adjust:100%;
+  text-size-adjust:100%;
+}
+html.ios-device,html.ios-device body{
+  min-height:100%;
+  min-height:100dvh;
+}
+html.ios-device body{
+  overscroll-behavior-x:none;
+}
+html.ios-device button,
+html.ios-device [role="button"],
+html.ios-device a,
+html.ios-device summary{
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
+}
+/* iOS zooms focused fields below 16px. Keep compose/join/create screens visually stable. */
+html.ios-device input:not([type]),
+html.ios-device input[type="text"],
+html.ios-device input[type="email"],
+html.ios-device input[type="password"],
+html.ios-device input[type="search"],
+html.ios-device input[type="tel"],
+html.ios-device input[type="url"],
+html.ios-device textarea,
+html.ios-device select{
+  font-size:16px!important;
+}
+html.ios-device input:not([type]),
+html.ios-device input[type="text"],
+html.ios-device input[type="email"],
+html.ios-device input[type="password"],
+html.ios-device input[type="search"],
+html.ios-device input[type="tel"],
+html.ios-device input[type="url"],
+html.ios-device textarea{
+  -webkit-appearance:none;
+  appearance:none;
+}
+/* Fixed sheets ignore body padding, so carry safe areas into the sheet itself on iPhone. */
+html.ios-device .about-overlay,
+html.ios-device .settings-page-overlay,
+html.ios-device .settings-detail-overlay,
+html.ios-device .recovery-overlay{
+  min-height:100dvh;
+}
+html.ios-device .confirm-overlay{
+  padding-left:calc(12px + var(--app-safe-left,0px));
+  padding-right:calc(12px + var(--app-safe-right,0px));
+  padding-bottom:calc(12px + var(--app-safe-bottom,env(safe-area-inset-bottom,0px)));
+}
+html.ios-device .settings-popover{
+  max-width:calc(100vw - var(--app-safe-left,0px) - var(--app-safe-right,0px) - 24px);
+}
+/* Safari can retain horizontal rubber-band movement around full-width cards. */
+html.ios-device #app,
+html.ios-device .w{
+  max-width:100%;
+  overflow-x:clip;
+}
+@supports not (overflow:clip){
+  html.ios-device #app,
+  html.ios-device .w{overflow-x:hidden}
+}
