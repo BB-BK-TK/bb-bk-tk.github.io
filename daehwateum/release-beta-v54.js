@@ -25,14 +25,17 @@ function patchPremiumBanner(){
   });
 }
 function patchActivePremium(){
-  document.querySelectorAll('.my-premium-pill').forEach(function(el){el.textContent=text('★ Beta Premium','★ Beta Premium')});
+  document.querySelectorAll('.my-premium-pill').forEach(function(el){el.textContent='★ Beta Premium'});
   document.querySelectorAll('.premium-note').forEach(function(el){
     var v=(el.textContent||'').trim();
     if(/Premium 활성화됨|Premium active/i.test(v))el.textContent=text('★ Beta Premium 이용 중','★ Beta Premium active');
   });
 }
-function patch(){scheduled=false;patchPremiumGate();patchPremiumBanner();patchActivePremium()}
+function patchSettings(){
+  document.querySelectorAll('[data-settings-subscription]').forEach(function(el){el.textContent=text('Premium','Premium')});
+}
+function patch(){scheduled=false;patchPremiumGate();patchPremiumBanner();patchActivePremium();patchSettings()}
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(patch)}
-function start(){var app=document.getElementById('app')||document.body;new MutationObserver(schedule).observe(app,{childList:true,subtree:true});schedule()}
+function start(){new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});schedule()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();
