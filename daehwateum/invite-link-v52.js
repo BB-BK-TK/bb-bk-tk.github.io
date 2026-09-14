@@ -17,7 +17,8 @@ function install(){
   if(!window.DT){setTimeout(install,10);return;}
   DT.inviteUrl=function(){
     var s=DT.session&&DT.session();
-    var token=s&&s.invite?s.invite:'';
+    var token=s&&(s.invite||s.joinedInvite)?(s.invite||s.joinedInvite):'';
+    if(!token)return '';
     return location.origin+DT.base()+'join/?invite='+encodeURIComponent(token);
   };
 }
