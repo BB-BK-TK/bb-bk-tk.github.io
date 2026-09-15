@@ -16,6 +16,31 @@
     text-overflow:ellipsis;
     white-space:nowrap;
   }
+
+  /* Mobile hero is a separate composition, not a scaled desktop hero. */
+  .hero-scene{min-height:560px!important;overflow:hidden!important}
+  .hero-phone{
+    width:min(280px,72vw)!important;
+    height:500px!important;
+    left:41%!important;
+    top:49%!important;
+    transform:translate(-50%,-50%) rotate(1deg)!important;
+  }
+  .scene-quote{
+    right:8px!important;
+    top:172px!important;
+    width:84px!important;
+    font-size:18px!important;
+    line-height:1.08!important;
+    text-align:center!important;
+    z-index:4!important;
+    transform:rotate(-7deg)!important;
+    white-space:normal!important;
+    pointer-events:none!important;
+  }
+  .books{right:8px!important;bottom:24px!important;transform:scale(.62)!important;transform-origin:bottom right!important}
+  .mug{right:9px!important;bottom:82px!important;transform:scale(.62)!important;transform-origin:bottom right!important}
+
   .example-grid,.phone-sequence,.play-grid{
     -webkit-overflow-scrolling:touch;
     overscroll-behavior-inline:contain;
@@ -25,6 +50,14 @@
   .example-grid:after,.phone-sequence:after,.play-grid:after{content:"";flex:0 0 2px}
   .pill{min-height:48px}
 }
+
 @media (max-width:390px){
   .topbar>.pill.small{max-width:158px;padding:0 11px!important;font-size:10px!important}
+  .hero-phone{width:min(270px,70vw)!important;left:40.5%!important}
+  .scene-quote{right:6px!important;width:82px!important;font-size:17px!important;top:176px!important}
+}
+
+@media (max-width:350px){
+  .hero-phone{width:238px!important;left:39%!important}
+  .scene-quote{width:74px!important;font-size:16px!important;right:4px!important}
 }
