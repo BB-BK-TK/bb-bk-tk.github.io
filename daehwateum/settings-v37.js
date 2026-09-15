@@ -21,7 +21,7 @@ function t(){return KO?{
   notificationChecking:'Checking notification status…',notificationChecked:'Notification status checked.',notificationDenied:'Allow Daehwateum notifications in your device settings.',
   appInfoTitle:'App info',version:'Version',how:'How Daehwateum works',terms:'Terms of use',privacy:'Privacy policy'
 }}
-function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot',"'":'&#39;'}[c]})}
+function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function closeSettingsPage(){var x=document.getElementById('settings-page-overlay');if(x)x.remove()}
 function page(title,body){closeSettingsPage();var x=document.createElement('div');x.id='settings-page-overlay';x.className='settings-page-overlay';x.innerHTML='<div class="settings-page-sheet"><header><button type="button" class="settings-page-back" data-settings-page-close aria-label="Back">←</button><b>'+esc(title)+'</b></header><main>'+body+'</main></div>';document.body.appendChild(x)}
 function pushEnabled(){try{return localStorage.getItem(PUSH_ENABLED)==='1'}catch(e){return false}}
@@ -31,7 +31,7 @@ function openNotifications(feedback){page(t().notificationTitle,notificationBody
 function feedback(msg){var el=document.getElementById('notification-feedback');if(el)el.textContent=msg||''}
 function requestNotifications(){
   var c=t();
-  if(nativeSettingsAvailable()){
+  if(pushEnabled()&&nativeSettingsAvailable()){
     try{AndroidPush.openSettings();return}catch(e){}
   }
   feedback(c.notificationChecking);
