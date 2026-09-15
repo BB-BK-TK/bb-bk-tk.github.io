@@ -8,6 +8,11 @@
 .notification-permission-status.on{color:var(--g,#405b52)}
 .notification-permission-status.off{color:var(--m,#7b746c)}
 .notification-permission-chevron{font-size:22px;line-height:1;color:var(--m,#7b746c);font-weight:400;transform:translateY(-1px)}
+.notification-toggle-button{width:100%;min-height:50px;margin-top:18px;border-radius:14px;font:inherit;font-size:14px;font-weight:850;cursor:pointer;transition:opacity .16s ease,transform .16s ease}
+.notification-toggle-button:active{transform:translateY(1px)}
+.notification-toggle-button:disabled{opacity:.55;cursor:default}
+.notification-toggle-button.off{border:0;background:var(--g,#405b52);color:#fff}
+.notification-toggle-button.on{border:1px solid var(--l,#e5ddd3);background:transparent;color:var(--i,#292521)}
 .notification-settings-simple .settings-action-feedback{min-height:0;margin-top:12px;font-size:12px;line-height:1.5;color:var(--g,#405b52);font-weight:800}
 .notification-settings-simple .settings-action-feedback:empty{display:none}
 .notification-settings-simple small{display:block;margin-top:18px;color:var(--m,#7b746c);font-size:12px;line-height:1.65}
