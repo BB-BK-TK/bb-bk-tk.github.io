@@ -7,6 +7,17 @@
 .deep-question-list{border-top:1px solid rgba(32,36,31,.18)}
 .deep-question-list span{display:block;padding:14px 0;border-bottom:1px solid rgba(32,36,31,.14);font-size:18px;line-height:1.45;font-weight:650;letter-spacing:-.025em;color:#20241f}
 .deep-question-list span:first-child{color:#234d38}
+
+/* Same-context progression: make the relationship between the everyday line and the deeper question visible */
+.example-grid article{position:relative!important}
+.example-grid .before{display:flex!important;align-items:baseline!important;gap:10px!important;margin-bottom:16px!important;color:#747872!important}
+.example-grid .before b{flex:0 0 auto;font-size:10px!important;letter-spacing:.02em!important;color:#9a9d97!important;font-weight:700!important}
+.example-grid .transition-label{display:flex;align-items:center;gap:9px;margin:0 0 12px;font-size:10px;font-weight:700;letter-spacing:.02em;color:#234d38}
+.example-grid .transition-label:before{content:"↓";font-size:14px;line-height:1;color:#234d38}
+.example-grid h3{margin-top:0!important}
+.example-grid .answer{margin-top:26px!important}
+.example-grid small{display:block!important;margin-top:24px!important}
+
 @media(max-width:900px){.conversation-contrast{grid-template-columns:1fr;gap:36px}}
 @media(max-width:767px){
   .conversation-contrast{display:grid!important;grid-template-columns:1fr!important;gap:36px!important;margin-top:46px!important}
@@ -14,4 +25,6 @@
   .contrast-group .bubble-field{margin-top:0!important}
   .contrast-group .bubble-field span,.deep-question-list span{font-size:19px!important;padding:14px 0!important}
   .deep-question-list span{font-weight:650!important}
+  .example-grid .before{margin-bottom:14px!important}
+  .example-grid .transition-label{margin-bottom:10px!important}
 }
