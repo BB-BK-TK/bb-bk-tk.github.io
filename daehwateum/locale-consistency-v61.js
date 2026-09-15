@@ -1,7 +1,7 @@
 (function(){'use strict';
-/* One app locale for every legacy module. The app defaults to Korean and can be
-   explicitly opened with ?lang=en. Some older modules still read
-   navigator.language directly, so align that signal with the app locale. */
+/* Compatibility bridge for older modules that still read navigator.language.
+   The app locale defaults to Korean from <html lang="ko"> and can be explicitly
+   switched with ?lang=en. Keep every module on that single locale. */
 var params;try{params=new URLSearchParams(location.search)}catch(e){params=null}
 var requested=((params&&params.get('lang'))||document.documentElement.getAttribute('lang')||'ko').toLowerCase();
 var lang=requested.indexOf('en')===0?'en':'ko';
@@ -11,9 +11,9 @@ window.DaehwateumLocale={lang:lang,isKorean:lang==='ko'};
 try{Object.defineProperty(navigator,'language',{configurable:true,get:function(){return browserLocale}})}catch(e){}
 try{Object.defineProperty(navigator,'languages',{configurable:true,get:function(){return[browserLocale]}})}catch(e){}
 
-/* A few editorial eyebrow labels predate i18n and are hard-coded in English.
-   Keep product names such as Premium/Beta as-is, but never mix ordinary UI
-   copy inside a Korean screen. */
+/* Editorial eyebrow labels in older screens were written directly in English.
+   Product names such as Premium/Beta stay as product names; ordinary UI copy
+   follows the active locale. */
 var eyebrowKo={
   'OUR ANSWERS':'우리의 답',
   'RECOVERY':'대화 복구',
@@ -45,26 +45,27 @@ function replaceTextNodes(root,map){
     node.nodeValue=left+map[trim]+right
   }
 }
-function patch(root){
-  if(lang!=='ko'||!root)return;
-  var scope=root.nodeType===1?root:document;
-  var labels=[];
-  if(scope.nodeType===1&&scope.matches&&scope.matches('.k'))labels.push(scope);
-  if(scope.querySelectorAll)scope.querySelectorAll('.k').forEach(function(el){labels.push(el)});
-  labels.forEach(function(el){
+function patch(){
+  if(lang!=='ko')return;
+  document.querySelectorAll('.k').forEach(function(el){
     var s=String(el.textContent||'').replace(/\s+/g,' ').trim();
-    if(s==='OUR RHYTHM'){el.hidden=true;el.setAttribute('aria-hidden','true');return}
+    if(s==='OUR RHYTHM'){
+      if(!el.hidden){el.hidden=true;el.setAttribute('aria-hidden','true')}
+      return
+    }
     exactText(el,eyebrowKo)
   });
-  var controls=[];
-  if(scope.nodeType===1&&scope.matches&&scope.matches('button,a,.queue-module-title'))controls.push(scope);
-  if(scope.querySelectorAll)scope.querySelectorAll('button,a,.queue-module-title').forEach(function(el){controls.push(el)});
-  controls.forEach(function(el){replaceTextNodes(el,actionKo)})
+  document.querySelectorAll('button,a,.queue-module-title').forEach(function(el){replaceTextNodes(el,actionKo)})
+}
+var queued=false;
+function schedule(){
+  if(queued)return;queued=true;
+  requestAnimationFrame(function(){queued=false;patch()})
 }
 function start(){
-  patch(document);
+  patch();
   var target=document.getElementById('app')||document.body;if(!target)return;
-  new MutationObserver(function(records){records.forEach(function(r){Array.prototype.forEach.call(r.addedNodes,function(n){if(n.nodeType===1)patch(n)})})}).observe(target,{childList:true,subtree:true})
+  new MutationObserver(schedule).observe(target,{childList:true,subtree:true,characterData:true})
 }
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});else start();
 })();
