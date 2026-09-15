@@ -3,200 +3,270 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#f8f4ed">
-  <meta name="description" content="오래 알았다고, 다 아는 건 아니니까. 가까운 사람과 조금 더 이야기하게 만드는 앱, 대화틈.">
-  <meta property="og:title" content="대화틈 — 오래 알았다고, 다 아는 건 아니니까">
-  <meta property="og:description" content="사람 사이에 다시 말을 건넬 작은 틈을 만드는 서비스.">
+  <meta name="theme-color" content="#f5efe5">
+  <meta name="description" content="오래 알았다고, 다 아는 건 아니니까. 사람 사이에 다시 말을 건넬 작은 틈, 대화틈.">
+  <meta property="og:title" content="대화틈 — 우리 사이에, 대화틈">
+  <meta property="og:description" content="가까운 사람과 조금 더 이야기하게 만드는 작은 대화 리추얼.">
   <meta property="og:type" content="website">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css" rel="stylesheet">
   <link rel="icon" href="../app-icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="./landing.css?v=20260915-1">
+  <link rel="stylesheet" href="./landing.css?v=20260915-2">
   <title>대화틈 — 우리 사이에, 대화틈</title>
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="./" aria-label="대화틈 소개 홈">대화틈</a>
-    <a class="header-cta" href="../">시작하기 <span aria-hidden="true">↗</span></a>
+    <a class="brand serif" href="./">대화틈</a>
+    <nav class="top-nav" aria-label="주요 메뉴">
+      <a href="#why">대화틈이란</a>
+      <a href="#how">사용 방법</a>
+      <a href="#play">같이 해보기</a>
+      <a href="#premium">Premium</a>
+    </nav>
+    <a class="header-cta" href="../">시작하기 <span>→</span></a>
   </header>
 
   <main>
     <section class="hero section-shell">
-      <div class="hero-copy reveal">
+      <div class="hero-copy">
         <p class="eyebrow">우리 사이에, 대화틈</p>
-        <h1>오래 알았다고,<br>다 아는 건 아니니까.</h1>
+        <h1 class="serif">오래 알았다고,<br>다 아는 건 아니니까.</h1>
         <p class="hero-sub">가까워지고 싶은 사이에도, 이미 가까운 사이에도.<br>사람 사이에 다시 말을 건넬 작은 틈을 만듭니다.</p>
-        <a class="primary-cta" href="../">우리 둘의 대화틈 만들기 <span aria-hidden="true">→</span></a>
+        <a class="primary-cta" href="../">우리 둘의 대화틈 만들기 <span>→</span></a>
         <p class="cta-note">초대 링크 하나면 바로 시작할 수 있어요.</p>
+        <div class="hero-words" aria-label="대화틈 키워드">
+          <span>사이</span><i></i><span>대화</span><i></i><span>틈</span>
+        </div>
       </div>
 
-      <div class="hero-visual reveal" aria-label="대화틈 질문 화면 예시">
-        <div class="phone phone-hero">
-          <div class="phone-topbar">
-            <strong>대화틈</strong>
-            <span>•••</span>
-          </div>
-          <div class="people">
-            <span class="avatar avatar-a">보</span>
-            <span class="avatar avatar-b">현</span>
-          </div>
-          <p class="pair-label">보람 × 현우</p>
-          <div class="question-card">
-            <p class="micro">오늘의 대화</p>
-            <h2>요즘 내가 잘 모르고 있는<br>너의 마음이 있을까?</h2>
-            <button type="button" tabindex="-1">내 답 남기기</button>
-          </div>
-          <p class="phone-footnote">서로 답하기 전에는 상대의 답이 보이지 않아요.</p>
+      <div class="hero-stage" aria-label="대화틈 질문 화면 예시">
+        <div class="sun-shadow shadow-one"></div>
+        <div class="sun-shadow shadow-two"></div>
+        <div class="hero-table"></div>
+        <div class="phone phone-main">
+          <div class="speaker"></div>
+          <div class="phone-bar"><strong>대화틈</strong><span>○</span></div>
+          <div class="phone-date">오늘의 대화<br><small>9월 15일</small></div>
+          <p class="phone-question serif">요즘 내가 잘 모르고 있는<br>너의 마음이 있을까?</p>
+          <div class="phone-people"><span>보</span><span>현</span></div>
+          <button type="button" tabindex="-1">답 남기기</button>
+          <p class="phone-note">서로 답하면 함께 열려요.</p>
+        </div>
+        <div class="paper-note serif">가까울수록,<br>오히려 묻지 않게 되는<br>마음이 있어요.</div>
+      </div>
+    </section>
+
+    <section id="why" class="tension full-bleed">
+      <div class="section-shell tension-grid">
+        <div>
+          <p class="eyebrow">왜 대화틈일까요</p>
+          <h2 class="serif">우리는 많이 이야기하지만,<br>정작 이런 이야기는<br>잘 못 하니까.</h2>
+          <p class="body-copy">사람 사이가 멀어지는 건 꼭 큰 사건 때문만은 아니에요. 궁금했지만 묻지 못한 것, 고마웠지만 말하지 못한 것, 다 안다고 생각해서 더는 묻지 않게 된 것. 그런 작은 순간들이 쌓이기도 하니까요.</p>
+        </div>
+        <div class="everyday-talk" aria-label="평소 주고받는 말들">
+          <span>오늘 뭐 먹었어?</span>
+          <span>몇 시에 와?</span>
+          <span>뭐 하고 있어?</span>
+          <span>잘 잤어?</span>
+          <span>회의 끝났어?</span>
+          <div class="small-note serif">대화틈은 그 익숙한 말들 사이에<br>조금 다른 질문 하나를 놓습니다.</div>
         </div>
       </div>
     </section>
 
-    <section class="problem section-shell">
-      <div class="section-heading reveal">
-        <p class="eyebrow">우리가 풀고 싶은 문제</p>
-        <h2>사람 사이가 멀어지는 건<br>꼭 큰 사건 때문만은 아니니까.</h2>
+    <section class="examples section-shell">
+      <div class="section-heading compact">
+        <p class="eyebrow">이런 대화가 시작될 수 있어요</p>
+        <h2 class="serif">평범한 하루에서,<br>조금 다른 이야기로.</h2>
       </div>
 
-      <div class="chatter reveal" aria-hidden="true">
-        <span>궁금했지만 묻지 못한 것</span>
-        <span>작은 오해를 그냥 지나친 것</span>
-        <span>고마웠지만 말하지 못한 것</span>
-        <span>다 안다고 생각했던 것</span>
-        <span>무슨 말을 꺼낼지 몰랐던 순간</span>
-      </div>
-
-      <p class="body-copy reveal">이런 작은 순간들이 쌓여 관계의 거리를 만듭니다. 대화틈은 그 사이에 <strong>질문과 대화의 작은 계기</strong>를 놓아, 평소에는 꺼내지 못했던 이야기를 자연스럽게 시작하게 합니다.</p>
-    </section>
-
-    <section class="how section-shell">
-      <div class="section-heading reveal">
-        <p class="eyebrow">대화틈의 역할</p>
-        <h2>질문보다,<br>그 뒤에 이어지는 대화.</h2>
-      </div>
-
-      <div class="steps">
-        <article class="step reveal">
-          <div class="step-number">01</div>
-          <div class="mini-phone question-mini">
-            <p class="micro">오늘의 질문</p>
-            <h3>최근에 내가<br>고마웠던 순간은?</h3>
-            <span class="fake-button">내 답 남기기</span>
-          </div>
-          <h3>말을 꺼낼 계기가 생겨요</h3>
-          <p>평소에는 묻지 않았던 질문 하나를 건넵니다.</p>
+      <div class="example-grid">
+        <article class="conversation-card">
+          <div class="ordinary">오늘 몇 시에 와?</div>
+          <div class="arrow">↓</div>
+          <div class="prompt serif">요즘 내가 알아줬으면<br>하는 게 있어?</div>
+          <div class="reply"><b>상대의 답</b><p>별건 아닌데, 요즘 좀 지쳐 있었어. 그냥 알아줬으면 했어.</p></div>
+          <small>매일 보는 사람 사이에도, 대화틈</small>
         </article>
 
-        <article class="step reveal">
-          <div class="step-number">02</div>
-          <div class="mini-phone answer-mini">
-            <p class="micro">내 답</p>
-            <div class="text-field">퇴근하고 아무 말 없이<br>내가 좋아하는 빵 사왔을 때.</div>
-            <span class="privacy-line">상대는 아직 볼 수 없어요</span>
-          </div>
-          <h3>각자의 생각을 먼저 남겨요</h3>
-          <p>상대의 답을 보기 전에 내 마음부터 이야기합니다.</p>
+        <article class="conversation-card">
+          <div class="ordinary">뭐 먹을까?</div>
+          <div class="arrow">↓</div>
+          <div class="prompt serif">최근에 내가 고마웠던<br>순간은?</div>
+          <div class="reply"><b>상대의 답</b><p>그날 아무 말 안 해도 기다려준 거. 그게 되게 고마웠어.</p></div>
+          <small>고마웠지만 말하지 못한 사이에도, 대화틈</small>
         </article>
 
-        <article class="step reveal">
-          <div class="step-number">03</div>
-          <div class="mini-phone reveal-mini">
-            <p class="micro">서로의 답</p>
-            <div class="answer-bubble me"><b>나</b><span>그날 빵 사왔던 거.</span></div>
-            <div class="answer-bubble you"><b>너</b><span>내 얘기 끝까지 들어줬을 때.</span></div>
-          </div>
-          <h3>둘 다 답하면 함께 열려요</h3>
-          <p>질문은 끝나고, 두 사람의 대화가 시작됩니다.</p>
+        <article class="conversation-card">
+          <div class="ordinary">언제 한번 보자.</div>
+          <div class="arrow">↓</div>
+          <div class="prompt serif">요즘 네가 제일 많이<br>생각하는 건 뭐야?</div>
+          <div class="reply"><b>상대의 답</b><p>사실 이직할지 계속 고민하고 있어. 아직 누구한테도 말 안 했는데.</p></div>
+          <small>오래 본 친구 사이에도, 대화틈</small>
         </article>
       </div>
     </section>
 
-    <section class="manifesto section-shell">
-      <div class="manifesto-card reveal">
-        <p class="eyebrow light">우리가 믿는 것</p>
-        <h2>좋은 질문의 목적은<br>질문 자체가 아니에요.</h2>
-        <p class="manifesto-lead">그 뒤에 이어지는 사람 사이의 대화예요.</p>
-        <div class="manifesto-rule"></div>
-        <div class="manifesto-points">
-          <span>가깝다고 해서 서로를 다 아는 것은 아니고.</span>
-          <span>오해는 풀 기회가 필요하고.</span>
-          <span>고마움은 전할 기회가 필요하고.</span>
-          <span>가까워지고 싶은 관계에는 말을 꺼낼 계기가 필요해요.</span>
+    <section id="how" class="ritual full-bleed">
+      <div class="section-shell ritual-grid">
+        <div class="ritual-copy">
+          <p class="eyebrow">질문보다, 그 뒤에 이어지는 대화</p>
+          <h2 class="serif">하루에 하나.<br>조금 더 깊게.</h2>
+          <p>질문은 시작점일 뿐이에요. 각자 먼저 자신의 생각을 남기고, 둘 다 답하면 처음으로 서로의 마음이 열립니다.</p>
+          <ol>
+            <li><b>01</b><span>질문 하나가 도착해요.</span></li>
+            <li><b>02</b><span>각자의 생각을 먼저 남겨요.</span></li>
+            <li><b>03</b><span>둘 다 답하면 함께 열려요.</span></li>
+          </ol>
         </div>
-        <strong class="manifesto-end">사람 사이에 다시 대화가 들어갈 공간.</strong>
+
+        <div class="ritual-phones">
+          <div class="mini-device">
+            <div class="mini-top">오늘의 질문</div>
+            <h3 class="serif">최근에 가장<br>행복했던 순간은?</h3>
+            <div class="mini-cta">답 남기기</div>
+            <small>먼저 내 생각을 적어요</small>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="mini-device">
+            <div class="mini-top">내 답</div>
+            <div class="answer-field">주말에 같이 걷다가 별 얘기 없이 웃었던 순간.</div>
+            <div class="locked">상대는 아직 볼 수 없어요</div>
+            <small>서로에게 맞추지 않고</small>
+          </div>
+          <div class="flow-arrow">→</div>
+          <div class="mini-device">
+            <div class="mini-top">서로의 답</div>
+            <div class="opened-answer"><b>나</b><span>같이 걷다가 웃었던 순간.</span></div>
+            <div class="opened-answer soft"><b>너</b><span>오랜만에 천천히 아침 먹었을 때.</span></div>
+            <small>그때부터 대화가 시작돼요</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="play" class="play section-shell">
+      <div class="play-intro">
+        <div>
+          <p class="eyebrow">깊은 얘기만 해야 하는 건 아니에요</p>
+          <h2 class="serif">궁금하고, 맞혀보고,<br>같이 웃는 것도 대화니까.</h2>
+        </div>
+        <p>대화틈은 정해진 질문을 받는 앱에 머물지 않아요. 둘이 직접 질문을 만들고, 서로를 맞혀보고, 오래 두고 채워가는 놀이가 될 수 있어요.</p>
+      </div>
+
+      <div class="play-grid">
+        <article class="play-card green-card">
+          <div class="play-icon">100</div>
+          <p class="play-label">우리만의</p>
+          <h3 class="serif">100문 100답</h3>
+          <p>하루에 하나씩, 우리 둘만의 답변집을 만들어가요.</p>
+          <div class="progress"><i style="width:37%"></i></div>
+          <small>37 / 100</small>
+        </article>
+
+        <article class="play-card sand-card">
+          <div class="play-icon">＋</div>
+          <p class="play-label">오늘은 내가 출제자</p>
+          <h3 class="serif">내가 만든 질문</h3>
+          <p>평소 궁금했지만 타이밍을 놓쳤던 질문을 직접 남겨요.</p>
+          <div class="custom-question">사실 예전부터<br>물어보고 싶었던 게 있어.</div>
+        </article>
+
+        <article class="play-card sage-card">
+          <div class="play-icon">?</div>
+          <p class="play-label">서로 얼마나 알고 있을까</p>
+          <h3 class="serif">나 맞혀봐</h3>
+          <p>내 답을 먼저 정하고, 상대가 어떻게 예상하는지 비교해봐요.</p>
+          <div class="guess-row"><span>내가 요즘<br>가장 가고 싶은 곳은?</span><b>?</b></div>
+        </article>
+
+        <article class="play-card rose-card">
+          <div class="play-icon">A/B</div>
+          <p class="play-label">선택보다 이유가 더 재밌는</p>
+          <h3 class="serif">밸런스 게임</h3>
+          <p>같은 선택이어도, 다른 선택이어도. 서로의 이유에서 새 대화가 시작돼요.</p>
+          <div class="balance"><span>계획 없는<br>3일 여행</span><i>vs</i><span>완벽하게 계획한<br>하루 여행</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section class="manifesto full-bleed">
+      <div class="manifesto-inner section-shell">
+        <div>
+          <p class="eyebrow light">대화틈이 믿는 것</p>
+          <h2 class="serif">대화를 많이 하는 것이<br>목표가 아니에요.</h2>
+          <p class="manifesto-lead">좋은 대화 하나가 남는 것이 목표예요.</p>
+        </div>
+        <div class="manifesto-list">
+          <p><b>01</b> 한 번에 질문 하나.</p>
+          <p><b>02</b> 서로 답하기 전에는 열지 않고.</p>
+          <p><b>03</b> 시간이 지나면 다시 꺼내보고.</p>
+          <p><b>04</b> 생각난 질문은 다음을 위해 남겨두고.</p>
+          <strong class="serif">조금 천천히,<br>대신 조금 더 깊게.</strong>
+        </div>
       </div>
     </section>
 
     <section class="memory section-shell">
-      <div class="section-heading reveal">
-        <p class="eyebrow">대화가 남는 방식</p>
-        <h2>질문은 지나가도,<br>대화는 기억에 남으니까.</h2>
+      <div class="memory-copy">
+        <p class="eyebrow">우리 둘의 대화 기록</p>
+        <h2 class="serif">좋은 대화는<br>지나가 버리지 않게.</h2>
+        <p>지난 대화를 다시 보고, 기억에 남은 상대의 답을 돌아보고, 다음에 묻고 싶은 질문을 남길 수 있어요.</p>
       </div>
-
-      <div class="memory-grid">
-        <div class="history-card reveal">
-          <div class="history-top">
-            <span>지난 대화</span>
-            <span>›</span>
-          </div>
-          <strong>24개의 대화</strong>
-          <div class="history-lines">
-            <i></i><i></i><i></i><i></i><i></i><i></i><i></i>
-          </div>
-        </div>
-        <div class="reflection-card reveal">
-          <p class="micro">이번 주</p>
-          <h3>상대의 답 중<br>가장 기억에 남은 건?</h3>
-          <div class="reflection-option">“사실 그때 조금 서운했어.”</div>
-          <div class="reflection-option muted">“요즘은 같이 걷는 시간이 좋아.”</div>
-        </div>
-      </div>
-      <p class="body-copy reveal">지나간 대화를 다시 보고, 기억에 남은 답을 돌아보고, 그때 하지 못했던 말을 다시 꺼내볼 수 있어요. 좋은 대화가 한 번의 질문으로 끝나지 않도록.</p>
-    </section>
-
-    <section class="relationships section-shell">
-      <div class="section-heading reveal">
-        <p class="eyebrow">우리 사이에, 대화틈</p>
-        <h2>관계의 이름보다,<br>서로 조금 더 알고 싶은 마음.</h2>
-      </div>
-      <div class="relationship-row reveal">
-        <span>오래 본 친구</span><i></i><span>매일 보는 사람</span><i></i><span>말이 줄어든 사이</span><i></i><span>더 알고 싶은 사람</span>
+      <div class="memory-ui">
+        <div class="memory-header"><span>지난 대화</span><strong>24</strong></div>
+        <article><small>9월 12일</small><b>요즘 내가 알아줬으면 하는 게 있어?</b><span>“별건 아닌데, 요즘 좀 지쳐 있었어.”</span></article>
+        <article><small>9월 10일</small><b>최근에 내가 고마웠던 순간은?</b><span>“그날 아무 말 안 해도 기다려준 거.”</span></article>
+        <article class="favorite"><small>기억에 남은 답</small><b>이번 주, 가장 마음에 남은 말</b><span>♥ 저장됨</span></article>
       </div>
     </section>
 
-    <section class="premium section-shell">
-      <div class="premium-wrap reveal">
+    <section class="relationships full-bleed">
+      <div class="section-shell relationship-inner">
+        <h2 class="serif">더 알고 싶은 사람이 있다면,<br>그 사이에 대화틈을 만들어보세요.</h2>
+        <div class="relationship-list">
+          <span>연인</span><i></i><span>부부</span><i></i><span>오래된 친구</span><i></i><span>가족</span>
+        </div>
+        <p>관계의 이름보다 중요한 건, 서로 조금 더 알고 싶다는 마음이니까.</p>
+      </div>
+    </section>
+
+    <section id="premium" class="premium section-shell">
+      <div class="premium-card">
         <div class="premium-copy">
-          <p class="eyebrow">DAEHWATEUM PREMIUM</p>
-          <h2>우리 둘의 대화를<br>조금 더 오래 이어가고 싶다면.</h2>
-          <p>대화틈의 가치는 질문을 많이 소비하는 데 있지 않아요. 지난 대화를 다시 보고, 기억에 남은 답을 돌아보고, 서로에게 한 번 더 말을 걸 계기를 이어가세요.</p>
-        </div>
-        <div class="price-card">
-          <div class="price-head">
-            <span>대화틈 Premium</span>
-            <strong>한 명만 결제하면<br>둘 모두 Premium</strong>
+          <p class="eyebrow">대화틈 Premium</p>
+          <h2 class="serif">조금 더 오래,<br>우리의 대화를 이어가고 싶다면.</h2>
+          <p>더 많은 질문만을 위한 구독이 아니에요. 우리 둘의 대화가 계속 쌓이고, 다시 열리고, 다음 대화로 이어질 수 있도록.</p>
+          <div class="premium-features">
+            <span>더 다양한 질문</span><span>질문 직접 만들기</span><span>지난 대화 다시보기</span><span>대화 기록 저장</span>
           </div>
-          <div class="price-row"><span>월간</span><b>4,900원</b></div>
-          <div class="price-row"><span>연간</span><b>39,000원</b></div>
-          <p>연간 구독 시 월 약 3,250원</p>
+        </div>
+        <div class="price-box">
+          <div class="price-highlight">한 명만 결제하면<br><strong>둘 모두 Premium</strong></div>
+          <div class="price-line"><span>월간</span><b>4,900원</b></div>
+          <div class="price-line"><span>연간</span><b>39,000원</b></div>
+          <small>연간 구독 시 월 약 3,250원</small>
+          <a href="../?premium=1">Premium 시작하기 →</a>
         </div>
       </div>
     </section>
 
-    <section class="final-cta section-shell reveal">
-      <p class="eyebrow">우리 사이에, 대화틈</p>
-      <h2>가까운 사람에게,<br>한 번 더 말을 걸어보세요.</h2>
-      <a class="primary-cta" href="../">우리 둘의 대화틈 만들기 <span aria-hidden="true">→</span></a>
-      <p class="cta-note">평소에는 하지 못했던 이야기 하나면 충분해요.</p>
+    <section class="final-cta full-bleed">
+      <div class="section-shell final-inner">
+        <p class="eyebrow">우리 사이에, 대화틈</p>
+        <h2 class="serif">가까운 사람에게,<br>한 번 더 말을 걸어보세요.</h2>
+        <p>말하지 못한 마음도, 그냥 웃긴 궁금증도.<br>둘 사이에서 대화가 시작되면 다 대화틈이에요.</p>
+        <a class="primary-cta" href="../">우리 둘의 대화틈 만들기 <span>→</span></a>
+        <small>초대 링크 하나면 바로 시작할 수 있어요.</small>
+      </div>
     </section>
   </main>
 
   <footer class="site-footer section-shell">
-    <div>
-      <strong>대화틈</strong>
-      <p>사람 사이에 다시 말을 건넬 작은 틈.</p>
-    </div>
-    <nav aria-label="법적 고지">
-      <a href="../legal/terms/">이용약관</a>
-      <a href="../legal/privacy/">개인정보처리방침</a>
-    </nav>
+    <div><strong class="serif">대화틈</strong><p>사람 사이에, 대화할 틈.</p></div>
+    <nav><a href="../legal/terms/">이용약관</a><a href="../legal/privacy/">개인정보처리방침</a></nav>
   </footer>
 </body>
 </html>
