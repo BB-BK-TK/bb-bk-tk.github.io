@@ -1,4 +1,18 @@
 /* Search-friendly content layer — visible, useful, and intentionally quiet */
+
+/* Korean typography guardrail: wrap at word boundaries, not inside words. */
+body,
+button,
+input,
+textarea,
+select{
+  word-break:keep-all;
+  line-break:strict;
+}
+p,h1,h2,h3,h4,h5,h6,span,strong,b,small,summary,a,button{
+  overflow-wrap:break-word;
+}
+
 .product-definition{
   display:grid;
   grid-template-columns:minmax(180px,.55fr) minmax(0,1.35fr);
