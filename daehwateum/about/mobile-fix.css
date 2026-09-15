@@ -1,0 +1,30 @@
+/* Final mobile production safeguards */
+@media (max-width:767px){
+  body{padding-bottom:0!important}
+  .topbar{padding:0 16px!important}
+  .topbar>.pill.small{
+    position:static!important;
+    left:auto!important;right:auto!important;bottom:auto!important;
+    z-index:auto!important;
+    min-height:40px!important;
+    padding:0 14px!important;
+    font-size:11px!important;
+    box-shadow:none!important;
+    border:0!important;
+    max-width:184px;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    white-space:nowrap;
+  }
+  .example-grid,.phone-sequence,.play-grid{
+    -webkit-overflow-scrolling:touch;
+    overscroll-behavior-inline:contain;
+    scroll-padding-inline:20px;
+  }
+  .example-grid article,.mini-stage,.play-card{scroll-snap-stop:always}
+  .example-grid:after,.phone-sequence:after,.play-grid:after{content:"";flex:0 0 2px}
+  .pill{min-height:48px}
+}
+@media (max-width:390px){
+  .topbar>.pill.small{max-width:158px;padding:0 11px!important;font-size:10px!important}
+}
