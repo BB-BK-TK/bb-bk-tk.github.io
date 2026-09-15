@@ -58,6 +58,7 @@
   var mobile=android||ios||/Mobile/i.test(ua)||navigator.maxTouchPoints>1;
   var kakao=/KAKAOTALK/i.test(ua);
   var standalone=navigator.standalone===true||(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);
+  var androidPendingKey='dt.android.pendingInvite.v1';
   var loading=document.getElementById('loading'),invite=document.getElementById('invite'),closed=document.getElementById('closed'),title=document.getElementById('title'),body=document.getElementById('body'),open=document.getElementById('open'),closedTitle=document.getElementById('closedTitle'),closedBody=document.getElementById('closedBody');
   var appInstall=document.getElementById('appInstall'),installHelp=document.getElementById('installHelp'),installClose=document.getElementById('installClose'),installKind=document.getElementById('installKind'),installTitle=document.getElementById('installTitle'),installLead=document.getElementById('installLead'),installStep1=document.getElementById('installStep1'),installStep2=document.getElementById('installStep2'),installStep3=document.getElementById('installStep3');
   if(!ko){document.documentElement.lang='en';document.querySelector('.brand-name').textContent='Daehwateum';document.querySelector('.steps').innerHTML='<div class="step">One question</div><div class="step">Answer separately</div><div class="step">Open together</div>';document.querySelector('.fine').textContent='No account required.';installClose.setAttribute('aria-label','Close')}
@@ -65,6 +66,35 @@
   function webUrl(){return '../?invite='+encodeURIComponent(token)+'&web=1'}
   function openDaehwateum(){location.href=webUrl()}
   function hideInstallHelp(){installHelp.classList.add('hidden')}
+  function androidDeepLink(tok){return 'daehwateum://join?invite='+encodeURIComponent(tok||'')}
+  function copyAndroidHandoff(){
+    if(!token)return;
+    var payload='DAEHWATEUM_INVITE:'+token;
+    try{
+      var el=document.createElement('textarea');
+      el.value=payload;
+      el.setAttribute('readonly','');
+      el.style.position='fixed';el.style.opacity='0';el.style.pointerEvents='none';
+      document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
+    }catch(e){}
+    try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(payload).catch(function(){})}catch(e){}
+  }
+  function beginAndroidInstall(){
+    copyAndroidHandoff();
+    try{sessionStorage.setItem(androidPendingKey,token)}catch(e){}
+    appInstall.textContent=ko?'다운로드 중 · 설치 후 초대가 이어져요':'Downloading · your invite will continue after install';
+    location.href='../downloads/daehwateum-beta.apk';
+  }
+  function resumeAndroidInstall(){
+    if(!android||document.hidden||!token)return;
+    var pending='';
+    try{pending=sessionStorage.getItem(androidPendingKey)||''}catch(e){}
+    if(pending!==token)return;
+    try{sessionStorage.removeItem(androidPendingKey)}catch(e){}
+    setTimeout(function(){location.href=androidDeepLink(token)},250);
+  }
+  document.addEventListener('visibilitychange',function(){if(!document.hidden)resumeAndroidInstall()});
+  window.addEventListener('focus',resumeAndroidInstall);
   function joinedSessionForInvite(tok){
     if(!tok)return null;
     try{
@@ -95,7 +125,7 @@
     appInstall.classList.remove('hidden');
     if(android){
       appInstall.textContent=ko?'대화틈 앱 다운로드':'Download Daehwateum app';
-      appInstall.onclick=function(){location.href='../downloads/daehwateum-beta.apk'};
+      appInstall.onclick=beginAndroidInstall;
       return;
     }
     appInstall.textContent=ko?'iPhone에 앱으로 추가하기':'Add Daehwateum to iPhone';
