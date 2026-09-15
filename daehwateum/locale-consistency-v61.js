@@ -8,8 +8,17 @@ var lang=requested.indexOf('en')===0?'en':'ko';
 var browserLocale=lang==='ko'?'ko-KR':'en-US';
 document.documentElement.lang=lang;
 window.DaehwateumLocale={lang:lang,isKorean:lang==='ko'};
-try{Object.defineProperty(navigator,'language',{configurable:true,get:function(){return browserLocale}})}catch(e){}
-try{Object.defineProperty(navigator,'languages',{configurable:true,get:function(){return[browserLocale]}})}catch(e){}
+function forceNavigatorLocale(prop,value){
+  try{Object.defineProperty(navigator,prop,{configurable:true,get:function(){return value}})}catch(e){}
+  try{
+    var current=navigator[prop],matches=prop==='language'?current===value:(current&&current[0]===value);
+    if(!matches&&typeof Navigator!=='undefined'&&Navigator.prototype){
+      Object.defineProperty(Navigator.prototype,prop,{configurable:true,get:function(){return value}})
+    }
+  }catch(e){}
+}
+forceNavigatorLocale('language',browserLocale);
+forceNavigatorLocale('languages',[browserLocale]);
 
 /* Editorial eyebrow labels in older screens were written directly in English.
    Product names such as Premium/Beta stay as product names; ordinary UI copy
