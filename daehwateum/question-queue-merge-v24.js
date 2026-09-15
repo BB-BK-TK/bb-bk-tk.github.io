@@ -1,10 +1,12 @@
 (function(){'use strict';
 var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0,pending=false;
-function copy(){return ko?{emptyTitle:'다음 질문을 남겨보세요',emptyDesc:'떠오른 질문을 미리 남겨두세요.',action:'질문 예약하기',reservedTitle:function(n){return '예약된 질문 '+n+'개'},reservedDesc:'다음 질문이 기다리고 있어요.',manage:'질문 더 예약하기'}:{emptyTitle:'Leave your next question',emptyDesc:'Save a question whenever it comes to mind.',action:'Reserve question',reservedTitle:function(n){return n+' reserved question'+(n===1?'':'s')},reservedDesc:'Your next question is waiting.',manage:'Reserve another question'}}
+function copy(){return ko?{emptyTitle:'다음 질문을 남겨보세요',emptyDesc:'떠오른 질문을 미리 남겨두세요.',action:'질문 예약하기',reservedTitle:function(n){return '예약된 질문 '+n+'개'},reservedDesc:'다음 질문이 기다리고 있어요.',manage:'질문 더 예약하기',composerDesc:'떠오른 질문을 미리 남겨두세요. 이미 나눈 질문은 다시 예약되지 않아요.',placeholder:'직접 물어보고 싶은 질문을 적어보세요'}:{emptyTitle:'Leave your next question',emptyDesc:'Save a question whenever it comes to mind.',action:'Reserve question',reservedTitle:function(n){return n+' reserved question'+(n===1?'':'s')},reservedDesc:'Your next question is waiting.',manage:'Reserve another question',composerDesc:'Save a question for later. Questions you have already discussed cannot be reserved again.',placeholder:"Type something you've wanted to ask"}}
 function removeDuplicate(app){var duplicate=app.querySelector('.premium-tools [data-a="custom"]');if(!duplicate)return;var grid=duplicate.closest('.feature-grid'),tools=grid&&grid.closest('.premium-tools');duplicate.remove();if(grid&&!grid.children.length&&tools)tools.remove()}
+function patchComposer(app){var screen=app.querySelector('.question-queue-screen');if(!screen)return;var cc=copy(),chips=screen.querySelector('.example-chips'),ta=screen.querySelector('#queue-form textarea'),title=screen.querySelector('h1'),body=title&&title.nextElementSibling;if(chips)chips.remove();if(ta&&ta.getAttribute('placeholder')!==cc.placeholder)ta.setAttribute('placeholder',cc.placeholder);if(body&&body.tagName==='P'&&body.textContent!==cc.composerDesc)body.textContent=cc.composerDesc}
 function countFromStatus(status){var m=String(status||'').match(/\d+/);return m?Number(m[0]):1}
 function merge(){
   var app=document.getElementById('app');if(!app)return;
+  patchComposer(app);
   var card=app.querySelector('.queue-summary-card');if(!card)return;
   removeDuplicate(app);
   var cc=copy(),intro=card.querySelector('.queue-summary-intro'),state=card.querySelector('[data-queue-summary-state],.queue-summary-state'),button=card.querySelector('[data-a="custom"]');
