@@ -1,0 +1,154 @@
+/* v62 — compact completed-state flow, lighter question reservation CTA, simpler history list. */
+
+/* Completed conversation should read as one compact state, not a large dashboard card. */
+.visual-room-v43 .post-reveal-home .post-reveal-summary.home-complete-v62{
+  min-height:100px!important;
+  margin:0!important;
+  padding:20px 20px!important;
+  border-radius:24px!important;
+  box-shadow:0 10px 28px rgba(52,43,34,.045)!important;
+}
+.visual-room-v43 .post-reveal-home .post-reveal-summary.home-complete-v62>div{
+  gap:0!important;
+}
+.visual-room-v43 .post-reveal-home .post-reveal-summary.home-complete-v62 b[data-v62-title]{
+  font-size:0!important;
+  line-height:1!important;
+}
+.visual-room-v43 .post-reveal-home .post-reveal-summary.home-complete-v62 b[data-v62-title]::after{
+  content:attr(data-v62-title);
+  display:block;
+  color:#171d19;
+  font-size:21px;
+  font-weight:850;
+  line-height:1.3;
+  letter-spacing:-.045em;
+}
+.visual-room-v43 .post-reveal-home .post-reveal-summary.home-complete-v62::after{
+  flex-basis:30px!important;
+  width:30px!important;
+  height:30px!important;
+  font-size:27px!important;
+  color:#34473f!important;
+}
+
+/* A timing gate with no meaningful content must not leave a blank 100px+ hole. */
+.visual-room-v43 .post-reveal-home .next-gate.v62-empty-gate,
+.visual-room-v43 .post-reveal-home .premium-continuation-gate.v62-empty-gate{
+  min-height:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+  overflow:hidden!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+/* Reservation is a secondary action: quiet surface, short copy, explicit text action. */
+.visual-room-v43 .queue-summary-card.queue-summary-merged.home-queue-v62{
+  min-height:68px!important;
+  margin-top:10px!important;
+  padding:14px 92px 14px 18px!important;
+  border:1px solid rgba(232,226,217,.88)!important;
+  border-radius:22px!important;
+  background:rgba(255,254,250,.58)!important;
+  box-shadow:none!important;
+}
+.visual-room-v43 .queue-summary-card.queue-summary-merged.home-queue-v62 .queue-summary-intro{
+  gap:0!important;
+}
+.visual-room-v43 .queue-summary-card.queue-summary-merged.home-queue-v62 .queue-module-title{
+  color:#202923!important;
+  font-size:15.5px!important;
+  font-weight:800!important;
+  line-height:1.35!important;
+  letter-spacing:-.025em!important;
+}
+.visual-room-v43 .queue-summary-card.queue-summary-merged.home-queue-v62 .queue-summary-intro p{
+  display:none!important;
+}
+.visual-room-v43 .queue-summary-card.queue-summary-merged.home-queue-v62::after{
+  content:attr(data-v62-action)!important;
+  right:18px!important;
+  width:auto!important;
+  height:auto!important;
+  transform:translateY(-50%)!important;
+  color:var(--v43-green)!important;
+  font-size:13px!important;
+  font-weight:850!important;
+  line-height:1!important;
+}
+
+/* The rhythm card remains the premium visual anchor and gets real section breathing room. */
+.visual-room-v43 .queue-summary-card.home-queue-v62+.cal{
+  margin-top:24px!important;
+}
+
+/* Past conversations become a section + rows, removing the card-inside-card effect. */
+.visual-room-v43 .hist.home-history-v62:not(.weekly-reflection-history){
+  margin-top:26px!important;
+  padding:0 4px 8px!important;
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.visual-room-v43 .hist.home-history-v62:not(.weekly-reflection-history) h2{
+  margin:0 0 12px!important;
+  font-size:25px!important;
+}
+.visual-room-v43 .hist.home-history-v62 .hist-day{
+  margin-top:0!important;
+}
+.visual-room-v43 .hist.home-history-v62 .item{
+  margin:0!important;
+  border:0!important;
+  border-top:1px solid var(--v43-line)!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+.visual-room-v43 .hist.home-history-v62 .item summary{
+  min-height:60px;
+  padding:16px 34px 16px 0!important;
+  display:flex;
+  align-items:center;
+}
+.visual-room-v43 .hist.home-history-v62 .item summary::after{
+  right:2px!important;
+  color:#607268!important;
+}
+.visual-room-v43 .hist.home-history-v62 .hb{
+  margin:0;
+  border-top:1px solid var(--v43-line);
+}
+
+@media(max-width:600px){
+  .visual-room-v43 .post-reveal-home .post-reveal-summary.home-complete-v62{
+    min-height:94px!important;
+    padding:18px 18px!important;
+    flex-direction:row!important;
+    align-items:center!important;
+  }
+  .visual-room-v43 .post-reveal-home .post-reveal-summary.home-complete-v62 b[data-v62-title]::after{
+    font-size:20px;
+  }
+  .visual-room-v43 .queue-summary-card.queue-summary-merged.home-queue-v62{
+    min-height:66px!important;
+    margin-top:10px!important;
+    padding:13px 82px 13px 17px!important;
+  }
+  .visual-room-v43 .queue-summary-card.queue-summary-merged.home-queue-v62::after{
+    right:17px!important;
+    font-size:12.5px!important;
+  }
+  .visual-room-v43 .queue-summary-card.home-queue-v62+.cal{
+    margin-top:22px!important;
+  }
+  .visual-room-v43 .hist.home-history-v62:not(.weekly-reflection-history){
+    margin-top:24px!important;
+    padding-left:2px!important;
+    padding-right:2px!important;
+  }
+}
