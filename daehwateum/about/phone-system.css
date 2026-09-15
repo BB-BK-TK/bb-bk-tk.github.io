@@ -1,0 +1,130 @@
+/* Unified device system for every phone mockup on the landing page */
+:root{--device-ratio:390/844;--device-border:#111513;--device-bg:#fbf8f1;--device-radius:38px}
+
+.phone{
+  box-sizing:border-box!important;
+  width:auto;
+  height:auto!important;
+  aspect-ratio:var(--device-ratio)!important;
+  border:4px solid var(--device-border)!important;
+  border-radius:var(--device-radius)!important;
+  background:linear-gradient(180deg,#fffdf9 0%,var(--device-bg) 100%)!important;
+  overflow:hidden!important;
+  position:relative!important;
+  box-shadow:0 24px 52px rgba(28,26,22,.22)!important;
+}
+.phone-notch{
+  width:32%!important;
+  max-width:88px!important;
+  height:21px!important;
+  top:10px!important;
+  left:50%!important;
+  transform:translateX(-50%)!important;
+  border-radius:999px!important;
+  background:#0f120f!important;
+}
+.phone-head{margin-top:30px!important}
+
+/* Hero device */
+.hero-phone{
+  width:min(310px,64%)!important;
+  height:auto!important;
+  aspect-ratio:var(--device-ratio)!important;
+  left:44%!important;
+  top:50%!important;
+  transform:translate(-50%,-50%) rotate(1deg)!important;
+  padding:24px!important;
+}
+.hero-phone .phone-date{margin-top:76px!important}
+.hero-phone h2{font-size:22px!important;line-height:1.58!important}
+
+/* How-it-works devices */
+.phone-sequence{align-items:flex-start!important}
+.mini-stage{display:flex!important;flex-direction:column!important;align-items:center!important;min-width:0!important}
+.mini-phone{
+  width:min(220px,100%)!important;
+  height:auto!important;
+  aspect-ratio:var(--device-ratio)!important;
+  border-radius:34px!important;
+  padding:16px 17px 20px!important;
+  margin:0 auto!important;
+}
+.mini-phone .phone-notch{max-width:72px!important;height:17px!important;top:9px!important}
+.mini-phone .phone-head{margin-top:24px!important}
+.mini-phone .phone-date{margin-top:60px!important}
+.mini-phone h3{font-size:18px!important;line-height:1.55!important}
+.write-phone .write-label{margin-top:48px!important}
+.write-phone .answer-box{min-height:118px!important}
+.reveal-phone .avatars{margin-top:72px!important}
+
+/* Conversation-history device */
+.memory{
+  min-height:650px!important;
+  align-items:center!important;
+}
+.memory-phone{
+  width:min(265px,100%)!important;
+  height:auto!important;
+  aspect-ratio:var(--device-ratio)!important;
+  border-radius:36px!important;
+  padding:18px!important;
+  margin:0 auto!important;
+  transform:none!important;
+  justify-self:center!important;
+}
+.memory-phone .phone-notch{max-width:84px!important;height:19px!important}
+.memory-phone .phone-head{margin-top:27px!important}
+.memory-tabs{margin-top:28px!important}
+.memory-item{padding:14px 0!important}
+.memory-item p{font-size:10px!important;line-height:1.45!important}
+.memory-item small{font-size:7px!important}
+
+/* Tablet */
+@media(max-width:820px){
+  .hero-scene{min-height:670px!important}
+  .hero-phone{width:min(300px,58vw)!important;left:44%!important}
+  .phone-sequence{grid-template-columns:repeat(3,minmax(245px,270px))!important}
+  .mini-phone{width:225px!important}
+  .memory{grid-template-columns:1fr 1fr!important;min-height:auto!important;padding-top:70px!important;padding-bottom:70px!important}
+  .memory-copy{grid-column:1/-1!important}
+  .memory-phone{width:260px!important}
+}
+
+/* Mobile */
+@media(max-width:767px){
+  .hero-scene{min-height:610px!important}
+  .hero-phone{
+    width:min(250px,64vw)!important;
+    left:39.5%!important;
+    top:50%!important;
+    padding:19px!important;
+  }
+  .hero-phone .phone-head{margin-top:25px!important}
+  .hero-phone .phone-date{margin-top:62px!important}
+  .hero-phone h2{font-size:19px!important;line-height:1.55!important}
+  .hero-phone button{margin-top:32px!important}
+
+  .phone-sequence{grid-template-columns:repeat(3,minmax(250px,270px))!important;align-items:start!important}
+  .mini-phone{width:225px!important}
+
+  .memory{grid-template-columns:1fr!important;min-height:auto!important;padding-top:66px!important;padding-bottom:70px!important}
+  .memory-copy{grid-column:auto!important}
+  .memory-phone{width:min(260px,72vw)!important;justify-self:center!important}
+  .memory-quote{justify-self:center!important}
+  .polaroids{justify-self:center!important}
+}
+
+@media(max-width:390px){
+  .hero-scene{min-height:590px!important}
+  .hero-phone{width:242px!important;left:39%!important}
+  .mini-phone{width:218px!important}
+  .memory-phone{width:min(250px,70vw)!important}
+}
+
+@media(max-width:350px){
+  .hero-scene{min-height:555px!important}
+  .hero-phone{width:222px!important;left:38%!important}
+  .hero-phone h2{font-size:17px!important}
+  .mini-phone{width:205px!important}
+  .memory-phone{width:232px!important}
+}
