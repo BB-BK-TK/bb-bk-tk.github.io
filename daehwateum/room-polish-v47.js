@@ -20,6 +20,17 @@ function compactRelationship(){
   hero.innerHTML='<button type="button" class="relationship-compact-button-v47" aria-label="'+(ko?'함께하는 사람 보기':'View people')+'"><span class="relationship-people-v47">'+ps.map(avatar).join('')+'</span><span class="relationship-compact-copy-v47"><b>'+esc(names(d))+'</b><small>'+(ko?'지금, 더 가까워지는 대화':'A conversation that brings us closer')+'</small></span><i aria-hidden="true">›</i></button>';
 }
 
+function cleanInviteWaitingDuplicates(){
+  var d=state();
+  if(!d||Number(d.participant_count||0)!==1)return;
+  var w=app.querySelector(':scope > .w');if(!w)return;
+  var cards=[].slice.call(w.querySelectorAll(':scope > .card.stage')).filter(function(card){
+    return !!(card.querySelector('[data-a="share"]')&&card.querySelector('[data-a="copy"]'));
+  });
+  if(cards.length<2)return;
+  cards.slice(1).forEach(function(card){card.remove()});
+}
+
 function polishHome(){
   if(!document.body.classList.contains('visual-home-v44'))return;
   Array.prototype.forEach.call(app.querySelectorAll('.spacecard'),function(card){
@@ -59,7 +70,7 @@ function releaseWhenReady(){
   requestAnimationFrame(function(){requestAnimationFrame(function(){document.documentElement.classList.remove('app-boot-pending');document.documentElement.classList.add('app-boot-ready');released=true})});
 }
 
-function patch(){queued=false;compactRelationship();polishHome();releaseWhenReady()}
+function patch(){queued=false;cleanInviteWaitingDuplicates();compactRelationship();polishHome();releaseWhenReady()}
 function schedule(){if(queued)return;queued=true;requestAnimationFrame(patch)}
 
 app.addEventListener('click',function(e){var b=e.target.closest&&e.target.closest('.relationship-compact-button-v47');if(!b)return;var original=app.querySelector('.top .people[data-people-manage],.top .people');if(original&&typeof original.click==='function')original.click()},true);
