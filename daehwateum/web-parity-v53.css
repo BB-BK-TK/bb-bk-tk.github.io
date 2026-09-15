@@ -56,6 +56,14 @@ html.ios-device .confirm-overlay{
 html.ios-device .settings-popover{
   max-width:calc(100vw - var(--app-safe-left,0px) - var(--app-safe-right,0px) - 24px);
 }
+/* Room participant chips are visually replaced by the relationship hero. When .people
+   remains directly before the settings trigger, shell-v8 removes the trigger's auto
+   margin. Restore the trailing header slot without adding a second safe-area offset. */
+html.ios-device body.visual-room-v43 .top>.people+.dots,
+html.ios-device body.visual-room-v43 .top>.people+.settings-trigger{
+  margin-left:auto!important;
+  flex:0 0 40px;
+}
 /* Safari can retain horizontal rubber-band movement around full-width cards. */
 html.ios-device #app,
 html.ios-device .w{
