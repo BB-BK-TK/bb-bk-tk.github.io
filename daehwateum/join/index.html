@@ -10,7 +10,7 @@
 <meta property="og:site_name" content="대화틈">
 <meta property="og:title" content="대화틈에 초대받았어요">
 <meta property="og:description" content="하루에 질문 하나. 서로 답한 뒤, 함께 열어봐요.">
-<link rel="stylesheet" href="./invite-v53.css?v=20260914-1620">
+<link rel="stylesheet" href="./invite-v53.css?v=20260915-1255">
 <script src="../supabase-auth-v2.js?v=20260831-1548"></script>
 </head>
 <body>
@@ -27,10 +27,24 @@
       </div>
       <div class="steps" aria-label="대화 방식"><div class="step">질문 하나씩</div><div class="step">각자 답하기</div><div class="step">함께 열어보기</div></div>
       <button class="btn" id="open" type="button" disabled>대화 시작하기</button>
+      <button class="install-btn hidden" id="iosInstall" type="button">iPhone에 앱으로 추가하기</button>
       <p class="fine">계정 없이 바로 시작할 수 있어요.</p>
     </section>
     <section id="closed" class="status hidden"><h1 id="closedTitle">이 초대는 더 이상 열 수 없어요.</h1><p id="closedBody">링크가 만료되었거나 유효하지 않아요.</p></section>
   </main>
+</div>
+<div id="installHelp" class="install-sheet hidden" role="dialog" aria-modal="true" aria-labelledby="installTitle">
+  <section class="install-panel">
+    <button type="button" class="install-close" id="installClose" aria-label="닫기">×</button>
+    <span class="k">IPHONE</span>
+    <h2 id="installTitle">대화틈을 앱처럼 사용하기</h2>
+    <p id="installLead">iPhone에서는 별도 앱 다운로드 대신 홈 화면에 추가해 앱처럼 사용할 수 있어요.</p>
+    <ol class="install-steps">
+      <li><b>1</b><span id="installStep1">Safari에서 이 초대장을 열어주세요.</span></li>
+      <li><b>2</b><span id="installStep2">대화 시작하기로 들어간 뒤 Safari의 공유 버튼을 누르세요.</span></li>
+      <li><b>3</b><span id="installStep3">‘홈 화면에 추가’를 선택하세요.</span></li>
+    </ol>
+  </section>
 </div>
 <script>
 (function(){
@@ -38,11 +52,31 @@
   var token=p.get('invite')||'';
   if(!token&&location.hash){try{var hp=new URLSearchParams(location.hash.replace(/^#\??/,''));token=hp.get('invite')||''}catch(e){}}
   var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0;
+  var ua=navigator.userAgent||'';
+  var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  var kakao=/KAKAOTALK/i.test(ua);
+  var standalone=navigator.standalone===true||(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);
   var loading=document.getElementById('loading'),invite=document.getElementById('invite'),closed=document.getElementById('closed'),title=document.getElementById('title'),body=document.getElementById('body'),open=document.getElementById('open'),closedTitle=document.getElementById('closedTitle'),closedBody=document.getElementById('closedBody');
-  if(!ko){document.documentElement.lang='en';document.querySelector('.brand-name').textContent='Daehwateum';document.querySelector('.steps').innerHTML='<div class="step">One question</div><div class="step">Answer separately</div><div class="step">Open together</div>';document.querySelector('.fine').textContent='No account required.'}
+  var iosInstall=document.getElementById('iosInstall'),installHelp=document.getElementById('installHelp'),installClose=document.getElementById('installClose'),installTitle=document.getElementById('installTitle'),installLead=document.getElementById('installLead'),installStep1=document.getElementById('installStep1'),installStep2=document.getElementById('installStep2'),installStep3=document.getElementById('installStep3');
+  if(!ko){document.documentElement.lang='en';document.querySelector('.brand-name').textContent='Daehwateum';document.querySelector('.steps').innerHTML='<div class="step">One question</div><div class="step">Answer separately</div><div class="step">Open together</div>';document.querySelector('.fine').textContent='No account required.';iosInstall.textContent='Add Daehwateum to iPhone';installClose.setAttribute('aria-label','Close');installTitle.textContent='Use Daehwateum like an app';installLead.textContent='On iPhone, add Daehwateum to your Home Screen instead of downloading a separate app.';installStep3.textContent='Choose “Add to Home Screen”.'}
   function showClosed(h,b){loading.classList.add('hidden');invite.classList.add('hidden');closed.classList.remove('hidden');closedTitle.textContent=h;closedBody.textContent=b}
   function webUrl(){return '../?invite='+encodeURIComponent(token)+'&web=1'}
   function openDaehwateum(){location.href=webUrl()}
+  function hideInstallHelp(){installHelp.classList.add('hidden')}
+  function configureIOSInstall(){
+    if(!ios||standalone)return;
+    iosInstall.classList.remove('hidden');
+    if(kakao){
+      if(ko){installStep1.textContent='카카오톡의 ··· 메뉴에서 ‘다른 브라우저로 열기’를 선택해 Safari로 여세요.';installStep2.textContent='Safari에서 대화 시작하기로 들어간 뒤 공유 버튼을 누르세요.'}
+      else{installStep1.textContent='In KakaoTalk, open the ··· menu and choose “Open in another browser” to continue in Safari.';installStep2.textContent='In Safari, start the conversation, then tap the Share button.'}
+    }else{
+      if(ko){installStep1.textContent='Safari에서 이 초대장을 열어주세요.';installStep2.textContent='대화 시작하기로 들어간 뒤 Safari의 공유 버튼을 누르세요.'}
+      else{installStep1.textContent='Open this invitation in Safari.';installStep2.textContent='Start the conversation, then tap Safari’s Share button.'}
+    }
+    iosInstall.onclick=function(){installHelp.classList.remove('hidden')};
+  }
+  installClose.onclick=hideInstallHelp;
+  installHelp.addEventListener('click',function(e){if(e.target===installHelp)hideInstallHelp()});
   if(!token){showClosed(ko?'초대 정보가 없어요.':'Invite not found.',ko?'전달받은 링크를 다시 확인해 주세요.':'Please check the invitation link.');return}
   fetch('https://kacvynoegfpvgdpqtjdi.supabase.co/rest/v1/rpc/dt_get_invite_status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_invite_token:token})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error((j&&j.message)||'Invite check failed');return j})}).then(function(s){
     if(!s||!s.valid){showClosed(ko?'이 초대는 더 이상 열 수 없어요.':'This invite is no longer available.',ko?'링크가 만료되었거나 유효하지 않아요.':'The link has expired or is invalid.');return}
@@ -50,7 +84,7 @@
     loading.classList.add('hidden');closed.classList.add('hidden');invite.classList.remove('hidden');
     var inviter=s.inviter_name?String(s.inviter_name).trim():'';
     if(ko){title.textContent=inviter?inviter+'님이 대화틈에 초대했어요.':'대화틈에 초대받았어요.';body.innerHTML='하루에 질문 하나.<br>서로 답한 뒤, 함께 열어봐요.';open.textContent=inviter?inviter+'님과 대화 시작하기':'대화 시작하기'}else{title.textContent=inviter?inviter+' invited you to Daehwateum.':'You were invited to Daehwateum.';body.innerHTML='One question at a time.<br>Answer separately, then open together.';open.textContent=inviter?'Start with '+inviter:'Start the conversation'}
-    open.disabled=false;open.onclick=openDaehwateum;
+    open.disabled=false;open.onclick=openDaehwateum;configureIOSInstall();
   }).catch(function(){showClosed(ko?'초대장을 확인하지 못했어요.':'Could not check this invite.',ko?'잠시 후 다시 링크를 열어 주세요.':'Please open the link again in a moment.')});
 })();
 </script>
