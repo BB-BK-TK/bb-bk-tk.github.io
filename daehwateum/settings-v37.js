@@ -31,7 +31,7 @@ function openNotifications(feedback){page(t().notificationTitle,notificationBody
 function feedback(msg){var el=document.getElementById('notification-feedback');if(el)el.textContent=msg||''}
 function requestNotifications(){
   var c=t();
-  if(pushEnabled()&&nativeSettingsAvailable()){
+  if(nativeSettingsAvailable()){
     try{AndroidPush.openSettings();return}catch(e){}
   }
   feedback(c.notificationChecking);
