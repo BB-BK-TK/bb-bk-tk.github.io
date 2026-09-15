@@ -1,0 +1,17 @@
+/* Conversation contrast: everyday talk -> the questions we often avoid */
+.conversation-contrast{display:grid;grid-template-columns:1fr 1fr;gap:42px;align-items:start}
+.contrast-group{min-width:0}
+.contrast-label{margin:0 0 16px!important;font-size:11px!important;font-weight:700!important;letter-spacing:.02em!important;color:#888b85!important}
+.contrast-group .bubble-field{margin:0!important}
+.contrast-group .bubble-field span{font-size:18px!important;color:#777b75!important;padding:14px 0!important}
+.deep-question-list{border-top:1px solid rgba(32,36,31,.18)}
+.deep-question-list span{display:block;padding:14px 0;border-bottom:1px solid rgba(32,36,31,.14);font-size:18px;line-height:1.45;font-weight:650;letter-spacing:-.025em;color:#20241f}
+.deep-question-list span:first-child{color:#234d38}
+@media(max-width:900px){.conversation-contrast{grid-template-columns:1fr;gap:36px}}
+@media(max-width:767px){
+  .conversation-contrast{display:grid!important;grid-template-columns:1fr!important;gap:36px!important;margin-top:46px!important}
+  .contrast-label{font-size:11px!important;margin-bottom:12px!important}
+  .contrast-group .bubble-field{margin-top:0!important}
+  .contrast-group .bubble-field span,.deep-question-list span{font-size:19px!important;padding:14px 0!important}
+  .deep-question-list span{font-weight:650!important}
+}
