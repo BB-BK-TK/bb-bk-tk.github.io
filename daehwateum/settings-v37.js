@@ -51,20 +51,31 @@ function requestNotifications(){
 function appInfoBody(){var c=t();return '<section class="settings-page-card app-info-card"><div class="app-info-brand">◉ 대화틈</div><div class="app-info-version"><span>'+esc(c.version)+'</span><b>'+esc(VERSION)+'</b></div></section><section class="settings-page-list"><button type="button" data-settings-action="about">'+esc(c.how)+'<span>›</span></button><a href="./legal/terms/?from=app-info">'+esc(c.terms)+'<span>›</span></a><a href="./legal/privacy/?from=app-info">'+esc(c.privacy)+'<span>›</span></a></section>'}
 function openAppInfo(){page(t().appInfoTitle,appInfoBody())}
 function openPremiumFromQuery(){var p=new URLSearchParams(location.search);if(p.get('premium')!=='1')return;history.replaceState({},'',location.pathname+location.hash);setTimeout(function(){var app=document.getElementById('app');if(!app)return;var b=document.createElement('button');b.type='button';b.hidden=true;b.setAttribute('data-a','premium');b.setAttribute('data-feature','bundle');app.appendChild(b);b.click();b.remove()},80)}
+/* Room-scoped entries belong together at the bottom, next to the destructive
+   action, wherever the module that owns them inserted them. */
+function orderMenu(m){
+  var danger=m.querySelector('.danger-menu');if(!danger)return;
+  var transfer=m.querySelector('[data-owner-transfer-menu]');
+  if(transfer&&transfer.nextElementSibling!==danger)m.insertBefore(transfer,danger);
+}
 function ensureMenu(){
   var m=document.getElementById('settings-popover');if(!m)return;
-  if(m.getAttribute('data-settings-v37')==='1')return;
+  if(m.getAttribute('data-settings-v37')==='1'){orderMenu(m);return}
   var danger=m.querySelector('.danger-menu');var c=t();
   Array.from(m.querySelectorAll('button')).forEach(function(b){if(b!==danger&&!b.hasAttribute('data-owner-transfer-menu'))b.remove()});
   function add(label,attr,val){var b=document.createElement('button');b.type='button';b.setAttribute(attr,val||'1');b.textContent=label;m.insertBefore(b,danger||null)}
   add(c.notification,'data-settings-notification','1');
   add(c.subscription,'data-settings-subscription','1');
-  var legacy=document.createElement('button');legacy.type='button';legacy.hidden=true;legacy.setAttribute('data-subscription-management','1');legacy.setAttribute('aria-hidden','true');m.insertBefore(legacy,danger||null);
   add(c.recovery,'data-recovery-settings','1');
   add(c.appInfo,'data-settings-app-info','1');
   m.setAttribute('data-settings-v37','1');
+  orderMenu(m);
 }
-function patch(){if(patching)return;patching=true;requestAnimationFrame(function(){patching=false;ensureMenu()})}
+/* Rebuild synchronously from the observer callback, which runs as a microtask
+   before the browser paints. Deferring to the next animation frame let the
+   popover be painted first with the entries the other modules add — About,
+   내 대화틈 and a second subscription row all flashed up before being replaced. */
+function patch(){if(patching)return;patching=true;try{ensureMenu()}finally{patching=false}}
 var previousNativePushPermission=window.DaehwateumNativePushPermission;
 window.DaehwateumNativePushPermission=function(granted){
   try{if(granted)localStorage.setItem(PUSH_ENABLED,'1');else localStorage.removeItem(PUSH_ENABLED)}catch(e){}

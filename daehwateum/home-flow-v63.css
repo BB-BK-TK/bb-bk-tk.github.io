@@ -37,12 +37,36 @@
   color:#34473f!important;
 }
 
-/* Never reserve empty vertical space while timing is still resolving.
-   A gate that already holds the next-question button is not a placeholder, so
-   .v51-ready-gate is excluded here: hiding it is what left "다음 대화가
-   준비됐어요" on screen with no way to open the question. */
-.visual-room-v43 .post-reveal-home .post-reveal-current>.next-gate:not(.timing-ready):not(.v51-ready-gate),
-.visual-room-v43 .post-reveal-home .post-reveal-current>.premium-continuation-gate:not(.timing-ready):not(.v51-ready-gate){
+/* ------------------------------------------------------------------
+   Gate visibility inside a completed conversation — single owner.
+
+   Every rule that decides whether a .next-gate / .premium-continuation-gate
+   under .post-reveal-current is shown lives here and nowhere else. It used to
+   be split across this file and room-spacing-v51.css, which asserted the
+   opposite with its own !important; the winner was decided silently by
+   specificity, and the losing side was the button that opens the next
+   question.
+
+   The contract:
+   - .timing-ready means the gate has resolved content. Every module that
+     builds a real gate sets it (schedule-v6, room-spacing-v51,
+     home-flow-v63, premium-continuation-v29). Without it a gate is a
+     placeholder and must not reserve space.
+   - .home-countdown-absorbed-v67 means the summary card is already showing
+     this gate's countdown, so the gate itself would be a duplicate.
+   - A gate holding an actionable button is never a placeholder, whatever
+     classes it carries. That rule comes last so it wins ties, and it is what
+     keeps a CTA on screen even if a future module forgets .timing-ready.
+
+   Anywhere else in the app a placeholder gate only needs to be invisible, not
+   collapsed; that pair used to live in question-queue-v7.css.
+   ------------------------------------------------------------------ */
+.next-gate:not(.timing-ready){visibility:hidden}
+.next-gate.timing-ready{visibility:visible}
+
+.visual-room-v43 .post-reveal-home .post-reveal-current>.next-gate:not(.timing-ready),
+.visual-room-v43 .post-reveal-home .post-reveal-current>.premium-continuation-gate:not(.timing-ready),
+.visual-room-v43 .post-reveal-home .post-reveal-current>.next-gate.home-countdown-absorbed-v67{
   display:none!important;
   min-height:0!important;
   height:0!important;
@@ -50,11 +74,13 @@
   padding:0!important;
   border:0!important;
 }
-.visual-room-v43 .post-reveal-home .post-reveal-current>.next-gate.home-countdown-absorbed-v67{
-  display:none!important;
+.next-gate:has([data-a="next"]){visibility:visible!important}
+.visual-room-v43 .post-reveal-home .post-reveal-current>.next-gate:has([data-a="next"]),
+.visual-room-v43 .post-reveal-home .post-reveal-current>.premium-continuation-gate:has([data-a="next"]){
+  display:block!important;
+  height:auto!important;
   min-height:0!important;
-  height:0!important;
-  margin:0!important;
+  margin-top:10px!important;
   padding:0!important;
   border:0!important;
 }

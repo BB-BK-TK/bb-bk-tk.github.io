@@ -1,4 +1,5 @@
 (function(){'use strict';
+var APIKEY='sb_publishable_SeG92zfrAeh5zECaVbztkw_qb0C91D6';
 var token=new URLSearchParams(location.search).get('invite');
 if(!token)return;
 var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0;
@@ -11,7 +12,7 @@ function run(){
   if(!form)return;
   var btn=form.querySelector('button');if(btn)btn.disabled=true;
   fetch('https://kacvynoegfpvgdpqtjdi.supabase.co/rest/v1/rpc/dt_get_invite_status',{
-    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_invite_token:token})
+    method:'POST',headers:{apikey:APIKEY,'Content-Type':'application/json'},body:JSON.stringify({p_invite_token:token})
   }).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error((j&&j.message)||'Invite check failed');return j})})
     .then(function(s){
       if(!s||!s.valid){render(ko?'이 초대는 더 이상 열 수 없어요.':'This invite is no longer available.',ko?'링크가 만료되었거나 유효하지 않아요.':'The link has expired or is invalid.',ko?'홈으로':'Back home');return}

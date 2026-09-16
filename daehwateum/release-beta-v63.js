@@ -31,7 +31,11 @@ function patchActivePremium(){
     if(/Premium 활성화됨|Premium active/i.test(v))el.textContent=text('★ Beta Premium 이용 중','★ Beta Premium active');
   });
 }
-function patchSettings(){document.querySelectorAll('[data-settings-subscription]').forEach(function(el){el.textContent='Premium'})}
+/* Write only when the label differs. Rewriting it unconditionally replaced the
+   text node on every pass, which re-triggered the observer that scheduled the
+   pass — a permanent repaint loop. Being idempotent also lets this run inline
+   below, so the entry is never painted under its pre-beta name first. */
+function patchSettings(){document.querySelectorAll('[data-settings-subscription]').forEach(function(el){if(el.textContent!=='Premium')el.textContent='Premium'})}
 function patchConversationLabels(){
   if(!window.DT||typeof DT.state!=='function')return;
   var d=DT.state();if(!d)return;
@@ -59,6 +63,6 @@ function patchQuestionQueue(){
 }
 function patch(){scheduled=false;patchPremiumGate();patchPremiumBanner();patchActivePremium();patchSettings();patchConversationLabels();patchQuestionQueue()}
 function schedule(){if(scheduled)return;scheduled=true;requestAnimationFrame(patch)}
-function start(){new MutationObserver(schedule).observe(document.body,{childList:true,subtree:true});schedule()}
+function start(){new MutationObserver(function(){patchSettings();schedule()}).observe(document.body,{childList:true,subtree:true});schedule()}
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start);else start();
 })();

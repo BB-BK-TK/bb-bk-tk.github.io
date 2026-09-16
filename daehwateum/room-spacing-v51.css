@@ -21,11 +21,11 @@
   margin-top:14px!important;
 }
 
-/* Keep the next-question timing visible even while the server timing state is resolving.
-   schedule-v6.js immediately fills this gate from room state and then reconciles with the server. */
-.visual-room-v43 .post-reveal-current>.next-gate:not(.timing-ready){
-  display:block!important;
-}
+/* Gate visibility is owned by home-flow-v63.css. The rule that used to live
+   here forced placeholder gates visible, contradicting that file's rule to hide
+   them; the two fought via !important and specificity. The countdown now lives
+   in the summary card, so a placeholder gate is a duplicate rather than the
+   only signal, and this file sticks to spacing. */
 
 .visual-room-v43 .next-gate.timing-pending{
   min-height:0!important;
