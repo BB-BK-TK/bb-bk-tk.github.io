@@ -4,9 +4,16 @@ var queued=false,countdownTimer=null;
 function isKo(){return (document.documentElement.lang||navigator.language||'ko').toLowerCase().indexOf('ko')===0}
 function state(){return window.DT&&typeof DT.state==='function'?DT.state():null}
 function doneLabel(d){var n=Math.max(1,parseInt(d&&d.round_sequence||1,10)||1);if(isKo())return n===1?'첫 대화를 마쳤어요':n+'번째 대화를 마쳤어요';return n===1?'First conversation complete':'Conversation '+n+' complete'}
+function isReady(d){
+  if(!d||!d.round_completed_at||d.is_paused)return false;
+  if(Number(d.participant_count||0)<Number(d.max_participants||2))return false;
+  if(d.can_start_next)return true;
+  if(!d.next_round_at)return false;
+  var due=new Date(d.next_round_at);return !isNaN(due.getTime())&&Date.now()>=due.getTime();
+}
 function countdownLabel(d){
   if(!d)return'';
-  if(d.can_start_next)return isKo()?'다음 대화가 준비됐어요':'Next conversation is ready';
+  if(isReady(d))return isKo()?'다음 대화가 준비됐어요':'Next conversation is ready';
   if(!d.next_round_at)return'';
   var due=new Date(d.next_round_at);if(isNaN(due.getTime()))return'';
   var left=due.getTime()-Date.now();
@@ -25,12 +32,27 @@ function patchSummary(d,summary){
   summary.setAttribute('aria-label',title+(label?' · '+label:'')+(isKo()?' · 답변 다시 보기':' · Review answers'));
   return label;
 }
+function ensureReadyAction(d,w,summary){
+  var sec=w.querySelector('.post-reveal-current');if(!sec)return;
+  var fallback=sec.querySelector('.home-ready-next-v69');
+  if(!isReady(d)){if(fallback)fallback.remove();return}
+  var existing=sec.querySelector('[data-a="next"]');
+  if(existing){if(fallback&&fallback!==existing.closest('.home-ready-next-v69'))fallback.remove();return}
+  if(!summary)return;
+  if(!fallback){
+    fallback=document.createElement('section');
+    fallback.className='next-gate timing-ready home-ready-next-v69';
+    fallback.innerHTML='<button type="button" class="btn full next-question-primary" data-a="next">'+(isKo()?'다음 질문 열기 →':'Open next question →')+'</button>';
+    summary.insertAdjacentElement('afterend',fallback);
+  }
+}
 function patch(){
   var d=state(),w=app.querySelector(':scope > .w');
   if(!d||!w||!w.classList.contains('post-reveal-home'))return;
   var summary=w.querySelector('.post-reveal-summary'),label='';
   if(summary)label=patchSummary(d,summary);
-  var gate=w.querySelector('.post-reveal-current > .next-gate.timing-ready:not(.premium-continuation-gate)');
+  ensureReadyAction(d,w,summary);
+  var gate=w.querySelector('.post-reveal-current > .next-gate.timing-ready:not(.premium-continuation-gate):not(.home-ready-next-v69)');
   if(gate){var hasNext=!!gate.querySelector('[data-a="next"]'),text=String(gate.textContent||'');var reflection=/회고|reflection/i.test(text);gate.classList.toggle('home-countdown-absorbed-v67',!!label&&!hasNext&&!reflection)}
   var q=w.querySelector(':scope > .queue-summary-card.queue-summary-merged');
   if(q&&!q.classList.contains('has-reserved-questions')){var queueTitle=q.querySelector('.queue-module-title');var wanted=isKo()?'물어보고 싶은 질문이 있나요?':'Anything you want to ask?';if(queueTitle&&queueTitle.textContent!==wanted)queueTitle.textContent=wanted}
