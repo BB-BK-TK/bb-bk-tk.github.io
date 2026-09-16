@@ -276,14 +276,14 @@
     .setbar span{height:3px;background:rgba(255,255,255,.12)}
     .work-meta{margin:8px 20px 0;font-size:9px;letter-spacing:.95px}
     .work-meta b{font-size:10px}
-    .guide-stage{height:calc(100dvh - 218px);min-height:470px;max-height:620px;margin:12px 12px 12px;border-radius:25px;background:#d8d7d1;justify-content:center;padding:18px 12px 16px}
-    .guide-stage:before{width:300px;height:300px;top:45px;border-color:rgba(23,36,31,.08)}
-    .guide-sprite.beat-driven{width:min(76vw,312px);height:min(76vw,312px);margin-top:5px;border-radius:21px;background:#d8d7d1 url("assets/video/squat-poster.jpg") center/cover no-repeat}
+    .guide-stage{height:auto;min-height:0;max-height:none;margin:12px 12px 10px;border-radius:25px;background:#d8d7d1;justify-content:flex-start;padding:12px 12px 18px}
+    .guide-stage:before{display:none}
+    .guide-sprite.beat-driven{width:min(82vw,336px);height:min(82vw,336px);margin-top:0;border-radius:21px;background:#d8d7d1 url("assets/video/squat-poster.jpg") center/cover no-repeat}
     .guide-sprite.beat-driven .guide-video{opacity:0;transition:opacity .22s ease;mask-image:linear-gradient(to right,transparent 0,#000 38px,#000 calc(100% - 38px),transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 38px,#000 calc(100% - 38px),transparent 100%)}
     .guide-sprite.beat-driven .guide-video.ready{opacity:1}
-    .movement-cues{margin-top:0;min-height:29px;font-size:11px;letter-spacing:1.8px}
-    .movement-cues b{font-size:16px}
-    .rep-count{margin-top:16px;gap:7px}
+    .movement-cues{margin-top:6px;min-height:22px;font-size:10px;letter-spacing:1.25px}
+    .movement-cues b{font-size:14px}
+    .rep-count{margin-top:2px;gap:7px}
     .rep-count strong{font-size:76px;line-height:.9;font-weight:770;letter-spacing:-5px}
     .rep-count span{font-size:18px;color:rgba(23,36,31,.42)}
     .guide-stage>p{font-size:10px}
@@ -360,7 +360,7 @@
     @media(max-height:720px){
       .home-intro{padding-top:3px;padding-bottom:12px}.home-intro h1{font-size:37px}
       .today-card{min-height:330px}.today-number{margin-top:22px}.today-number strong{font-size:90px}
-      .guide-stage{height:calc(100dvh - 200px);min-height:390px}.guide-sprite.beat-driven{width:250px;height:250px}
+      .guide-stage{height:auto;min-height:0}.guide-sprite.beat-driven{width:min(82vw,300px);height:min(82vw,300px)}
       .break-offer{padding-top:15px}.break-offer h1{margin-top:16px}
     }
   </style>
