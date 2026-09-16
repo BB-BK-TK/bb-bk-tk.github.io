@@ -5,6 +5,7 @@
   var API_KEY='sb_publishable_SeG92zfrAeh5zECaVbztkw_qb0C91D6';
   var VISITOR_KEY='dt.acq.visitor.v1';
   var ALLOWED={landing_view:true,download_click:true,app_first_open:true};
+  var ASSET_BASE=(function(){try{return new URL('./',document.currentScript&&document.currentScript.src?document.currentScript.src:location.href).href}catch(e){return './'}})();
 
   function randomId(){
     if(window.crypto&&typeof window.crypto.randomUUID==='function')return window.crypto.randomUUID();
@@ -115,13 +116,11 @@
   function loadInstallRecommendation(){
     var p=platform();
     if(p==='android_app'||p==='android_pwa'||p==='ios_pwa')return;
-    var about=location.pathname.indexOf('/about/')>=0;
-    var base=about?'../':'./';
     if(!document.querySelector('link[data-dt-install-css]')){
-      var css=document.createElement('link');css.rel='stylesheet';css.href=base+'pwa-install-v71.css?v=20260916-1';css.setAttribute('data-dt-install-css','1');document.head.appendChild(css);
+      var css=document.createElement('link');css.rel='stylesheet';css.href=ASSET_BASE+'pwa-install-v71.css?v=20260916-2';css.setAttribute('data-dt-install-css','1');document.head.appendChild(css);
     }
     if(!document.querySelector('script[data-dt-install-js]')){
-      var js=document.createElement('script');js.src=base+'pwa-install-v71.js?v=20260916-1';js.defer=true;js.setAttribute('data-dt-install-js','1');document.head.appendChild(js);
+      var js=document.createElement('script');js.src=ASSET_BASE+'pwa-install-v71.js?v=20260916-2';js.defer=true;js.setAttribute('data-dt-install-js','1');document.head.appendChild(js);
     }
   }
 
