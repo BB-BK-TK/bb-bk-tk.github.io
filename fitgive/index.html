@@ -10,6 +10,7 @@
   <meta property="og:description" content="A tiny 3-minute workout. Your rest can help fund a real donation.">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
+  <link rel="preload" href="assets/video/squat-fast-veo.mp4?v=veo1" as="video" type="video/mp4">
   <style>
     :root{--cream:#f8f3e7;--ink:#172f28;--forest:#1f4a3b;--dark:#17382e;--lime:#d9ff73;--yellow:#ffd95c;--coral:#ff6f61;--blue:#a8d8ff;--paper:#fffdf7}
     *{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#dedbd3;color:var(--ink);font-family:"Trebuchet MS","Arial Rounded MT Bold",Arial,sans-serif}button{font:inherit}
@@ -123,6 +124,245 @@
     .cue-ready,.cue-done{grid-area:1/1;display:flex;align-items:center;gap:8px;color:var(--forest)}
     .cue-done{color:var(--forest)}
     .breathing-ring strong{transition:opacity .2s linear}
+
+    /* ---- FitGive clean refresh · 2026-09 ---------------------------------- */
+    :root{
+      --cream:#f6f5f0;
+      --ink:#17241f;
+      --forest:#183d33;
+      --dark:#10241e;
+      --lime:#d7ff69;
+      --yellow:#f4e9a4;
+      --coral:#ff7b67;
+      --blue:#e2ebe6;
+      --paper:#fff;
+      --muted:#69746f;
+      --line:rgba(23,36,31,.11);
+      --soft:#ebece7;
+    }
+    html,body{background:#e9e8e2;font-family:Inter,"SF Pro Display","Segoe UI",Roboto,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+    body{overscroll-behavior-y:none}
+    h1,.how-card strong,.set-number,.rep-count strong,.countdown-number,.completion-number,.result-ticket strong,.mission-visual strong,.facts strong,.streak-card strong,.default-card strong,.section-heading strong{font-family:inherit}
+    .app-shell{padding:20px}
+    .phone-screen{width:min(100%,408px);min-height:min(852px,calc(100dvh - 40px));background:var(--cream);border:0;border-radius:30px;box-shadow:0 24px 70px rgba(23,36,31,.13)}
+    .topbar{height:68px;padding:0 22px}
+    .wordmark{font-size:22px;letter-spacing:-1.1px}
+    .wordmark.small{font-size:16px;letter-spacing:-.65px}
+    .dot{color:var(--lime);text-shadow:0 0 0 var(--forest)}
+    .avatar{width:36px;height:36px;border:0;background:var(--paper);box-shadow:inset 0 0 0 1px var(--line);font-size:0;position:relative}
+    .avatar:before{content:"";width:7px;height:7px;border:1.7px solid var(--ink);border-radius:50%;position:absolute;top:8px;left:50%;transform:translateX(-50%)}
+    .avatar:after{content:"";width:13px;height:7px;border:1.7px solid var(--ink);border-bottom:0;border-radius:10px 10px 0 0;position:absolute;bottom:7px;left:50%;transform:translateX(-50%)}
+    .avatar.active{background:var(--forest)}
+    .avatar.active:before,.avatar.active:after{border-color:var(--lime)}
+    .eyebrow{font-size:9px;line-height:1.2;letter-spacing:1.45px}
+    .primary-action{min-height:56px;border-radius:17px;padding:0 19px;box-shadow:none!important;font-size:14px;letter-spacing:-.1px}
+    .primary-action:hover{transform:none}
+    .primary-action:active{transform:scale(.985)}
+
+    /* Navigation */
+    .bottom-nav{height:70px;padding:8px 34px max(10px,env(safe-area-inset-bottom));background:rgba(246,245,240,.96);border-color:var(--line);backdrop-filter:blur(18px)}
+    .nav-item{gap:5px;color:#909892;font-size:9px;font-weight:750;letter-spacing:.15px}
+    .nav-item span{width:19px;height:19px;font-size:0;position:relative}
+    .nav-item span:before{content:"";position:absolute;inset:4px;border:1.6px solid currentColor;border-radius:50%}
+    .nav-item:nth-child(2) span:before{inset:3px 5px 4px;border-radius:10px 10px 4px 4px;transform:rotate(8deg)}
+    .nav-item:nth-child(3) span:before{inset:2px 5px 9px}
+    .nav-item:nth-child(3) span:after{content:"";position:absolute;left:3px;right:3px;bottom:2px;height:7px;border:1.6px solid currentColor;border-bottom:0;border-radius:10px 10px 0 0}
+    .nav-item.active{color:var(--forest)}
+    .nav-item.active span:before{background:var(--forest);box-shadow:0 0 0 3px var(--lime)}
+    .nav-item:nth-child(2).active span:before,.nav-item:nth-child(3).active span:before{background:var(--forest);box-shadow:none}
+
+    /* Onboarding */
+    .onboarding-topbar{height:60px;padding:0 20px;grid-template-columns:40px 1fr 40px}
+    .onboarding-progress{gap:5px}
+    .onboarding-progress span{height:3px;background:#dedfd9}
+    .onboarding-page{padding:8px 22px 26px}
+    .onboarding-wordmark{margin:2px 0 18px;font-size:21px}
+    .promise-visual{height:294px;border-radius:25px;background:var(--forest)}
+    .promise-visual:before{width:230px;height:230px;top:31px;border-color:rgba(215,255,105,.25)}
+    .promise-visual:after{content:"";position:absolute;width:154px;height:154px;border-radius:50%;background:var(--lime);left:50%;top:69px;transform:translateX(-50%)}
+    .promise-visual .onboarding-sprite{display:none}
+    .tiny-sticker{left:15px;top:15px;background:rgba(255,255,255,.13);color:#fff;padding:7px 10px;font-size:7px;letter-spacing:1.2px}
+    .promise-count{left:50%;top:101px;bottom:auto;transform:translateX(-50%);z-index:2;text-align:center;color:var(--ink)}
+    .promise-count strong{font-family:inherit;font-size:76px;font-weight:800;letter-spacing:-6px;line-height:.8}
+    .promise-count span{margin-top:8px;font-size:10px;letter-spacing:2.4px}
+    .promise-burst{right:22px;bottom:20px;font-size:22px;color:var(--lime)}
+    .onboarding-copy{margin-top:23px}
+    .onboarding-copy h1{margin:9px 0 10px;font-family:inherit;font-size:41px;font-weight:720;line-height:.98;letter-spacing:-2.4px}
+    .onboarding-copy h1 em,.page-title em{color:inherit;font-style:normal;text-decoration:none}
+    .onboarding-copy p{font-size:12px;line-height:1.55;color:var(--muted)}
+    .onboarding-action{margin-top:20px;background:var(--ink);color:#fff}
+    .onboarding-action span:last-child{color:var(--lime)}
+    .how-page .onboarding-copy h1,.personalize-page .onboarding-copy h1{font-size:39px}
+    .how-stack{gap:8px;margin-top:22px}
+    .how-card{min-height:78px;border:0;border-radius:19px;padding:13px 15px;grid-template-columns:28px 1fr 35px;box-shadow:none!important;background:var(--paper)!important}
+    .how-card:nth-child(1){box-shadow:inset 3px 0 0 var(--lime)!important}
+    .how-card:nth-child(2){box-shadow:inset 3px 0 0 #b9d8ca!important}
+    .how-card:nth-child(3){box-shadow:inset 3px 0 0 var(--coral)!important}
+    .how-number{font-size:8px;color:var(--muted)}
+    .how-card strong{font-size:16px;font-weight:750}
+    .how-card p{font-size:9px;color:var(--muted)}
+    .how-card>b{font-size:19px;font-weight:500}
+    .trust-note{margin-top:11px;padding:12px 13px;border:0;border-radius:16px;background:transparent}
+    .trust-note>span{background:var(--soft);color:var(--forest)}
+    .plan-cards{grid-template-columns:1fr;gap:8px}
+    .plan-cards button{min-height:64px;border:1px solid var(--line);border-radius:17px;background:var(--paper);padding:0 15px;display:flex;align-items:center;gap:8px}
+    .plan-cards button.selected{border-color:var(--forest);background:var(--forest);color:#fff;box-shadow:none;transform:none}
+    .plan-cards strong{font-family:inherit;font-size:17px;font-weight:750}
+    .plan-cards small{margin-left:auto;color:var(--muted);font-size:9px}
+    .plan-cards button.selected small{color:rgba(255,255,255,.58)}
+    .check-dot{position:static;width:20px;height:20px;margin-left:6px;border-color:currentColor}
+    .first-summary{margin-top:13px;padding:12px 14px;border-radius:16px;background:var(--soft);color:var(--ink)}
+    .first-summary>span{color:var(--forest);font-size:17px}
+    .first-summary p,.first-summary strong{color:var(--ink)}
+
+    /* Today */
+    .home-page{padding:15px 18px 92px}
+    .home-intro{padding:12px 5px 18px}
+    .home-intro h1{margin:7px 0 8px;font-size:43px;line-height:.98;letter-spacing:-2.55px;font-weight:740}
+    .home-intro h1 span{color:var(--muted);font-weight:520}
+    .home-intro p{margin:0;color:var(--muted);font-size:12px}
+    .today-card{min-height:376px;border-radius:26px;padding:20px;background:var(--forest);color:#fff;position:relative;overflow:hidden;display:flex;flex-direction:column}
+    .today-card:before{content:"";position:absolute;width:255px;height:255px;border-radius:50%;background:var(--lime);right:-102px;top:50px;opacity:.96}
+    .today-card:after{content:"";position:absolute;width:176px;height:176px;border-radius:50%;border:1px solid rgba(255,255,255,.17);right:-45px;top:89px}
+    .today-card-head{display:flex;align-items:center;justify-content:space-between;position:relative;z-index:1}
+    .today-card-head .eyebrow{color:rgba(255,255,255,.68)}
+    .duration-chip{padding:7px 10px;border-radius:999px;background:rgba(255,255,255,.11);font-size:10px;font-weight:700}
+    .today-number{margin-top:32px;position:relative;z-index:1;display:flex;flex-direction:column;align-items:flex-start}
+    .today-number strong{font-size:104px;line-height:.76;letter-spacing:-8px;font-weight:780;color:#fff}
+    .today-number span{margin:11px 0 0 5px;font-size:13px;letter-spacing:3px;font-weight:800}
+    .today-summary{margin-top:auto;margin-bottom:15px;position:relative;z-index:1;color:rgba(255,255,255,.65);font-size:11px;font-weight:650}
+    .today-start{position:relative;z-index:1;background:var(--lime);color:var(--ink)}
+    .today-start span:last-child{width:28px;height:28px;border-radius:50%;background:var(--ink);color:var(--lime);display:grid;place-items:center}
+    .impact-mini{width:100%;margin:12px 0 0;border:0;border-radius:20px;background:var(--paper);padding:15px 16px;display:grid;grid-template-columns:36px 1fr 16px;align-items:center;gap:12px;text-align:left;color:var(--ink);cursor:pointer}
+    .impact-mini-icon{width:36px;height:36px;border-radius:50%;background:var(--soft);display:grid;place-items:center;color:var(--forest);font-size:15px}
+    .impact-mini-copy{min-width:0}
+    .impact-mini-copy div{display:flex;justify-content:space-between;gap:10px;align-items:baseline}
+    .impact-mini-copy strong{font-size:12px}
+    .impact-mini-copy span{font-size:9px;color:var(--muted)}
+    .impact-mini .progress-track{margin-top:8px;height:4px;background:var(--soft)}
+    .impact-mini .progress-track span{background:var(--forest)}
+    .impact-mini-arrow{color:var(--muted);font-size:15px}
+
+    /* Setup */
+    .setup-copy{padding:23px 22px 24px}
+    .setup-copy h1{margin:9px 0 0;font-size:37px;line-height:1.02;font-weight:730;letter-spacing:-2px}
+    .setup-copy p{margin-top:10px;color:var(--muted);font-size:12px}
+    .choice-stack{padding:0 18px;gap:8px}
+    .set-choice{min-height:72px;border:1px solid var(--line);border-radius:18px;background:var(--paper);padding:0 16px;grid-template-columns:92px 1fr 22px}
+    .set-choice.selected{border-color:var(--forest);background:var(--forest);color:#fff;box-shadow:none}
+    .set-number{font-size:21px;font-weight:760}
+    .set-meta{font-size:10px;color:var(--muted)}
+    .set-choice.selected .set-meta{color:rgba(255,255,255,.6)}
+    .choice-check{width:20px;height:20px;border-color:currentColor;font-size:10px}
+    .rhythm-note{margin:14px 18px 0;padding:14px 16px;border-radius:17px;background:var(--soft);display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .rhythm-note div{display:flex;flex-direction:column;gap:3px}
+    .rhythm-note strong{font-size:12px}
+    .rhythm-note span{font-size:9px;color:var(--muted)}
+    .rhythm-pulse{display:flex;gap:4px}
+    .rhythm-pulse i{width:5px;height:5px;border-radius:50%;background:var(--forest);opacity:.25}
+    .rhythm-pulse i:nth-child(2){opacity:.5}.rhythm-pulse i:nth-child(3){opacity:.75}.rhythm-pulse i:nth-child(4){opacity:1}
+    .setup-action{width:calc(100% - 36px);margin:16px 18px 24px;background:var(--ink);color:#fff}
+    .setup-action span:last-child{color:var(--lime)}
+
+    /* Guided workout */
+    .dark-screen{background:var(--dark)}
+    .countdown-screen{gap:18px;background:var(--dark)}
+    .countdown-number{font-size:132px;font-weight:760;letter-spacing:-9px;color:var(--lime)}
+    .countdown-screen p{font-size:10px;letter-spacing:1.25px}
+    .workout-topbar{height:62px;padding:0 18px}
+    .workout-topbar .icon-button,.sound-button{width:36px;height:36px;border-color:rgba(255,255,255,.15);font-size:18px}
+    .set-label{font-size:9px;letter-spacing:1.45px}
+    .setbar{margin:4px 20px 0;gap:5px}
+    .setbar span{height:3px;background:rgba(255,255,255,.12)}
+    .work-meta{margin:8px 20px 0;font-size:9px;letter-spacing:.95px}
+    .work-meta b{font-size:10px}
+    .guide-stage{height:calc(100dvh - 218px);min-height:470px;max-height:620px;margin:12px 12px 12px;border-radius:25px;background:#d8d7d1;justify-content:flex-start;padding:18px 12px 16px}
+    .guide-stage:before{width:300px;height:300px;top:45px;border-color:rgba(23,36,31,.08)}
+    .guide-sprite.beat-driven{width:min(76vw,312px);height:min(76vw,312px);margin-top:5px;border-radius:21px;background:#d8d7d1 url("assets/video/squat-poster.jpg") center/cover no-repeat}
+    .guide-sprite.beat-driven .guide-video{opacity:0;transition:opacity .22s ease;mask-image:linear-gradient(to right,transparent 0,#000 38px,#000 calc(100% - 38px),transparent 100%);-webkit-mask-image:linear-gradient(to right,transparent 0,#000 38px,#000 calc(100% - 38px),transparent 100%)}
+    .guide-sprite.beat-driven .guide-video.ready{opacity:1}
+    .movement-cues{margin-top:0;min-height:29px;font-size:11px;letter-spacing:1.8px}
+    .movement-cues b{font-size:16px}
+    .rep-count{margin-top:auto;gap:7px}
+    .rep-count strong{font-size:76px;line-height:.9;font-weight:770;letter-spacing:-5px}
+    .rep-count span{font-size:18px;color:rgba(23,36,31,.42)}
+    .guide-stage>p{font-size:10px}
+    .workout-controls{height:58px;margin:0 20px max(12px,env(safe-area-inset-bottom));justify-content:center}
+    .workout-controls .round-control{width:48px;height:48px;background:var(--lime);font-size:17px}
+    .workout-controls strong{font-size:12px}.workout-controls small{font-size:9px}
+
+    /* Rest + impact offer */
+    .break-offer{min-height:calc(100dvh - 68px);padding:28px 22px 24px;display:flex;flex-direction:column}
+    .break-sticker{align-self:flex-start;transform:none;border:0;box-shadow:none;background:var(--soft);padding:7px 10px;border-radius:999px;color:var(--muted);font-size:8px}
+    .break-offer h1{margin:25px 0 10px;font-size:44px;line-height:.98;font-weight:740;letter-spacing:-2.5px}
+    .break-offer>p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
+    .impact-promise{margin:auto 0 14px;padding:17px;border-radius:19px;background:var(--paper)}
+    .mini-seed{width:38px;height:38px;background:var(--lime);color:var(--forest)}
+    .impact-promise strong{font-size:12px}.impact-promise small{font-size:9px;color:var(--muted)}
+    .watch-action{background:var(--ink);color:#fff}
+    .watch-action span:last-child{color:var(--lime)}
+    .text-action{margin:16px auto 0;text-decoration:none;color:var(--muted);font-size:11px}
+    .plain-break{min-height:calc(100dvh - 68px);padding:25px}
+    .breathing-ring{width:174px;height:174px;border:0;background:var(--soft)}
+    .breathing-ring strong{font-size:64px;font-weight:720}
+    .plain-break h2{font-family:inherit;font-size:31px;font-weight:720}
+    .plain-break p{font-size:11px;color:var(--muted)}
+
+    /* Completion */
+    .complete-screen{padding:72px 22px 30px;background:var(--cream)}
+    .confetti span{font-size:16px}
+    .completion-number{margin-top:28px;font-size:126px;font-weight:780;letter-spacing:-9px;color:var(--forest)}
+    .complete-screen>h1{margin:5px 0 9px;font-size:36px;font-weight:740;letter-spacing:-1.8px}
+    .complete-screen>p{font-size:11px;color:var(--muted);margin-bottom:22px}
+    .result-ticket{border:0;box-shadow:none;border-radius:21px;padding:17px;background:var(--paper)}
+    .result-ticket strong{font-size:21px;font-weight:740}
+    .ticket-progress{height:5px;background:var(--soft)}
+    .share-action{margin-top:18px;background:var(--ink)}
+    .share-action span:last-child{color:var(--lime)}
+    .completion-links{margin-top:17px}.completion-links button{text-decoration:none;color:var(--muted)}
+
+    /* Impact and Me */
+    .page{padding:18px 18px 94px}
+    .page-title{margin:10px 0 20px;font-size:37px;line-height:1;letter-spacing:-2.1px;font-weight:730}
+    .mission-visual{min-height:275px;border:0;border-radius:25px;background:var(--forest);color:#fff}
+    .mission-visual:before{width:210px;height:210px;border:34px solid rgba(215,255,105,.12)}
+    .mission-sun{color:var(--lime)}
+    .big-sprout{font-size:53px;color:var(--lime)}
+    .mission-visual strong{font-size:56px;font-weight:740}
+    .mission-visual span{font-size:10px;color:rgba(255,255,255,.62)}
+    .facts{gap:7px;margin:11px 0}
+    .facts div{border:0;border-radius:17px;padding:14px 10px;background:var(--paper)}
+    .facts strong{font-size:22px;font-weight:740}
+    .transparency{border-radius:21px;padding:19px;background:var(--paper);color:var(--ink)}
+    .transparency .eyebrow{color:var(--muted)}
+    .transparency h3{font-size:17px;margin:8px 0 6px}
+    .transparency p{font-size:10px;color:var(--muted)}
+    .transparency button{color:var(--forest)}
+    .streak-card{min-height:154px;border:0;border-radius:23px;background:var(--forest);color:#fff;padding:20px}
+    .streak-card strong{font-size:23px;font-weight:650}.streak-card strong b{font-size:59px;font-weight:760}
+    .streak-card p{color:rgba(255,255,255,.58)}.streak-spark{color:var(--lime);font-size:54px}
+    .week-card{margin-top:10px;border:0;border-radius:20px;padding:17px;background:var(--paper)}
+    .section-heading strong{font-size:15px;font-weight:720}
+    .day span{width:29px;height:29px}.day.done span{background:var(--forest)}
+    .default-card{border-radius:20px;background:var(--soft);color:var(--ink)}
+    .default-card .eyebrow{color:var(--muted)}
+    .default-card strong{color:var(--forest);font-size:22px;font-weight:740}
+    .default-card p{color:var(--muted)}
+    .default-card button{border-color:var(--line);color:var(--ink)}
+
+    @media(max-width:520px){
+      html,body{background:var(--cream)}
+      .app-shell{padding:0}
+      .phone-screen{width:100%;min-height:100dvh;border-radius:0;box-shadow:none}
+      .home-page{padding-top:10px}
+      .guide-stage{max-height:none}
+    }
+    @media(max-height:720px){
+      .home-intro{padding-top:3px;padding-bottom:12px}.home-intro h1{font-size:37px}
+      .today-card{min-height:330px}.today-number{margin-top:22px}.today-number strong{font-size:90px}
+      .guide-stage{height:calc(100dvh - 200px);min-height:390px}.guide-sprite.beat-driven{width:250px;height:250px}
+      .break-offer{padding-top:15px}.break-offer h1{margin-top:16px}
+    }
   </style>
 </head>
 <body>
@@ -187,8 +427,9 @@
       '3 × 10':{sets:3,reps:10,note:'2 breaks · balanced'},
       '6 × 5':{sets:6,reps:5,note:'5 breaks · bite-size'}
     };
+    const SINGLE_PACE='steady';
     const state={
-      view:'onboarding',onboardingStep:0,plan:'3 × 10',pace:'slow',countdown:3,
+      view:'onboarding',onboardingStep:0,plan:'3 × 10',pace:SINGLE_PACE,countdown:3,
       setIndex:0,repInSet:0,totalReps:0,paused:false,soundOn:true,breakStage:'offer',
       breakSeconds:8,adWatched:false,adOffered:false,transitioning:false,shared:false,
       workouts:0,totalSquats:0,totalImpact:0,streak:0,
@@ -197,25 +438,14 @@
     let flowTimer=null,cadenceTimers=[],audioContext=null;
     const DEV_MODE=/[?&]dev=1(&|$)/.test(location.search);
 
-    /* --- Beat-matched cadence -------------------------------------------------
-       Tempos measured from the audio (spectral-flux onsets -> autocorrelation ->
-       comb-filter phase), then the downbeat located from the low band, since the
-       kick is what a squat actually wants to land on:
-         fast : 120.00 BPM -> 0.5000s/beat, 4 beats per squat = 2.000s
-         slow : 131.00 BPM -> 0.4580s/beat, 8 beats per squat = 3.664s
-       `anchor` is the time (in the file) of a true bar downbeat, so every rep
-       begins on a downbeat rather than merely on some beat. Anchoring the slow
-       track to the wrong slot in the bar is what made it feel out of time -- its
-       old anchor sat on the weakest low-band point of the cycle. -------------- */
+    /* One stable cadence. The old Slow/Fast choice added setup friction and made
+       the lower-quality slow asset visible. The 120 BPM grid is now the single,
+       unnamed FitGive rhythm: four beats per squat, two seconds per rep. */
     const TRACKS={
-      fast:[{src:'assets/audio/fitgive-fast-a.mp3',bpm:120.00,anchor:0.1094},
-            {src:'assets/audio/fitgive-fast-b.mp3',bpm:120.00,anchor:0.0312}],
-      slow:[{src:'assets/audio/fitgive-slow.mp3',bpm:131.00,anchor:0.8937}]
+      steady:[{src:'assets/audio/fitgive-fast-a.mp3',bpm:120.00,anchor:0.1094},
+              {src:'assets/audio/fitgive-fast-b.mp3',bpm:120.00,anchor:0.0312}]
     };
-    /* Beats spent descending and rising, per pace. The squat articulates each of
-       these beats rather than gliding through them, so a slow rep reads as
-       "down-2-3-4, up-2-3-4" against the track instead of one long smooth slide. */
-    const PACE_BEATS={fast:{down:2,up:2},slow:{down:4,up:4}};
+    const PACE_BEATS={steady:{down:2,up:2}};
     const COUNTDOWN_MS=700;               // countdown runs before the music starts
     const prefersReducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion:reduce)').matches;
 
@@ -353,14 +583,14 @@
     }
     function safeGet(key){try{return localStorage.getItem(key)}catch(e){return null}}
     function safeSet(key,value){try{localStorage.setItem(key,value)}catch(e){}}
-    function loadProfile(){try{const p=JSON.parse(safeGet('fitgive-html-profile')||'{}');state.workouts=p.workouts||0;state.totalSquats=p.totalSquats||0;state.totalImpact=p.totalImpact||0;state.plan=p.plan||state.plan;state.pace=p.pace||state.pace}catch(e){}try{state.sessionHistory=JSON.parse(safeGet('fitgive-html-sessions')||'[]')}catch(e){state.sessionHistory=[]}state.streak=computeStreak(state.sessionHistory);if(safeGet('fitgive-html-onboarding')==='true')state.view='home'}
-    function persistProfile(){safeSet('fitgive-html-profile',JSON.stringify({workouts:state.workouts,totalSquats:state.totalSquats,totalImpact:state.totalImpact,plan:state.plan,pace:state.pace}))}
+    function loadProfile(){try{const p=JSON.parse(safeGet('fitgive-html-profile')||'{}');state.workouts=p.workouts||0;state.totalSquats=p.totalSquats||0;state.totalImpact=p.totalImpact||0;state.plan=p.plan||state.plan}catch(e){}state.pace=SINGLE_PACE;try{state.sessionHistory=JSON.parse(safeGet('fitgive-html-sessions')||'[]')}catch(e){state.sessionHistory=[]}state.streak=computeStreak(state.sessionHistory);if(safeGet('fitgive-html-onboarding')==='true')state.view='home'}
+    function persistProfile(){safeSet('fitgive-html-profile',JSON.stringify({workouts:state.workouts,totalSquats:state.totalSquats,totalImpact:state.totalImpact,plan:state.plan}))}
     function saveSessionRecord(record){state.sessionHistory.push(record);state.sessionHistory=state.sessionHistory.slice(-200);safeSet('fitgive-html-sessions',JSON.stringify(state.sessionHistory));state.streak=computeStreak(state.sessionHistory)}
     function clearFlow(){if(flowTimer)clearTimeout(flowTimer);flowTimer=null;cadenceTimers.forEach(clearTimeout);cadenceTimers=[]}
     function setView(view){clearFlow();state.view=view;render()}
     function wordmark(){return '<span class="wordmark">fitgive<span class="dot">.</span></span>'}
     function topbar(active){return '<header class="topbar">'+wordmark()+'<button class="avatar '+(active?'active':'')+'" onclick="setView(\'me\')" aria-label="Open profile">B</button></header>'}
-    function bottomNav(active){return '<nav class="bottom-nav" aria-label="Primary navigation"><button class="nav-item '+(active==='home'?'active':'')+'" onclick="setView(\'home\')"><span>'+(active==='home'?'●':'○')+'</span>Today</button><button class="nav-item '+(active==='impact'?'active':'')+'" onclick="setView(\'impact\')"><span>♧</span>Impact</button><button class="nav-item '+(active==='me'?'active':'')+'" onclick="setView(\'me\')"><span>'+(active==='me'?'●':'○')+'</span>Me</button></nav>'}
+    function bottomNav(active){return '<nav class="bottom-nav" aria-label="Primary navigation"><button class="nav-item '+(active==='home'?'active':'')+'" onclick="setView(\'home\')"><span></span>Today</button><button class="nav-item '+(active==='impact'?'active':'')+'" onclick="setView(\'impact\')"><span></span>Impact</button><button class="nav-item '+(active==='me'?'active':'')+'" onclick="setView(\'me\')"><span></span>Me</button></nav>'}
     function showToast(message){const toast=document.getElementById('toast');toast.textContent=message;toast.classList.add('show');setTimeout(function(){toast.classList.remove('show')},1800)}
     let lastRenderedView=null;
     function render(){clearFlow();phone.className='phone-screen';let html='';if(state.view==='onboarding')html=renderOnboarding();if(state.view==='home')html=renderHome();if(state.view==='setup')html=renderSetup();if(state.view==='countdown')html=renderCountdown();if(state.view==='workout')html=renderWorkout();if(state.view==='break')html=renderBreak();if(state.view==='complete')html=renderComplete();if(state.view==='impact')html=renderImpact();if(state.view==='me')html=renderMe();phone.innerHTML=html;
@@ -375,15 +605,15 @@
         <div class="onboarding-page">
           <div class="onboarding-wordmark">fitgive<span class="dot">.</span></div>
           <section class="promise-visual"><span class="tiny-sticker">YOUR FIRST 3 MINUTES</span><div class="onboarding-sprite sprite" role="img" aria-label="Person demonstrating a bodyweight squat"></div><div class="promise-burst">✦</div><div class="promise-count"><strong>30</strong><span>squats</span></div></section>
-          <div class="onboarding-copy"><span class="eyebrow">A TINY WORKOUT WITH A PURPOSE</span><h1>Move a little.<br><em>Give a little.</em></h1><p>Do 30 guided squats. During a break, you can choose to watch one ad that helps fund a real donation.</p></div>
-          <button class="primary-action onboarding-action" onclick="nextOnboarding()"><span>Show me how</span><span>→</span></button>
+          <div class="onboarding-copy"><span class="eyebrow">A TINY WORKOUT WITH A PURPOSE</span><h1>Move a little.<br><em>Give a little.</em></h1><p>Thirty guided squats. One optional ad break. A small move that can help fund something good.</p></div>
+          <button class="primary-action onboarding-action" onclick="nextOnboarding()"><span>See how it works</span><span>→</span></button>
         </div>`;
       if(state.onboardingStep===1)page=`
         <div class="onboarding-page how-page">
           <div class="onboarding-copy"><span class="eyebrow">ONE SIMPLE LOOP</span><h1>You move.<br><em>Your rest helps.</em></h1><p>No camera, no form scoring, no pressure.</p></div>
-          <div class="how-stack"><section class="how-card"><span class="how-number">01</span><div><strong>Move</strong><p>Follow the person and simple down/up cues.</p></div><b>↓↑</b></section><section class="how-card"><span class="how-number">02</span><div><strong>Rest</strong><p>Catch your breath between sets.</p></div><b>Ⅱ</b></section><section class="how-card"><span class="how-number">03</span><div><strong>Grow good</strong><p>Choose one short ad to add Impact Points.</p></div><b>✦</b></section></div>
+          <div class="how-stack"><section class="how-card"><span class="how-number">01</span><div><strong>Follow</strong><p>Move with one clear down-and-up rhythm.</p></div><b>↓↑</b></section><section class="how-card"><span class="how-number">02</span><div><strong>Breathe</strong><p>Take a short reset between sets.</p></div><b>Ⅱ</b></section><section class="how-card"><span class="how-number">03</span><div><strong>Add impact</strong><p>Choose one short ad during a break.</p></div><b>✦</b></section></div>
           <div class="trust-note"><span>✓</span><p><strong>Ads are always optional.</strong><br>FitGive donates 50% of eligible net ad revenue and publishes the receipts.</p></div>
-          <button class="primary-action onboarding-action" onclick="nextOnboarding()"><span>Make it mine</span><span>→</span></button>
+          <button class="primary-action onboarding-action" onclick="nextOnboarding()"><span>Choose my 30</span><span>→</span></button>
         </div>`;
       if(state.onboardingStep===2){
         const plans=Object.keys(planConfig).map(function(p){return '<button class="'+(state.plan===p?'selected':'')+'" onclick="selectPlan(\''+p+'\')"><strong>'+p+'</strong><small>'+(planConfig[p].sets-1)+' '+(planConfig[p].sets===2?'break':'breaks')+'</small><span class="check-dot">'+(state.plan===p?'✓':'')+'</span></button>'}).join('');
@@ -391,9 +621,7 @@
         <div class="onboarding-page personalize-page">
           <div class="onboarding-copy"><span class="eyebrow">YOUR FIRST 30</span><h1>Pick your<br><em>easy start.</em></h1><p>You can change this any time.</p></div>
           <div class="section-label"><strong>Break it up</strong><span>30 total</span></div><div class="plan-cards">${plans}</div>
-          <div class="section-label"><strong>Move at</strong><span>${state.pace==='slow'?'Easy & controlled':'Quick & energetic'}</span></div>
-          <div class="pace-cards"><button class="${state.pace==='slow'?'selected':''}" onclick="selectPace('slow')"><span>〰</span><div><strong>Slow</strong><small>Learn the rhythm</small></div><b>${state.pace==='slow'?'✓':''}</b></button><button class="${state.pace==='fast'?'selected':''}" onclick="selectPace('fast')"><span>↗</span><div><strong>Fast</strong><small>Keep it moving</small></div><b>${state.pace==='fast'?'✓':''}</b></button></div>
-          <div class="first-summary"><span>✦</span><p><strong>${state.plan} · ${state.pace} pace</strong><br>About 3 minutes · no equipment</p></div>
+          <div class="first-summary"><span>✦</span><p><strong>${state.plan} · one steady rhythm</strong><br>About 2 minutes · no equipment</p></div>
           <button class="primary-action onboarding-action" onclick="finishOnboarding(true)"><span>Start my first 30</span><span>→</span></button>
         </div>`;
       }
@@ -403,21 +631,28 @@
     function previousOnboarding(){state.onboardingStep=Math.max(0,state.onboardingStep-1);render();Analytics.track('onboarding_viewed',{step:state.onboardingStep})}
     function finishOnboarding(begin){safeSet('fitgive-html-onboarding','true');Analytics.track('onboarding_completed',{method:begin?'started_workout':'skipped'});if(begin)startWorkout();else setView('home')}
     function selectPlan(plan,source){state.plan=plan;persistProfile();render();Analytics.track('plan_selected',{plan_id:plan,source:source||state.view})}
-    function selectPace(pace,source){state.pace=pace;persistProfile();BeatEngine.load(pace);render();Analytics.track('pace_selected',{pace_id:pace,source:source||state.view})}
-
-    function renderHome(){return topbar(false)+`
-      <div class="hero-copy"><p class="hello">hey, you showed up ✦</p><h1>30 squats.<br><em>some real good.</em></h1></div>
-      <section class="challenge-panel"><div class="challenge-topline"><span class="eyebrow light">TODAY'S TINY CHALLENGE</span><span class="time-pill">~ 3 min</span></div><div class="squat-mark"><span>30</span><small>SQUATS</small></div><p class="challenge-copy">Move your body. Help grow the community fund.</p><button class="primary-action inverse" onclick="setView('setup')"><span>Let's do this</span><span>→</span></button></section>
-      <button class="impact-strip" onclick="setView('impact')"><div class="impact-illustration"><div class="sun">✦</div><div>♧</div></div><div class="impact-content"><span class="eyebrow">GROWING TOGETHER</span><strong>${12480+state.totalSquats} squats</strong><p>toward 20,000 for children's meals</p><div class="progress-track"><span></span></div></div></button>`+bottomNav('home')}
+    function renderHome(){
+      const together=12480+state.totalSquats;
+      const progress=Math.min(100,together/20000*100);
+      return topbar(false)+`<main class="home-page">
+        <header class="home-intro"><span class="eyebrow">TODAY'S MOVE</span><h1>30 squats.<br><span>That's it.</span></h1><p>One clear rhythm. No camera. No pressure.</p></header>
+        <section class="today-card">
+          <div class="today-card-head"><span class="eyebrow">YOUR DAILY 30</span><span class="duration-chip">about 2 min</span></div>
+          <div class="today-number"><strong>30</strong><span>SQUATS</span></div>
+          <div class="today-summary">${state.plan} · guided rhythm · no equipment</div>
+          <button class="primary-action today-start" onclick="setView('setup')"><span>Start today's 30</span><span>→</span></button>
+        </section>
+        <button class="impact-mini" onclick="setView('impact')"><span class="impact-mini-icon">✦</span><div class="impact-mini-copy"><div><strong>Moving together</strong><span>${together.toLocaleString()} / 20,000</span></div><span class="progress-track"><span style="width:${progress.toFixed(1)}%"></span></span></div><span class="impact-mini-arrow">›</span></button>
+      </main>`+bottomNav('home')}
 
     function renderSetup(){
       const choices=Object.keys(planConfig).map(function(p){return '<button class="set-choice '+(state.plan===p?'selected':'')+'" onclick="selectPlan(\''+p+'\')"><span class="set-number">'+p+'</span><span class="set-meta">'+planConfig[p].note+'</span><span class="choice-check">'+(state.plan===p?'✓':'')+'</span></button>'}).join('');
-      return `<header class="topbar"><button class="icon-button" onclick="setView('home')" aria-label="Back">←</button><span class="wordmark small">fitgive</span><span class="step-label">01 / 02</span></header><div class="setup-copy"><span class="eyebrow">TODAY'S 30</span><h1>How do you want<br>to break it up?</h1><p>Same 30 squats. Your rhythm.</p></div><div class="choice-stack">${choices}</div><div class="pace-block"><div><span class="eyebrow">YOUR PACE</span><p>${state.pace==='slow'?'Easy & controlled':'Quick & energetic'}</p></div><div class="segmented"><button class="${state.pace==='slow'?'active':''}" onclick="selectPace('slow')">Slow</button><button class="${state.pace==='fast'?'active':''}" onclick="selectPace('fast')">Fast</button></div></div><button class="primary-action setup-action" onclick="startWorkout()"><span>Start my 30</span><span>→</span></button>`;
+      return `<header class="topbar"><button class="icon-button" onclick="setView('home')" aria-label="Back">←</button><span class="wordmark small">fitgive</span><span class="step-label">30 TOTAL</span></header><div class="setup-copy"><span class="eyebrow">ONE QUICK CHOICE</span><h1>How should we<br>split your 30?</h1><p>The movement and rhythm stay the same.</p></div><div class="choice-stack">${choices}</div><div class="rhythm-note"><div><strong>One guided rhythm</strong><span>Down, then up. Nothing to configure.</span></div><span class="rhythm-pulse"><i></i><i></i><i></i><i></i></span></div><button class="primary-action setup-action" onclick="startWorkout()"><span>Start my 30</span><span>→</span></button>`;
     }
     function startWorkout(){clearFlow();stopBeatLoop();state.setIndex=0;state.repInSet=0;state.totalReps=0;state.paused=false;state.countdown=3;state.adWatched=false;state.adOffered=false;state.transitioning=false;state.shared=false;state.currentSessionId='w_'+Date.now().toString(36)+Math.random().toString(36).slice(2,8);state.currentSessionStartedAt=new Date().toISOString();
       BeatEngine.load(state.pace);BeatEngine.setMuted(!state.soundOn);BeatEngine.unlock();Screen.acquire();
       setView('countdown');Analytics.track('workout_started',{session_id:state.currentSessionId,plan_id:state.plan,pace_id:state.pace})}
-    function renderCountdown(){phone.classList.add('dark-screen');return '<div class="countdown-screen"><span class="eyebrow light">FEET READY · CHEST PROUD</span><div class="countdown-number" id="cdNum">'+(state.countdown===0?'GO':state.countdown)+'</div><p>'+state.plan+' · '+state.pace+' pace</p></div>'}
+    function renderCountdown(){phone.classList.add('dark-screen');return '<div class="countdown-screen"><span class="eyebrow light">FEET READY · CHEST PROUD</span><div class="countdown-number" id="cdNum">'+(state.countdown===0?'GO':state.countdown)+'</div><p>'+state.plan+' · FOLLOW THE GUIDE</p></div>'}
 
     function renderWorkout(){
       phone.classList.add('dark-screen');
@@ -425,7 +660,7 @@
       const cues=state.transitioning
         ?'<span class="cue">SET '+(state.setIndex+1)+' DONE ✓</span>'
         :(state.paused?'<span class="cue">PAUSED</span>'
-        :'<div class="movement-cues beat-driven"><span class="cue-down" id="cueDown">SQUAT DOWN <b>↓</b></span><span class="cue-up" id="cueUp" style="opacity:0">STAND UP <b>↑</b></span><span class="cue-ready" id="cueReady" style="opacity:0">GET READY</span></div>');
+        :'<div class="movement-cues beat-driven"><span class="cue-down" id="cueDown">DOWN <b>↓</b></span><span class="cue-up" id="cueUp" style="opacity:0">UP <b>↑</b></span><span class="cue-ready" id="cueReady" style="opacity:0">GET READY</span></div>');
       /* One progress element instead of three. Previously the screen carried an
          overall bar, a separate set-segment bar, a "SET n OF m" label and a NEXT
          chip -- four ways of saying where you are. A segmented bar where each
@@ -439,8 +674,8 @@
         <header class="topbar workout-topbar"><button class="icon-button light-button" onclick="exitWorkout()" aria-label="Exit workout">×</button><span class="set-label">SET ${state.setIndex+1} OF ${config.sets}</span><button class="sound-button" onclick="toggleSound()" aria-label="${state.soundOn?'Mute music':'Unmute music'}" aria-pressed="${state.soundOn}">${state.soundOn?'♪':'—'}</button></header>
         <div class="setbar">${segs}</div>
         <div class="work-meta"><span><b id="overallDone">${state.totalReps}</b> / 30</span><span id="timeLeft">${mmss(remainingEstimate())} LEFT</span></div>
-        <section class="guide-stage"><div class="guide-sprite beat-driven ${state.paused?'paused':''}" id="guideSprite"><video id="guideVideo" class="guide-video" muted playsinline loop preload="auto" disablepictureinpicture aria-label="Squat demonstration"></video></div>${cues}<div class="rep-count"><strong id="repNow">${state.repInSet}</strong><span>/ ${config.reps}</span></div></section>
-        <div class="workout-controls"><button class="round-control" onclick="togglePause()" aria-label="${state.paused?'Resume workout':'Pause workout'}">${state.paused?'▶':'Ⅱ'}</button><div><strong>${state.paused?'Ready when you are':'Move with the guide'}</strong><small>No camera. No judging. Just move.</small></div></div>
+        <section class="guide-stage"><div class="guide-sprite beat-driven ${state.paused?'paused':''}" id="guideSprite"><video id="guideVideo" class="guide-video" data-guide-src="assets/video/squat-fast-veo.mp4?v=veo1" src="assets/video/squat-fast-veo.mp4?v=veo1" poster="assets/video/squat-poster.jpg" muted playsinline loop preload="auto" disablepictureinpicture aria-label="Squat demonstration"></video></div>${cues}<div class="rep-count"><strong id="repNow">${state.repInSet}</strong><span>/ ${config.reps}</span></div></section>
+        <div class="workout-controls"><button class="round-control" onclick="togglePause()" aria-label="${state.paused?'Resume workout':'Pause workout'}">${state.paused?'▶':'Ⅱ'}</button><div><strong>${state.paused?'Ready when you are':'Follow the guide'}</strong><small>${state.paused?'Tap play to continue':'Down, then up'}</small></div></div>
         ${DEV_MODE?'<button class="prototype-skip" onclick="finishSet()">Prototype: finish this set →</button>':''}`;
     }
 
@@ -583,7 +818,7 @@
       // a short tick on the closing reps of a set: "nearly there", not every rep
       if(config.reps-state.repInSet<3)buzz(10);
     }
-    function playPulse(){if(!state.soundOn)return;try{audioContext=audioContext||new(window.AudioContext||window.webkitAudioContext)();const osc=audioContext.createOscillator(),gain=audioContext.createGain();osc.frequency.value=state.pace==='slow'?430:520;gain.gain.setValueAtTime(.045,audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.06);osc.connect(gain);gain.connect(audioContext.destination);osc.start();osc.stop(audioContext.currentTime+.065)}catch(e){}}
+    function playPulse(){if(!state.soundOn)return;try{audioContext=audioContext||new(window.AudioContext||window.webkitAudioContext)();const osc=audioContext.createOscillator(),gain=audioContext.createGain();osc.frequency.value=520;gain.gain.setValueAtTime(.045,audioContext.currentTime);gain.gain.exponentialRampToValueAtTime(.001,audioContext.currentTime+.06);osc.connect(gain);gain.connect(audioContext.destination);osc.start();osc.stop(audioContext.currentTime+.065)}catch(e){}}
     function togglePause(){
       state.paused=!state.paused;
       if(state.paused){BeatEngine.pause();VideoGuide.pause();Analytics.track('workout_paused',{session_id:state.currentSessionId,completed_reps:state.totalReps})}
@@ -621,14 +856,11 @@
        cycleLength/repSec so exactly one squat completes per rep, and drift is
        nudged back only at rep boundaries, and only when it exceeds a frame or
        two, so there is no visible hitch. */
-    const GUIDE_VIDEO={
-      fast:{src:'assets/video/squat-fast-veo.mp4?v=veo1',duration:1.75},
-      slow:{src:'assets/video/squat-slow-veo.mp4?v=veo1',duration:8.25}
-    };
+    const GUIDE_VIDEO={steady:{src:'assets/video/squat-fast-veo.mp4?v=veo1',duration:1.75}};
     const GUIDE_PHASE={bottom:0.40,standingAgain:0.86};
     const VideoGuide=(function(){
       function el(){return document.getElementById('guideVideo')}
-      function spec(){return GUIDE_VIDEO[state.pace==='slow'?'slow':'fast']}
+      function spec(){return GUIDE_VIDEO.steady}
       function phaseNow(){
         const g=paceGrid();
         if(!Number.isFinite(repBase))return 0;
@@ -650,8 +882,12 @@
           try{v.playbackRate=s.duration/g.repSec}catch(e){}
           const expected=Math.max(0,Math.min(.9999,phase))*s.duration;
           const drift=circularDrift(v.currentTime||0,expected,s.duration);
-          const tolerance=state.pace==='slow'?0.28:0.14;
-          if(force||Math.abs(drift)>tolerance){try{v.currentTime=expected}catch(e){}}
+          const tolerance=0.14;
+          let sought=false;
+          if(force||Math.abs(drift)>tolerance){try{v.currentTime=expected;sought=true}catch(e){}}
+          const reveal=function(){if(v.isConnected)v.classList.add('ready')};
+          if(sought){v.addEventListener('seeked',reveal,{once:true});setTimeout(reveal,180)}
+          else requestAnimationFrame(reveal);
           if(prefersReducedMotion||state.paused||state.transitioning){try{v.pause()}catch(e){};return}
           if(v.paused){const pr=v.play();if(pr&&pr.catch)pr.catch(function(){})}
         };
@@ -755,7 +991,7 @@
     function renderBreak(){
       const config=planConfig[state.plan];
       const header='<header class="topbar"><button class="icon-button" onclick="exitWorkout()">×</button><span class="wordmark small">impact break</span><span class="step-label">'+(state.setIndex+1)+' / '+(config.sets-1)+'</span></header>';
-      if(state.breakStage==='offer')return header+`<div class="break-offer"><span class="break-sticker">ONE PER WORKOUT</span><h1>Rest.<br>Grow some good.</h1><p>Watch one short ad during this break to add <strong>10 Impact Points</strong> to today's community challenge.</p><div class="impact-promise"><span class="mini-seed">✦</span><div><strong>Your workout stays free</strong><small>FitGive donates 50% of eligible net ad revenue.</small></div></div><button class="primary-action watch-action" onclick="watchAd()"><span>Watch & grow good</span><span>+10</span></button><button class="text-action" onclick="plainRest()">Just rest this time</button></div>`;
+      if(state.breakStage==='offer')return header+`<div class="break-offer"><span class="break-sticker">OPTIONAL · ONCE PER WORKOUT</span><h1>Catch your<br>breath.</h1><p>Want this break to add to today's community goal?</p><div class="impact-promise"><span class="mini-seed">✦</span><div><strong>Watch one short ad</strong><small>Add 10 Impact Points. Your workout always continues either way.</small></div></div><button class="primary-action watch-action" onclick="watchAd()"><span>Watch during my break</span><span>+10</span></button><button class="text-action" onclick="plainRest()">No thanks, just rest</button></div>`;
       // the full-screen ad overlay sits on top of this and owns its own clock
       if(state.breakStage==='ad')return header+`<div class="plain-break"><span class="eyebrow">LOADING YOUR REWARD</span><div class="breathing-ring"><strong>✦</strong></div><h2>Rest up.</h2><p>Your workout continues right after.</p></div>`;
       const nextSet=Math.min(state.setIndex+2,config.sets);
@@ -798,10 +1034,10 @@
     function advanceAfterBreak(){state.setIndex++;state.repInSet=0;state.breakStage='offer';BeatEngine.resume();resyncGrid();setView('workout')}
 
     function completeWorkout(){clearFlow();stopBeatLoop();BeatEngine.stop();Screen.release();buzz([40,80,40,80,60]);state.workouts++;state.totalSquats+=30;const impactEarned=state.adWatched?10:0;if(impactEarned)state.totalImpact+=impactEarned;persistProfile();const completedAt=new Date().toISOString();saveSessionRecord({id:state.currentSessionId,startedAt:state.currentSessionStartedAt,completedAt:completedAt,plan:state.plan,pace:state.pace,completedReps:30,impactPointsEarned:impactEarned,adOutcome:state.adWatched?'rewarded':(state.adOffered?'declined':'not_offered')});const durationMs=state.currentSessionStartedAt?(new Date(completedAt)-new Date(state.currentSessionStartedAt)):null;Analytics.track('workout_completed',{session_id:state.currentSessionId,duration_ms:durationMs,impact_points:impactEarned});setView('complete')}
-    function renderComplete(){return `<div class="complete-screen"><div class="confetti"><span>✦</span><span>●</span><span>＋</span><span>✦</span></div><span class="eyebrow">YOU DID SOME REAL GOOD</span><div class="completion-number">30</div><h1>squats, done.</h1><p>Your body moved. Today's community challenge moved too.</p><section class="result-ticket"><div><small>YOUR IMPACT</small><strong>${state.adWatched?'+10':'+0'} pts</strong></div><div><small>TODAY'S STREAK</small><strong>day ${state.streak} ✦</strong></div><div class="ticket-progress"><span></span></div><p>${12480+state.totalSquats} / 20,000 community squats</p></section><button class="primary-action share-action" onclick="shareResult()"><span>${state.shared?'Share text copied!':'Share my 30'}</span><span>↗</span></button><div class="completion-links"><button onclick="startWorkout()">Do 30 again</button><button onclick="setView('impact')">See the impact</button></div></div>`}
+    function renderComplete(){return `<div class="complete-screen"><div class="confetti"><span>✦</span><span>●</span><span>＋</span><span>✦</span></div><span class="eyebrow">TODAY'S 30 · DONE</span><div class="completion-number">30</div><h1>Nice work.</h1><p>You moved. The community goal moved with you.</p><section class="result-ticket"><div><small>IMPACT ADDED</small><strong>${state.adWatched?'+10':'+0'} pts</strong></div><div><small>YOUR STREAK</small><strong>${state.streak} day${state.streak===1?'':'s'}</strong></div><div class="ticket-progress"><span></span></div><p>${12480+state.totalSquats} / 20,000 community squats</p></section><button class="primary-action share-action" onclick="shareResult()"><span>${state.shared?'Share text copied!':'Share my 30'}</span><span>↗</span></button><div class="completion-links"><button onclick="startWorkout()">Do 30 again</button><button onclick="setView('impact')">See the impact</button></div></div>`}
     async function shareResult(){const text='I did 30 squats with FitGive — a tiny workout for some real good. 🌱';try{if(navigator.share)await navigator.share({title:'My FitGive 30',text:text});else if(navigator.clipboard)await navigator.clipboard.writeText(text);else throw new Error();state.shared=true;render();showToast('Share text ready');Analytics.track('result_shared',{session_id:state.currentSessionId,result:'completed'})}catch(e){showToast('Copy: '+text);Analytics.track('result_shared',{session_id:state.currentSessionId,result:'cancelled'})}}
 
-    function renderImpact(){const progress=Math.min(100,Math.round((12480+state.totalSquats)/20000*100));return topbar(false)+`<div class="page"><span class="eyebrow">AUGUST COMMUNITY MISSION</span><h1 class="page-title">20,000 squats<br><em>for children's meals.</em></h1><section class="mission-visual"><div class="mission-sun">✦</div><div class="big-sprout">♧</div><strong>${progress}%</strong><span>${12480+state.totalSquats} squats together</span></section><div class="facts"><div><small>YOUR 30s</small><strong>${state.workouts}</strong></div><div><small>IMPACT PTS</small><strong>${state.totalImpact}</strong></div><div><small>PEOPLE MOVING</small><strong>416</strong></div></div><section class="transparency"><span class="eyebrow">THE HONEST BIT</span><h3>Points show participation—not cash.</h3><p>FitGive pools eligible ad revenue, donates 50% monthly, then publishes the amount, recipient and receipt here.</p><button onclick="openGiving()">See how giving works →</button></section></div>`+bottomNav('impact')}
+    function renderImpact(){const progress=Math.min(100,Math.round((12480+state.totalSquats)/20000*100));return topbar(false)+`<div class="page"><span class="eyebrow">CURRENT COMMUNITY GOAL</span><h1 class="page-title">20,000 squats<br><em>for children's meals.</em></h1><section class="mission-visual"><div class="mission-sun">✦</div><div class="big-sprout">♧</div><strong>${progress}%</strong><span>${(12480+state.totalSquats).toLocaleString()} squats together</span></section><div class="facts"><div><small>YOUR 30s</small><strong>${state.workouts}</strong></div><div><small>IMPACT PTS</small><strong>${state.totalImpact}</strong></div><div><small>MOVING</small><strong>416</strong></div></div><section class="transparency"><span class="eyebrow">HOW IT WORKS</span><h3>Points show participation—not cash.</h3><p>FitGive pools eligible ad revenue, donates 50% monthly, then publishes the amount, recipient and receipt here.</p><button onclick="openGiving()">See the details →</button></section></div>`+bottomNav('impact')}
     function openGiving(){document.getElementById('givingModal').classList.add('open')}function closeGiving(event){if(event&&event.target!==event.currentTarget)return;document.getElementById('givingModal').classList.remove('open')}
 
     function renderMe(){
@@ -810,10 +1046,10 @@
       const trailingDays=Array.from({length:7},function(_,i){const d=new Date();d.setDate(d.getDate()-(6-i));return d});
       const days=trailingDays.map(function(d){const key=localDateStr(d.toISOString());const done=completedDays.has(key);return '<div class="day '+(done?'done':'')+'"><span>'+(done?'✓':'')+'</span><small>'+weekdayLabels[d.getDay()]+'</small></div>'}).join('');
       const activeDaysThisWeek=trailingDays.filter(function(d){return completedDays.has(localDateStr(d.toISOString()))}).length;
-      return topbar(true)+`<div class="page"><span class="eyebrow">YOUR FITGIVE</span><h1 class="page-title">Your little<br><em>good streak.</em></h1><section class="streak-card"><div><span class="eyebrow">CURRENT STREAK</span><strong><b>${state.streak}</b> day${state.streak===1?'':'s'}</strong><p>${state.streak?'Show up tomorrow to keep it growing.':'Your first 30 starts the streak.'}</p></div><span class="streak-spark">✦</span></section><section class="week-card"><div class="section-heading"><strong>This week</strong><span>${activeDaysThisWeek} of 7 days</span></div><div class="week-row">${days}</div></section><div class="facts"><div><small>WORKOUTS</small><strong>${state.workouts}</strong></div><div><small>SQUATS</small><strong>${state.totalSquats}</strong></div><div><small>IMPACT PTS</small><strong>${state.totalImpact}</strong></div></div><section class="default-card"><div><span class="eyebrow light">YOUR DEFAULT</span><strong>${state.plan}</strong><p>${state.pace==='slow'?'Easy & controlled pace':'Quick & energetic pace'}</p></div><button onclick="setView('setup')">Change →</button></section><button class="replay" onclick="replayOnboarding()">Replay the FitGive intro →</button></div>`+bottomNav('me');
+      return topbar(true)+`<div class="page"><span class="eyebrow">YOUR FITGIVE</span><h1 class="page-title">Your little<br><em>good streak.</em></h1><section class="streak-card"><div><span class="eyebrow">CURRENT STREAK</span><strong><b>${state.streak}</b> day${state.streak===1?'':'s'}</strong><p>${state.streak?'Show up tomorrow to keep it growing.':'Your first 30 starts the streak.'}</p></div><span class="streak-spark">✦</span></section><section class="week-card"><div class="section-heading"><strong>This week</strong><span>${activeDaysThisWeek} of 7 days</span></div><div class="week-row">${days}</div></section><div class="facts"><div><small>WORKOUTS</small><strong>${state.workouts}</strong></div><div><small>SQUATS</small><strong>${state.totalSquats}</strong></div><div><small>IMPACT PTS</small><strong>${state.totalImpact}</strong></div></div><section class="default-card"><div><span class="eyebrow light">YOUR DEFAULT</span><strong>${state.plan}</strong><p>One guided rhythm</p></div><button onclick="setView('setup')">Change sets</button></section><button class="replay" onclick="replayOnboarding()">Replay the FitGive intro →</button></div>`+bottomNav('me');
     }
     function replayOnboarding(){state.onboardingStep=0;setView('onboarding')}
-    function resetDemo(){if(!confirm('Reset this app and replay onboarding? This also clears saved workouts and local test data.'))return;try{localStorage.removeItem('fitgive-html-onboarding');localStorage.removeItem('fitgive-html-profile');localStorage.removeItem('fitgive-html-sessions');localStorage.removeItem('fitgive-html-events')}catch(e){}Object.assign(state,{view:'onboarding',onboardingStep:0,plan:'3 × 10',pace:'slow',countdown:3,setIndex:0,repInSet:0,totalReps:0,paused:false,soundOn:true,breakStage:'offer',breakSeconds:8,adWatched:false,adOffered:false,transitioning:false,shared:false,workouts:0,totalSquats:0,totalImpact:0,streak:0,sessionHistory:[],currentSessionId:null,currentSessionStartedAt:null});render()}
+    function resetDemo(){if(!confirm('Reset this app and replay onboarding? This also clears saved workouts and local test data.'))return;try{localStorage.removeItem('fitgive-html-onboarding');localStorage.removeItem('fitgive-html-profile');localStorage.removeItem('fitgive-html-sessions');localStorage.removeItem('fitgive-html-events')}catch(e){}Object.assign(state,{view:'onboarding',onboardingStep:0,plan:'3 × 10',pace:SINGLE_PACE,countdown:3,setIndex:0,repInSet:0,totalReps:0,paused:false,soundOn:true,breakStage:'offer',breakSeconds:8,adWatched:false,adOffered:false,transitioning:false,shared:false,workouts:0,totalSquats:0,totalImpact:0,streak:0,sessionHistory:[],currentSessionId:null,currentSessionStartedAt:null});render()}
     function exportEvents(){const events=Analytics.read();const text=JSON.stringify(events,null,2);if(navigator.clipboard)navigator.clipboard.writeText(text).then(function(){showToast('Copied '+events.length+' events')}).catch(function(){alert(text)});else alert(text)}
     document.addEventListener('visibilitychange',function(){if(document.hidden&&(state.view==='workout'||state.view==='countdown')&&!state.paused){state.paused=true;BeatEngine.pause();if(state.view==='countdown'){state.view='workout';resyncGrid()}render()}});
     (function boot(){
