@@ -18,14 +18,18 @@ function patchReadyNext(){
     var prev=btn.previousElementSibling;
     if(prev&&prev.classList&&prev.classList.contains('next-question-prompt'))prev.remove();
 
+    /* This wrapper only ever holds a real "open the next question" button, so it
+       must carry timing-ready: gates without that class are treated elsewhere as
+       still-resolving placeholders and hidden, which would swallow the CTA. */
     var gate=btn.closest('.next-gate');
     if(!gate){
       gate=document.createElement('section');
-      gate.className='next-gate v51-ready-gate';
+      gate.className='next-gate timing-ready v51-ready-gate';
       btn.insertAdjacentElement('beforebegin',gate);
       gate.appendChild(btn);
     }else{
       gate.classList.add('v51-ready-gate');
+      gate.classList.add('timing-ready');
     }
 
     var summary=sec.querySelector(':scope > .post-reveal-summary');

@@ -16,7 +16,13 @@ function saveSession(x){session=x;if(!x){registry.active=null;writeRegistry();lo
 function clearActive(){state=null;saveSession(null)}
 function activate(room){for(var i=0;i<registry.spaces.length;i++)if(registry.spaces[i].room===room){state=null;return saveSession(registry.spaces[i])}return null}
 function findByInvite(tok){if(!tok)return null;for(var i=0;i<registry.spaces.length;i++){var s=registry.spaces[i];if(s.invite===tok||s.joinedInvite===tok)return s}return null}
-function rpc(fn,payload){return fetch(SUPA+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null}catch(e){}if(!r.ok)throw Error(j&&j.message?j.message:'Something went wrong.');return j})})}
+/* Carry the transport outcome on the error. Callers need to tell a request the
+   server refused (a 4xx, which will keep failing for this token) apart from a
+   connection that simply did not get through. */
+function rpc(fn,payload){return fetch(SUPA+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:KEY,'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null}catch(e){}if(!r.ok){var err=Error(j&&j.message?j.message:'Something went wrong.');err.status=r.status;err.code=j&&j.code||'';throw err}return j})})}
+/* Drop a space this device can no longer open, so a dead entry stops sitting
+   in the list waiting to fail again. */
+function forgetRoom(room){if(!room)return false;var found=false,kept=[];for(var i=0;i<registry.spaces.length;i++){if(registry.spaces[i].room===room){found=true;continue}kept.push(registry.spaces[i])}if(!found)return false;registry.spaces=kept;if(registry.active===room){registry.active=null;session=null;state=null;try{localStorage.removeItem(LEGACY)}catch(e){}}writeRegistry();return true}
 function isPremium(){return localStorage.getItem(PREMIUM)==='1'}
 function setPremium(v){if(v)localStorage.setItem(PREMIUM,'1');else localStorage.removeItem(PREMIUM)}
 function refreshSignature(x){if(!x)return'';return JSON.stringify([x.round_id,x.round_sequence,x.unlocked,x.history&&x.history.length,x.participant_count,x.max_participants,x.participants&&x.participants.map(function(p){return p.answered}),x.reflection&&x.reflection.unlocked,x.is_premium,x.can_start_next,x.next_round_at,x.round_completed_at,x.is_paused,x.challenge_complete,x.free_period_ended])}
@@ -38,5 +44,5 @@ function clearQuery(){window.history.replaceState({},'',base())}
 function dateObj(v){var d=v?new Date(v):null;return d&&!isNaN(d.getTime())?d:null}
 function dateLabel(v){var d=dateObj(v);return d?(d.getMonth()+1)+'.'+d.getDate():''}
 function dayKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
-window.DT={esc:esc,nl:nl,initial:initial,base:base,spaces:function(){return registry.spaces.slice()},session:function(){return session},state:function(){return state},setState:function(x){state=x},saveSession:saveSession,clearActive:clearActive,activate:activate,findByInvite:findByInvite,refresh:refresh,createRoom:createRoom,joinRoom:joinRoom,answer:answer,next:next,customQuestion:customQuestion,enablePremium:enablePremium,isPremium:isPremium,setPremium:setPremium,submitReflection:submitReflection,log:log,markInviteSent:markInviteSent,inviteWasSent:inviteWasSent,reveal:reveal,revealed:revealed,inviteUrl:inviteUrl,clearQuery:clearQuery,dateObj:dateObj,dateLabel:dateLabel,dayKey:dayKey};
+window.DT={esc:esc,nl:nl,initial:initial,base:base,spaces:function(){return registry.spaces.slice()},session:function(){return session},state:function(){return state},setState:function(x){state=x},saveSession:saveSession,clearActive:clearActive,forgetRoom:forgetRoom,activate:activate,findByInvite:findByInvite,refresh:refresh,createRoom:createRoom,joinRoom:joinRoom,answer:answer,next:next,customQuestion:customQuestion,enablePremium:enablePremium,isPremium:isPremium,setPremium:setPremium,submitReflection:submitReflection,log:log,markInviteSent:markInviteSent,inviteWasSent:inviteWasSent,reveal:reveal,revealed:revealed,inviteUrl:inviteUrl,clearQuery:clearQuery,dateObj:dateObj,dateLabel:dateLabel,dayKey:dayKey};
 })();

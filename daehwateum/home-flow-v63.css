@@ -37,9 +37,12 @@
   color:#34473f!important;
 }
 
-/* Never reserve empty vertical space while timing is still resolving. */
-.visual-room-v43 .post-reveal-home .post-reveal-current>.next-gate:not(.timing-ready),
-.visual-room-v43 .post-reveal-home .post-reveal-current>.premium-continuation-gate:not(.timing-ready){
+/* Never reserve empty vertical space while timing is still resolving.
+   A gate that already holds the next-question button is not a placeholder, so
+   .v51-ready-gate is excluded here: hiding it is what left "다음 대화가
+   준비됐어요" on screen with no way to open the question. */
+.visual-room-v43 .post-reveal-home .post-reveal-current>.next-gate:not(.timing-ready):not(.v51-ready-gate),
+.visual-room-v43 .post-reveal-home .post-reveal-current>.premium-continuation-gate:not(.timing-ready):not(.v51-ready-gate){
   display:none!important;
   min-height:0!important;
   height:0!important;

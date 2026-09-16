@@ -11,11 +11,18 @@ function isReady(d){
   if(!d.next_round_at)return false;
   var due=new Date(d.next_round_at);return !isNaN(due.getTime())&&Date.now()>=due.getTime();
 }
+/* This line is the only thing under the completed card, so it has to say what is
+   actually happening. Falling through to a countdown while the room is paused
+   read as "preparing", and saying nothing at all when the server has not set a
+   next time yet left the card with no status. */
 function countdownLabel(d){
   if(!d)return'';
   if(isReady(d))return isKo()?'다음 대화가 준비됐어요':'Next conversation is ready';
-  if(!d.next_round_at)return'';
-  var due=new Date(d.next_round_at);if(isNaN(due.getTime()))return'';
+  if(d.is_paused)return isKo()?'무료 7일이 끝나 잠시 쉬고 있어요':'Paused after the free 7 days';
+  if(Number(d.participant_count||0)<Number(d.max_participants||2))
+    return isKo()?'상대방이 들어오면 다음 대화가 열려요':'The next conversation opens once everyone has joined';
+  var due=d.next_round_at?new Date(d.next_round_at):null;
+  if(!due||isNaN(due.getTime()))return isKo()?'다음 대화 시간을 확인하고 있어요':'Checking the next conversation time';
   var left=due.getTime()-Date.now();
   if(left<=0)return isKo()?'다음 대화를 준비하고 있어요':'Preparing the next conversation';
   var total=Math.max(1,Math.ceil(left/60000)),h=Math.floor(total/60),m=total%60;
