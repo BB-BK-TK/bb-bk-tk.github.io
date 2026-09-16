@@ -12,6 +12,7 @@
 <meta property="og:description" content="하루에 질문 하나. 서로 답한 뒤, 함께 열어봐요.">
 <link rel="stylesheet" href="./invite-v53.css?v=20260915-1455">
 <script src="../supabase-auth-v2.js?v=20260831-1548"></script>
+<script defer src="../acquisition-analytics.js?v=20260916-1"></script>
 </head>
 <body>
 <div class="shell">
@@ -30,7 +31,7 @@
       <p class="fine">계정 없이 바로 시작할 수 있어요.</p>
     </section>
     <section id="closed" class="status hidden"><h1 id="closedTitle">이 초대는 더 이상 열 수 없어요.</h1><p id="closedBody">링크가 만료되었거나 유효하지 않아요.</p></section>
-    <button class="install-btn hidden" id="appInstall" type="button">앱으로 사용하기</button>
+    <button class="install-btn hidden" id="appInstall" type="button" data-acquisition-download="android-apk">앱으로 사용하기</button>
   </main>
 </div>
 <div id="installHelp" class="install-sheet hidden" role="dialog" aria-modal="true" aria-labelledby="installTitle">
