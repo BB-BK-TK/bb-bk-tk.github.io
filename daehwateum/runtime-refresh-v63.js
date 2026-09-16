@@ -1,6 +1,14 @@
 (function(){'use strict';
 var CURRENT=(document.querySelector('meta[name="dt-build"]')||{}).content||'';
 var checking=false,lastCheck=0;
+function loadAccountLifecycle(){
+  if(!document.querySelector('link[data-dt-account-lifecycle]')){
+    var l=document.createElement('link');l.rel='stylesheet';l.href='./account-lifecycle-v67.css?v=20260916-1125';l.setAttribute('data-dt-account-lifecycle','1');document.head.appendChild(l);
+  }
+  if(!document.querySelector('script[data-dt-account-lifecycle]')){
+    var s=document.createElement('script');s.src='./account-lifecycle-v67.js?v=20260916-1125';s.defer=true;s.setAttribute('data-dt-account-lifecycle','1');document.head.appendChild(s);
+  }
+}
 function check(){
   var now=Date.now();
   if(checking||now-lastCheck<15000)return;
@@ -16,6 +24,7 @@ function check(){
     .catch(function(){})
     .then(function(){checking=false});
 }
+loadAccountLifecycle();
 document.addEventListener('visibilitychange',function(){if(!document.hidden)check()});
 window.addEventListener('focus',check);
 setTimeout(check,3000);

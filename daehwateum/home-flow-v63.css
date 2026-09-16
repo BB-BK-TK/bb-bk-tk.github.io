@@ -10,9 +10,24 @@
   align-items:center!important;
   box-shadow:0 10px 28px rgba(52,43,34,.045)!important;
 }
+.visual-room-v43 .post-reveal-home .post-reveal-summary>div{
+  min-width:0!important;
+  flex:1 1 auto!important;
+  display:grid!important;
+  gap:2px!important;
+}
 .visual-room-v43 .post-reveal-home .post-reveal-summary b{
   font-size:20px!important;
   line-height:1.3!important;
+}
+.visual-room-v43 .post-reveal-home .post-reveal-summary .home-next-countdown-v67{
+  display:block!important;
+  margin-top:4px!important;
+  color:#63776c!important;
+  font-size:12.5px!important;
+  font-weight:750!important;
+  line-height:1.35!important;
+  letter-spacing:-.02em!important;
 }
 .visual-room-v43 .post-reveal-home .post-reveal-summary::after{
   flex:0 0 30px!important;
@@ -25,6 +40,14 @@
 /* Never reserve empty vertical space while timing is still resolving. */
 .visual-room-v43 .post-reveal-home .post-reveal-current>.next-gate:not(.timing-ready),
 .visual-room-v43 .post-reveal-home .post-reveal-current>.premium-continuation-gate:not(.timing-ready){
+  display:none!important;
+  min-height:0!important;
+  height:0!important;
+  margin:0!important;
+  padding:0!important;
+  border:0!important;
+}
+.visual-room-v43 .post-reveal-home .post-reveal-current>.next-gate.home-countdown-absorbed-v67{
   display:none!important;
   min-height:0!important;
   height:0!important;

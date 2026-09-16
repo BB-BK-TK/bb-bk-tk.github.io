@@ -1,0 +1,25 @@
+.account-lifecycle-overlay{z-index:10020!important}
+.account-lifecycle-card{margin-bottom:14px}
+.account-lifecycle-card .k{display:block;margin-bottom:8px}
+.account-lifecycle-card h1{font-family:Georgia,"Noto Serif KR",serif;font-weight:500;letter-spacing:-.04em}
+.account-lifecycle-status{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 0 2px;font-size:13px;color:var(--m,#7b746c)}
+.account-lifecycle-status b{color:var(--i,#292521)}
+.account-provider-list{display:grid;gap:10px;margin-top:14px}
+.account-provider-btn{width:100%;min-height:52px;border:1px solid var(--l,#e5ddd3);border-radius:15px;background:#fff;color:var(--i,#292521);font:inherit;font-weight:850}
+.account-lifecycle-note{font-size:12px;line-height:1.65;color:var(--m,#7b746c);margin:10px 0 0}
+.account-danger-card{margin-top:14px;border:1px solid #e6d5d0;border-radius:22px;padding:20px 18px;background:#fffafa}
+.account-danger-card h2{font-size:17px;margin:0 0 8px}
+.account-danger-card p{font-size:13px;line-height:1.65;color:var(--m,#7b746c);margin:0 0 16px}
+.account-danger-btn{width:100%;min-height:50px;border:1px solid #c8a7a0;border-radius:14px;background:transparent;color:#874d43;font:inherit;font-weight:850}
+.account-danger-btn.final{background:#874d43;color:#fff;border-color:#874d43}
+.account-cancel-btn{width:100%;min-height:48px;border:0;background:transparent;color:var(--m,#7b746c);font:inherit;font-weight:800;margin-top:6px}
+.account-confirm-copy{padding:16px;border-radius:16px;background:#f2ebe5;color:var(--i,#292521);font-size:13px;line-height:1.75;margin:14px 0}
+.account-feedback{min-height:20px;margin-top:10px;font-size:12px;line-height:1.5;color:var(--g,#405b52);font-weight:800}
+.account-recover-entry{margin-top:12px!important}
+.account-recover-entry button{border:0;background:transparent;color:var(--m,#7b746c);font:inherit;font-size:12px;font-weight:800;text-decoration:underline;text-underline-offset:3px}
+.dt-room-closed .q,.dt-room-closed .card.stage,.dt-room-closed .premium-tools{display:none!important}
+.room-closed-banner{margin:16px auto 18px;padding:18px;border:1px solid var(--l,#e5ddd3);border-radius:20px;background:var(--p,#fffdfa)}
+.room-closed-banner .k{display:block;margin-bottom:6px}
+.room-closed-banner h2{margin:0 0 8px;font-size:20px}
+.room-closed-banner p{margin:0;color:var(--m,#7b746c);font-size:13px;line-height:1.65}
+@media(max-width:600px){.account-danger-card{border-radius:18px}.room-closed-banner{margin-left:0;margin-right:0}}
