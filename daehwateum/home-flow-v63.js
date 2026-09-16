@@ -5,9 +5,12 @@ function isKo(){return (document.documentElement.lang||navigator.language||'ko')
 function state(){return window.DT&&typeof DT.state==='function'?DT.state():null}
 function doneLabel(d){var n=Math.max(1,parseInt(d&&d.round_sequence||1,10)||1);if(isKo())return n===1?'첫 대화를 마쳤어요':n+'번째 대화를 마쳤어요';return n===1?'First conversation complete':'Conversation '+n+' complete'}
 function countdownLabel(d){
-  if(!d||d.can_start_next||!d.next_round_at)return'';
+  if(!d)return'';
+  if(d.can_start_next)return isKo()?'다음 대화가 준비됐어요':'Next conversation is ready';
+  if(!d.next_round_at)return'';
   var due=new Date(d.next_round_at);if(isNaN(due.getTime()))return'';
-  var left=due.getTime()-Date.now();if(left<=0)return'';
+  var left=due.getTime()-Date.now();
+  if(left<=0)return isKo()?'다음 대화를 준비하고 있어요':'Preparing the next conversation';
   var total=Math.max(1,Math.ceil(left/60000)),h=Math.floor(total/60),m=total%60;
   var remain=isKo()?(h>0?h+'시간 '+m+'분':m+'분'):(h>0?h+'h '+m+'m':m+'m');
   return isKo()?'다음 대화까지 '+remain:'Next conversation in '+remain;
