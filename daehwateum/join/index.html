@@ -19,144 +19,46 @@
   <main class="card">
     <div class="brand"><span class="mark">••</span><span class="brand-name">대화틈</span></div>
     <section id="loading" class="status"><h1>초대장을 확인하고 있어요.</h1><p>잠시만 기다려 주세요.</p></section>
+
     <section id="invite" class="hidden">
       <div class="hero">
-        <span class="eyebrow" id="eyebrow">INVITATION</span>
+        <span class="eyebrow">INVITATION</span>
         <h1 id="title">대화틈에 초대받았어요.</h1>
         <div class="conversation" aria-hidden="true"><div class="bubble a"><span class="dots"><i></i><i></i><i></i></span></div><div class="bubble b"><span class="dots"><i></i><i></i><i></i></span></div></div>
         <p id="body">하루에 질문 하나.<br>서로 답한 뒤, 함께 열어봐요.</p>
       </div>
       <div class="steps" aria-label="대화 방식"><div class="step">질문 하나씩</div><div class="step">각자 답하기</div><div class="step">함께 열어보기</div></div>
-      <button class="btn" id="open" type="button" disabled>대화 시작하기</button>
+      <button class="btn" id="open" type="button" disabled>초대받기</button>
       <p class="fine">계정 없이 바로 시작할 수 있어요.</p>
     </section>
+
+    <section id="continue" class="status hidden">
+      <span class="eyebrow">INVITE SAVED</span>
+      <h1 id="continueTitle">초대를 저장했어요.</h1>
+      <p id="continueBody">대화틈에서 계속할까요?<br><span>홈 화면에 추가하면 더 편하게 사용할 수 있어요.</span></p>
+      <button class="btn" id="continueOpen" type="button">대화틈에서 계속하기</button>
+      <button class="install-btn hidden" id="appInstall" type="button" data-acquisition-download="android-apk">앱으로 사용하기</button>
+      <button class="install-btn hidden" id="continueWeb" type="button">웹에서 계속하기</button>
+      <p class="fine">설치하거나 브라우저가 바뀌어도 이 초대는 유지돼요.</p>
+    </section>
+
     <section id="closed" class="status hidden"><h1 id="closedTitle">이 초대는 더 이상 열 수 없어요.</h1><p id="closedBody">링크가 만료되었거나 유효하지 않아요.</p></section>
-    <button class="install-btn hidden" id="appInstall" type="button" data-acquisition-download="android-apk">앱으로 사용하기</button>
   </main>
 </div>
+
 <div id="installHelp" class="install-sheet hidden" role="dialog" aria-modal="true" aria-labelledby="installTitle">
   <section class="install-panel">
     <button type="button" class="install-close" id="installClose" aria-label="닫기">×</button>
     <span class="k" id="installKind">IPHONE</span>
-    <h2 id="installTitle">대화틈을 앱처럼 사용하기</h2>
-    <p id="installLead">iPhone에서는 별도 앱 다운로드 대신 홈 화면에 추가해 앱처럼 사용할 수 있어요.</p>
+    <h2 id="installTitle">대화틈을 홈 화면에 추가하기</h2>
+    <p id="installLead">초대는 이미 저장됐어요. 홈 화면에 추가해도 같은 초대로 이어갈 수 있어요.</p>
     <ol class="install-steps">
-      <li><b>1</b><span id="installStep1">Safari에서 이 초대장을 열어주세요.</span></li>
-      <li><b>2</b><span id="installStep2">대화 시작하기로 들어간 뒤 Safari의 공유 버튼을 누르세요.</span></li>
-      <li><b>3</b><span id="installStep3">‘홈 화면에 추가’를 선택하세요.</span></li>
+      <li><b>1</b><span id="installStep1">Safari에서 이 저장된 초대 화면을 열어주세요.</span></li>
+      <li><b>2</b><span id="installStep2">‘대화틈에서 계속하기’를 눌러 대화 화면으로 이동하세요.</span></li>
+      <li><b>3</b><span id="installStep3">Safari 공유 버튼 → ‘홈 화면에 추가’를 선택하세요.</span></li>
     </ol>
   </section>
 </div>
-<script>
-(function(){
-  var p=new URLSearchParams(location.search);
-  var token=p.get('invite')||'';
-  if(!token&&location.hash){try{var hp=new URLSearchParams(location.hash.replace(/^#\??/,''));token=hp.get('invite')||''}catch(e){}}
-  var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0;
-  var ua=navigator.userAgent||'';
-  var android=/Android/i.test(ua);
-  var ios=/iPad|iPhone|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
-  var mobile=android||ios||/Mobile/i.test(ua)||navigator.maxTouchPoints>1;
-  var kakao=/KAKAOTALK/i.test(ua);
-  var standalone=navigator.standalone===true||(window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);
-  var androidPendingKey='dt.android.pendingInvite.v1';
-  var loading=document.getElementById('loading'),invite=document.getElementById('invite'),closed=document.getElementById('closed'),title=document.getElementById('title'),body=document.getElementById('body'),open=document.getElementById('open'),closedTitle=document.getElementById('closedTitle'),closedBody=document.getElementById('closedBody');
-  var appInstall=document.getElementById('appInstall'),installHelp=document.getElementById('installHelp'),installClose=document.getElementById('installClose'),installKind=document.getElementById('installKind'),installTitle=document.getElementById('installTitle'),installLead=document.getElementById('installLead'),installStep1=document.getElementById('installStep1'),installStep2=document.getElementById('installStep2'),installStep3=document.getElementById('installStep3');
-  if(!ko){document.documentElement.lang='en';document.querySelector('.brand-name').textContent='Daehwateum';document.querySelector('.steps').innerHTML='<div class="step">One question</div><div class="step">Answer separately</div><div class="step">Open together</div>';document.querySelector('.fine').textContent='No account required.';installClose.setAttribute('aria-label','Close')}
-  function showClosed(h,b){loading.classList.add('hidden');invite.classList.add('hidden');closed.classList.remove('hidden');closedTitle.textContent=h;closedBody.textContent=b}
-  function webUrl(){return '../?invite='+encodeURIComponent(token)+'&web=1'}
-  function openDaehwateum(){location.href=webUrl()}
-  function hideInstallHelp(){installHelp.classList.add('hidden')}
-  function androidDeepLink(tok){return 'daehwateum://join?invite='+encodeURIComponent(tok||'')}
-  function copyAndroidHandoff(){
-    if(!token)return;
-    var payload='DAEHWATEUM_INVITE:'+token;
-    try{
-      var el=document.createElement('textarea');
-      el.value=payload;
-      el.setAttribute('readonly','');
-      el.style.position='fixed';el.style.opacity='0';el.style.pointerEvents='none';
-      document.body.appendChild(el);el.select();document.execCommand('copy');document.body.removeChild(el);
-    }catch(e){}
-    try{if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(payload).catch(function(){})}catch(e){}
-  }
-  function beginAndroidInstall(){
-    copyAndroidHandoff();
-    try{sessionStorage.setItem(androidPendingKey,token)}catch(e){}
-    appInstall.textContent=ko?'다운로드 중 · 설치 후 초대가 이어져요':'Downloading · your invite will continue after install';
-    location.href='../downloads/daehwateum-beta.apk';
-  }
-  function resumeAndroidInstall(){
-    if(!android||document.hidden||!token)return;
-    var pending='';
-    try{pending=sessionStorage.getItem(androidPendingKey)||''}catch(e){}
-    if(pending!==token)return;
-    try{sessionStorage.removeItem(androidPendingKey)}catch(e){}
-    setTimeout(function(){location.href=androidDeepLink(token)},250);
-  }
-  document.addEventListener('visibilitychange',function(){if(!document.hidden)resumeAndroidInstall()});
-  window.addEventListener('focus',resumeAndroidInstall);
-  function joinedSessionForInvite(tok){
-    if(!tok)return null;
-    try{
-      var r=JSON.parse(localStorage.getItem('dt.spaces.v1')||'{}');
-      var spaces=r&&Array.isArray(r.spaces)?r.spaces:[];
-      for(var i=0;i<spaces.length;i++){
-        var s=spaces[i];
-        if(s&&s.room&&s.token&&(s.joinedInvite===tok||s.invite===tok))return s;
-      }
-      var old=JSON.parse(localStorage.getItem('dt.active.v3')||'null');
-      if(old&&old.room&&old.token&&(old.joinedInvite===tok||old.invite===tok))return old;
-    }catch(e){}
-    return null;
-  }
-  function resumeExistingInvite(){
-    var s=joinedSessionForInvite(token);
-    if(!s)return false;
-    try{
-      var r=JSON.parse(localStorage.getItem('dt.spaces.v1')||'{}');
-      if(r&&Array.isArray(r.spaces)){r.active=s.room;localStorage.setItem('dt.spaces.v1',JSON.stringify(r))}
-      localStorage.setItem('dt.active.v3',JSON.stringify(s));
-    }catch(e){}
-    location.replace('../');
-    return true;
-  }
-  function configureInstall(){
-    if(!mobile||standalone)return;
-    appInstall.classList.remove('hidden');
-    if(android){
-      appInstall.textContent=ko?'대화틈 앱 다운로드':'Download Daehwateum app';
-      appInstall.onclick=beginAndroidInstall;
-      return;
-    }
-    appInstall.textContent=ko?'iPhone에 앱으로 추가하기':'Add Daehwateum to iPhone';
-    installKind.textContent='IPHONE';
-    installTitle.textContent=ko?'대화틈을 앱처럼 사용하기':'Use Daehwateum like an app';
-    installLead.textContent=ko?'iPhone에서는 별도 앱 다운로드 대신 홈 화면에 추가해 앱처럼 사용할 수 있어요.':'On iPhone, add Daehwateum to your Home Screen instead of downloading a separate app.';
-    installStep3.textContent=ko?'‘홈 화면에 추가’를 선택하세요.':'Choose “Add to Home Screen”.';
-    if(kakao){
-      installStep1.textContent=ko?'카카오톡의 ··· 메뉴에서 ‘다른 브라우저로 열기’를 선택해 Safari로 여세요.':'In KakaoTalk, open the ··· menu and choose “Open in another browser” to continue in Safari.';
-      installStep2.textContent=ko?'Safari에서 대화 시작하기로 들어간 뒤 공유 버튼을 누르세요.':'In Safari, start the conversation, then tap the Share button.';
-    }else{
-      installStep1.textContent=ko?'Safari에서 이 초대장을 열어주세요.':'Open this invitation in Safari.';
-      installStep2.textContent=ko?'대화 시작하기로 들어간 뒤 Safari의 공유 버튼을 누르세요.':'Start the conversation, then tap Safari’s Share button.';
-    }
-    appInstall.onclick=function(){installHelp.classList.remove('hidden')};
-  }
-  installClose.onclick=hideInstallHelp;
-  installHelp.addEventListener('click',function(e){if(e.target===installHelp)hideInstallHelp()});
-  if(!token){showClosed(ko?'초대 정보가 없어요.':'Invite not found.',ko?'전달받은 링크를 다시 확인해 주세요.':'Please check the invitation link.');return}
-  if(resumeExistingInvite())return;
-  fetch('https://kacvynoegfpvgdpqtjdi.supabase.co/rest/v1/rpc/dt_get_invite_status',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({p_invite_token:token})}).then(function(r){return r.json().then(function(j){if(!r.ok)throw Error((j&&j.message)||'Invite check failed');return j})}).then(function(s){
-    if(!s||!s.valid){showClosed(ko?'이 초대는 더 이상 열 수 없어요.':'This invite is no longer available.',ko?'링크가 만료되었거나 유효하지 않아요.':'The link has expired or is invalid.');return}
-    configureInstall();
-    if(s.full){showClosed(ko?'이 대화틈은 참여가 완료됐어요.':'This conversation space is full.',ko?'이미 참여한 적이 있다면 처음 참여했던 브라우저나 앱에서 대화틈을 열어주세요.':'If you already joined, open Daehwateum from the browser or app you first used.');return}
-    loading.classList.add('hidden');closed.classList.add('hidden');invite.classList.remove('hidden');
-    var inviter=s.inviter_name?String(s.inviter_name).trim():'';
-    if(ko){title.textContent=inviter?inviter+'님이 대화틈에 초대했어요.':'대화틈에 초대받았어요.';body.innerHTML='하루에 질문 하나.<br>서로 답한 뒤, 함께 열어봐요.';open.textContent=inviter?inviter+'님과 대화 시작하기':'대화 시작하기'}else{title.textContent=inviter?inviter+' invited you to Daehwateum.':'You were invited to Daehwateum.';body.innerHTML='One question at a time.<br>Answer separately, then open together.';open.textContent=inviter?'Start with '+inviter:'Start the conversation'}
-    open.disabled=false;open.onclick=openDaehwateum;
-  }).catch(function(){showClosed(ko?'초대장을 확인하지 못했어요.':'Could not check this invite.',ko?'잠시 후 다시 링크를 열어 주세요.':'Please open the link again in a moment.')});
-})();
-</script>
+<script src="./invite-v66.js?v=20260916-1025"></script>
 </body>
 </html>
