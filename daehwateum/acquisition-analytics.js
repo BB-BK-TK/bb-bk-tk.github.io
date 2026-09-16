@@ -112,7 +112,20 @@
     },true);
   }
 
-  function start(){trackLanding();trackFirstOpen();bindDownload()}
+  function loadInstallRecommendation(){
+    var p=platform();
+    if(p==='android_app'||p==='android_pwa'||p==='ios_pwa')return;
+    var about=location.pathname.indexOf('/about/')>=0;
+    var base=about?'../':'./';
+    if(!document.querySelector('link[data-dt-install-css]')){
+      var css=document.createElement('link');css.rel='stylesheet';css.href=base+'pwa-install-v71.css?v=20260916-1';css.setAttribute('data-dt-install-css','1');document.head.appendChild(css);
+    }
+    if(!document.querySelector('script[data-dt-install-js]')){
+      var js=document.createElement('script');js.src=base+'pwa-install-v71.js?v=20260916-1';js.defer=true;js.setAttribute('data-dt-install-js','1');document.head.appendChild(js);
+    }
+  }
+
+  function start(){trackLanding();trackFirstOpen();bindDownload();loadInstallRecommendation()}
   window.DaehwateumAcquisition={track:track};
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',start,{once:true});
   else start();
