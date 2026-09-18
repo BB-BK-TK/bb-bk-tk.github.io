@@ -27,8 +27,8 @@ var eyebrowKo={
   'OUR ANSWERS':'우리의 답',
   'RECOVERY':'대화 복구',
   'INVITATION':'초대',
-  '7 DAYS · REFLECTION':'7일 · 회고',
-  '7 DAYS · A SMALL SPACE BETWEEN US':'7일 · 우리 사이의 작은 틈',
+  'REFLECTION':'회고',
+  'A SMALL SPACE BETWEEN US':'우리 사이의 작은 틈',
   'PREMIUM · PRIVATE QUEUE':'PREMIUM · 비공개 질문'
 };
 var actionKo={
