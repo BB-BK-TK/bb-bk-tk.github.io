@@ -338,6 +338,31 @@
     .transparency h3{font-size:17px;margin:8px 0 6px}
     .transparency p{font-size:10px;color:var(--muted)}
     .transparency button{color:var(--forest)}
+
+    /* Impact: real contribution ledger, not gamified points */
+    .impact-page .page-title{margin-bottom:18px}
+    .impact-ledger{border-radius:25px;background:var(--forest);color:#fff;padding:20px;min-height:286px;display:flex;flex-direction:column}
+    .impact-ledger-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .impact-ledger-head .eyebrow{color:rgba(255,255,255,.62)}
+    .impact-beta{font-size:8px;font-weight:800;letter-spacing:.9px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.10);color:rgba(255,255,255,.72)}
+    .impact-ledger-number{margin-top:34px}
+    .impact-ledger-number strong{display:block;font-size:82px;line-height:.82;letter-spacing:-6px;font-weight:770;color:#fff}
+    .impact-ledger-number span{display:block;margin-top:12px;font-size:11px;font-weight:700;letter-spacing:1.4px;color:rgba(255,255,255,.62);text-transform:uppercase}
+    .impact-ledger-row{margin-top:auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.13);display:grid;grid-template-columns:1fr 1fr;gap:16px}
+    .impact-ledger-row div{display:flex;flex-direction:column;gap:5px}
+    .impact-ledger-row small{font-size:8px;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,.48)}
+    .impact-ledger-row b{font-size:22px;font-weight:720;color:#fff}
+    .giving-card{margin-top:10px;border-radius:21px;background:var(--paper);padding:18px}
+    .giving-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .giving-card .eyebrow{color:var(--muted)}
+    .giving-status{font-size:8px;font-weight:800;letter-spacing:.7px;padding:6px 8px;border-radius:999px;background:var(--soft);color:var(--muted)}
+    .giving-amount{display:block;margin-top:15px;font-size:34px;line-height:1;font-weight:760;letter-spacing:-1.4px;color:var(--ink)}
+    .giving-card p{margin:9px 0 0;font-size:10px;line-height:1.5;color:var(--muted)}
+    .cause-card{margin-top:10px;border-radius:21px;background:var(--soft);padding:18px}
+    .cause-card .eyebrow{color:var(--muted)}
+    .cause-card strong{display:block;margin-top:8px;font-size:20px;font-weight:740;color:var(--forest)}
+    .cause-card p{margin:6px 0 0;font-size:10px;line-height:1.5;color:var(--muted)}
+    .impact-details{width:100%;margin-top:10px;border:0;background:transparent;color:var(--forest);padding:13px 4px;text-align:left;font-size:11px;font-weight:750;cursor:pointer}
     .streak-card{min-height:154px;border:0;border-radius:23px;background:var(--forest);color:#fff;padding:20px}
     .streak-card strong{font-size:23px;font-weight:650}.streak-card strong b{font-size:59px;font-weight:760}
     .streak-card p{color:rgba(255,255,255,.58)}.streak-spark{color:var(--lime);font-size:54px}
@@ -373,8 +398,8 @@
   <div id="givingModal" class="modal-backdrop" onclick="closeGiving(event)">
     <section class="modal-sheet" role="dialog" aria-modal="true" aria-labelledby="givingTitle">
       <span class="eyebrow">HOW GIVING WORKS</span>
-      <h2 id="givingTitle">Participation first.<br>Receipts after.</h2>
-      <p>Impact Points show that you chose to participate; they are not cash. FitGive plans to pool eligible net advertising revenue, donate 50% monthly, and publish the total amount, recipient, and evidence here.</p>
+      <h2 id="givingTitle">Ads fund the pool.<br>Receipts prove it.</h2>
+      <p>Rewarded ads are always optional. FitGive plans to reserve 50% of eligible net advertising revenue for the monthly donation pool. One ad never equals a fixed cash amount; revenue varies. The recipient, donated amount, and receipt will be published here after each donation.</p>
       <p><strong>This prototype contains simulated data and no real ad revenue.</strong></p>
       <button class="primary-action" onclick="closeGiving()"><span>Got it</span><span>✓</span></button>
     </section>
@@ -412,8 +437,8 @@
       <div class="ad-bar"><span id="adBar"></span></div>
       <div class="ad-reward" id="adReward">
         <div>
-          <strong>+10 Impact Points</strong>
-          <p>Reward earned. Thanks for growing some good.</p>
+          <strong>Added to this month's pool</strong>
+          <p>Thanks. Eligible ad revenue from this view can help fund the monthly donation.</p>
           <button onclick="AdMock.finish()">Back to my workout</button>
         </div>
       </div>
@@ -432,7 +457,7 @@
       view:'onboarding',onboardingStep:0,plan:'3 × 10',pace:SINGLE_PACE,countdown:3,
       setIndex:0,repInSet:0,totalReps:0,paused:false,soundOn:true,breakStage:'offer',
       breakSeconds:8,adWatched:false,adOffered:false,transitioning:false,shared:false,
-      workouts:0,totalSquats:0,totalImpact:0,streak:0,
+      workouts:0,totalSquats:0,totalImpact:0,adContributions:0,streak:0,
       currentSessionId:null,currentSessionStartedAt:null,sessionHistory:[]
     };
     let flowTimer=null,cadenceTimers=[],audioContext=null;
@@ -583,8 +608,8 @@
     }
     function safeGet(key){try{return localStorage.getItem(key)}catch(e){return null}}
     function safeSet(key,value){try{localStorage.setItem(key,value)}catch(e){}}
-    function loadProfile(){try{const p=JSON.parse(safeGet('fitgive-html-profile')||'{}');state.workouts=p.workouts||0;state.totalSquats=p.totalSquats||0;state.totalImpact=p.totalImpact||0;state.plan=p.plan||state.plan}catch(e){}state.pace=SINGLE_PACE;try{state.sessionHistory=JSON.parse(safeGet('fitgive-html-sessions')||'[]')}catch(e){state.sessionHistory=[]}state.streak=computeStreak(state.sessionHistory);if(safeGet('fitgive-html-onboarding')==='true')state.view='home'}
-    function persistProfile(){safeSet('fitgive-html-profile',JSON.stringify({workouts:state.workouts,totalSquats:state.totalSquats,totalImpact:state.totalImpact,plan:state.plan}))}
+    function loadProfile(){try{const p=JSON.parse(safeGet('fitgive-html-profile')||'{}');state.workouts=p.workouts||0;state.totalSquats=p.totalSquats||0;state.totalImpact=p.totalImpact||0;state.adContributions=p.adContributions||0;state.plan=p.plan||state.plan}catch(e){}state.pace=SINGLE_PACE;try{state.sessionHistory=JSON.parse(safeGet('fitgive-html-sessions')||'[]')}catch(e){state.sessionHistory=[]}state.streak=computeStreak(state.sessionHistory);if(safeGet('fitgive-html-onboarding')==='true')state.view='home'}
+    function persistProfile(){safeSet('fitgive-html-profile',JSON.stringify({workouts:state.workouts,totalSquats:state.totalSquats,totalImpact:state.totalImpact,adContributions:state.adContributions,plan:state.plan}))}
     function saveSessionRecord(record){state.sessionHistory.push(record);state.sessionHistory=state.sessionHistory.slice(-200);safeSet('fitgive-html-sessions',JSON.stringify(state.sessionHistory));state.streak=computeStreak(state.sessionHistory)}
     function clearFlow(){if(flowTimer)clearTimeout(flowTimer);flowTimer=null;cadenceTimers.forEach(clearTimeout);cadenceTimers=[]}
     function setView(view){clearFlow();state.view=view;render()}
@@ -611,7 +636,7 @@
       if(state.onboardingStep===1)page=`
         <div class="onboarding-page how-page">
           <div class="onboarding-copy"><span class="eyebrow">ONE SIMPLE LOOP</span><h1>You move.<br><em>Your rest helps.</em></h1><p>No camera, no form scoring, no pressure.</p></div>
-          <div class="how-stack"><section class="how-card"><span class="how-number">01</span><div><strong>Follow</strong><p>Move with one clear down-and-up rhythm.</p></div><b>↓↑</b></section><section class="how-card"><span class="how-number">02</span><div><strong>Breathe</strong><p>Take a short reset between sets.</p></div><b>Ⅱ</b></section><section class="how-card"><span class="how-number">03</span><div><strong>Add impact</strong><p>Choose one short ad during a break.</p></div><b>✦</b></section></div>
+          <div class="how-stack"><section class="how-card"><span class="how-number">01</span><div><strong>Follow</strong><p>Move with one clear down-and-up rhythm.</p></div><b>↓↑</b></section><section class="how-card"><span class="how-number">02</span><div><strong>Breathe</strong><p>Take a short reset between sets.</p></div><b>Ⅱ</b></section><section class="how-card"><span class="how-number">03</span><div><strong>Add to the pool</strong><p>Choose one short ad during a break.</p></div><b>✦</b></section></div>
           <div class="trust-note"><span>✓</span><p><strong>Ads are always optional.</strong><br>FitGive donates 50% of eligible net ad revenue and publishes the receipts.</p></div>
           <button class="primary-action onboarding-action" onclick="nextOnboarding()"><span>Choose my 30</span><span>→</span></button>
         </div>`;
@@ -632,8 +657,7 @@
     function finishOnboarding(begin){safeSet('fitgive-html-onboarding','true');Analytics.track('onboarding_completed',{method:begin?'started_workout':'skipped'});if(begin)startWorkout();else setView('home')}
     function selectPlan(plan,source){state.plan=plan;persistProfile();render();Analytics.track('plan_selected',{plan_id:plan,source:source||state.view})}
     function renderHome(){
-      const together=12480+state.totalSquats;
-      const progress=Math.min(100,together/20000*100);
+      const contributed=state.adContributions;
       return topbar(false)+`<main class="home-page">
         <header class="home-intro"><span class="eyebrow">TODAY'S MOVE</span><h1>30 squats.<br><span>That's it.</span></h1><p>One clear rhythm. No camera. No pressure.</p></header>
         <section class="today-card">
@@ -642,7 +666,7 @@
           <div class="today-summary">${state.plan} · guided rhythm · no equipment</div>
           <button class="primary-action today-start" onclick="setView('setup')"><span>Start today's 30</span><span>→</span></button>
         </section>
-        <button class="impact-mini" onclick="setView('impact')"><span class="impact-mini-icon">✦</span><div class="impact-mini-copy"><div><strong>Moving together</strong><span>${together.toLocaleString()} / 20,000</span></div><span class="progress-track"><span style="width:${progress.toFixed(1)}%"></span></span></div><span class="impact-mini-arrow">›</span></button>
+        <button class="impact-mini" onclick="setView('impact')"><span class="impact-mini-icon">✦</span><div class="impact-mini-copy"><div><strong>Giving</strong><span>${contributed} ad${contributed===1?'':'s'} helped</span></div><span>See how the money moves</span></div><span class="impact-mini-arrow">›</span></button>
       </main>`+bottomNav('home')}
 
     function renderSetup(){
@@ -970,7 +994,7 @@
       }
       function requestClose(){
         if(earned)return finish();
-        if(!confirm('Close this ad? You will not get the 10 Impact Points.'))return;
+        if(!confirm('Close this ad? This view will not contribute to the giving pool.'))return;
         finish();
       }
       function finish(){
@@ -991,7 +1015,7 @@
     function renderBreak(){
       const config=planConfig[state.plan];
       const header='<header class="topbar"><button class="icon-button" onclick="exitWorkout()">×</button><span class="wordmark small">impact break</span><span class="step-label">'+(state.setIndex+1)+' / '+(config.sets-1)+'</span></header>';
-      if(state.breakStage==='offer')return header+`<div class="break-offer"><span class="break-sticker">OPTIONAL · ONCE PER WORKOUT</span><h1>Catch your<br>breath.</h1><p>Want this break to add to today's community goal?</p><div class="impact-promise"><span class="mini-seed">✦</span><div><strong>Watch one short ad</strong><small>Add 10 Impact Points. Your workout always continues either way.</small></div></div><button class="primary-action watch-action" onclick="watchAd()"><span>Watch during my break</span><span>+10</span></button><button class="text-action" onclick="plainRest()">No thanks, just rest</button></div>`;
+      if(state.breakStage==='offer')return header+`<div class="break-offer"><span class="break-sticker">OPTIONAL · ONCE PER WORKOUT</span><h1>Catch your<br>breath.</h1><p>Want this break to help grow this month's giving pool?</p><div class="impact-promise"><span class="mini-seed">✦</span><div><strong>Watch one short ad</strong><small>Eligible ad revenue can help fund the monthly donation. Your workout always continues either way.</small></div></div><button class="primary-action watch-action" onclick="watchAd()"><span>Watch during my break</span><span>→</span></button><button class="text-action" onclick="plainRest()">No thanks, just rest</button></div>`;
       // the full-screen ad overlay sits on top of this and owns its own clock
       if(state.breakStage==='ad')return header+`<div class="plain-break"><span class="eyebrow">LOADING YOUR REWARD</span><div class="breathing-ring"><strong>✦</strong></div><h2>Rest up.</h2><p>Your workout continues right after.</p></div>`;
       const nextSet=Math.min(state.setIndex+2,config.sets);
@@ -1002,9 +1026,11 @@
       Analytics.track('ad_offer_selected',{session_id:state.currentSessionId});
       Analytics.track('ad_show_started',{session_id:state.currentSessionId});
       AdMock.open(function(rewarded,watchedSec){
-        if(rewarded&&!state.adWatched){          // granted once, on completion only
+        if(rewarded&&!state.adWatched){
           state.adWatched=true;
-          Analytics.track('ad_reward_earned',{session_id:state.currentSessionId,impact_points:10});
+          state.adContributions++;
+          persistProfile();
+          Analytics.track('ad_reward_earned',{session_id:state.currentSessionId,ad_contribution:1});
         }else if(!rewarded){
           Analytics.track('ad_failed',{session_id:state.currentSessionId,error_category:'dismissed'});
         }
@@ -1033,11 +1059,11 @@
     function extendRest(){state.breakSeconds+=20;render()}
     function advanceAfterBreak(){state.setIndex++;state.repInSet=0;state.breakStage='offer';BeatEngine.resume();resyncGrid();setView('workout')}
 
-    function completeWorkout(){clearFlow();stopBeatLoop();BeatEngine.stop();Screen.release();buzz([40,80,40,80,60]);state.workouts++;state.totalSquats+=30;const impactEarned=state.adWatched?10:0;if(impactEarned)state.totalImpact+=impactEarned;persistProfile();const completedAt=new Date().toISOString();saveSessionRecord({id:state.currentSessionId,startedAt:state.currentSessionStartedAt,completedAt:completedAt,plan:state.plan,pace:state.pace,completedReps:30,impactPointsEarned:impactEarned,adOutcome:state.adWatched?'rewarded':(state.adOffered?'declined':'not_offered')});const durationMs=state.currentSessionStartedAt?(new Date(completedAt)-new Date(state.currentSessionStartedAt)):null;Analytics.track('workout_completed',{session_id:state.currentSessionId,duration_ms:durationMs,impact_points:impactEarned});setView('complete')}
-    function renderComplete(){return `<div class="complete-screen"><div class="confetti"><span>✦</span><span>●</span><span>＋</span><span>✦</span></div><span class="eyebrow">TODAY'S 30 · DONE</span><div class="completion-number">30</div><h1>Nice work.</h1><p>You moved. The community goal moved with you.</p><section class="result-ticket"><div><small>IMPACT ADDED</small><strong>${state.adWatched?'+10':'+0'} pts</strong></div><div><small>YOUR STREAK</small><strong>${state.streak} day${state.streak===1?'':'s'}</strong></div><div class="ticket-progress"><span></span></div><p>${12480+state.totalSquats} / 20,000 community squats</p></section><button class="primary-action share-action" onclick="shareResult()"><span>${state.shared?'Share text copied!':'Share my 30'}</span><span>↗</span></button><div class="completion-links"><button onclick="startWorkout()">Do 30 again</button><button onclick="setView('impact')">See the impact</button></div></div>`}
+    function completeWorkout(){clearFlow();stopBeatLoop();BeatEngine.stop();Screen.release();buzz([40,80,40,80,60]);state.workouts++;state.totalSquats+=30;persistProfile();const completedAt=new Date().toISOString();const adContribution=state.adWatched?1:0;saveSessionRecord({id:state.currentSessionId,startedAt:state.currentSessionStartedAt,completedAt:completedAt,plan:state.plan,pace:state.pace,completedReps:30,adContribution:adContribution,adOutcome:state.adWatched?'rewarded':(state.adOffered?'declined':'not_offered')});const durationMs=state.currentSessionStartedAt?(new Date(completedAt)-new Date(state.currentSessionStartedAt)):null;Analytics.track('workout_completed',{session_id:state.currentSessionId,duration_ms:durationMs,ad_contribution:adContribution});setView('complete')}
+    function renderComplete(){return `<div class="complete-screen"><div class="confetti"><span>✦</span><span>●</span><span>＋</span><span>✦</span></div><span class="eyebrow">TODAY'S 30 · DONE</span><div class="completion-number">30</div><h1>Nice work.</h1><p>Your workout is done. The ad was always optional.</p><section class="result-ticket"><div><small>GIVING</small><strong>${state.adWatched?'Ad added ✓':'No ad today'}</strong></div><div><small>YOUR STREAK</small><strong>${state.streak} day${state.streak===1?'':'s'}</strong></div><p>${state.adContributions} optional ad${state.adContributions===1?'':'s'} contributed so far</p></section><button class="primary-action share-action" onclick="shareResult()"><span>${state.shared?'Share text copied!':'Share my 30'}</span><span>↗</span></button><div class="completion-links"><button onclick="startWorkout()">Do 30 again</button><button onclick="setView('impact')">See the impact</button></div></div>`}
     async function shareResult(){const text='I did 30 squats with FitGive — a tiny workout for some real good. 🌱';try{if(navigator.share)await navigator.share({title:'My FitGive 30',text:text});else if(navigator.clipboard)await navigator.clipboard.writeText(text);else throw new Error();state.shared=true;render();showToast('Share text ready');Analytics.track('result_shared',{session_id:state.currentSessionId,result:'completed'})}catch(e){showToast('Copy: '+text);Analytics.track('result_shared',{session_id:state.currentSessionId,result:'cancelled'})}}
 
-    function renderImpact(){const progress=Math.min(100,Math.round((12480+state.totalSquats)/20000*100));return topbar(false)+`<div class="page"><span class="eyebrow">CURRENT COMMUNITY GOAL</span><h1 class="page-title">20,000 squats<br><em>for children's meals.</em></h1><section class="mission-visual"><div class="mission-sun">✦</div><div class="big-sprout">♧</div><strong>${progress}%</strong><span>${(12480+state.totalSquats).toLocaleString()} squats together</span></section><div class="facts"><div><small>YOUR 30s</small><strong>${state.workouts}</strong></div><div><small>IMPACT PTS</small><strong>${state.totalImpact}</strong></div><div><small>MOVING</small><strong>416</strong></div></div><section class="transparency"><span class="eyebrow">HOW IT WORKS</span><h3>Points show participation—not cash.</h3><p>FitGive pools eligible ad revenue, donates 50% monthly, then publishes the amount, recipient and receipt here.</p><button onclick="openGiving()">See the details →</button></section></div>`+bottomNav('impact')}
+    function renderImpact(){return topbar(false)+`<div class="page impact-page"><span class="eyebrow">YOUR IMPACT</span><h1 class="page-title">Small moves.<br><em>Clear giving.</em></h1><section class="impact-ledger"><div class="impact-ledger-head"><span class="eyebrow">YOUR LEDGER</span><span class="impact-beta">BETA</span></div><div class="impact-ledger-number"><strong>${state.totalSquats}</strong><span>squats moved</span></div><div class="impact-ledger-row"><div><small>WORKOUTS</small><b>${state.workouts}</b></div><div><small>ADS CONTRIBUTED</small><b>${state.adContributions}</b></div></div></section><section class="giving-card"><div class="giving-card-head"><span class="eyebrow">THIS MONTH'S GIVING</span><span class="giving-status">NOT LIVE YET</span></div><strong class="giving-amount">₩—</strong><p>When real rewarded ads go live, verified eligible net ad revenue will appear here. FitGive plans to set aside 50% for donation.</p></section><section class="cause-card"><span class="eyebrow">CURRENT CAUSE</span><strong>Children's meals</strong><p>The recipient, donated amount, and receipt will be published here after each monthly donation.</p></section><button class="impact-details" onclick="openGiving()">How the money moves →</button></div>`+bottomNav('impact')}
     function openGiving(){document.getElementById('givingModal').classList.add('open')}function closeGiving(event){if(event&&event.target!==event.currentTarget)return;document.getElementById('givingModal').classList.remove('open')}
 
     function renderMe(){
@@ -1046,10 +1072,10 @@
       const trailingDays=Array.from({length:7},function(_,i){const d=new Date();d.setDate(d.getDate()-(6-i));return d});
       const days=trailingDays.map(function(d){const key=localDateStr(d.toISOString());const done=completedDays.has(key);return '<div class="day '+(done?'done':'')+'"><span>'+(done?'✓':'')+'</span><small>'+weekdayLabels[d.getDay()]+'</small></div>'}).join('');
       const activeDaysThisWeek=trailingDays.filter(function(d){return completedDays.has(localDateStr(d.toISOString()))}).length;
-      return topbar(true)+`<div class="page"><span class="eyebrow">YOUR FITGIVE</span><h1 class="page-title">Your little<br><em>good streak.</em></h1><section class="streak-card"><div><span class="eyebrow">CURRENT STREAK</span><strong><b>${state.streak}</b> day${state.streak===1?'':'s'}</strong><p>${state.streak?'Show up tomorrow to keep it growing.':'Your first 30 starts the streak.'}</p></div><span class="streak-spark">✦</span></section><section class="week-card"><div class="section-heading"><strong>This week</strong><span>${activeDaysThisWeek} of 7 days</span></div><div class="week-row">${days}</div></section><div class="facts"><div><small>WORKOUTS</small><strong>${state.workouts}</strong></div><div><small>SQUATS</small><strong>${state.totalSquats}</strong></div><div><small>IMPACT PTS</small><strong>${state.totalImpact}</strong></div></div><section class="default-card"><div><span class="eyebrow light">YOUR DEFAULT</span><strong>${state.plan}</strong><p>One guided rhythm</p></div><button onclick="setView('setup')">Change sets</button></section><button class="replay" onclick="replayOnboarding()">Replay the FitGive intro →</button></div>`+bottomNav('me');
+      return topbar(true)+`<div class="page"><span class="eyebrow">YOUR FITGIVE</span><h1 class="page-title">Your little<br><em>good streak.</em></h1><section class="streak-card"><div><span class="eyebrow">CURRENT STREAK</span><strong><b>${state.streak}</b> day${state.streak===1?'':'s'}</strong><p>${state.streak?'Show up tomorrow to keep it growing.':'Your first 30 starts the streak.'}</p></div><span class="streak-spark">✦</span></section><section class="week-card"><div class="section-heading"><strong>This week</strong><span>${activeDaysThisWeek} of 7 days</span></div><div class="week-row">${days}</div></section><div class="facts"><div><small>WORKOUTS</small><strong>${state.workouts}</strong></div><div><small>SQUATS</small><strong>${state.totalSquats}</strong></div><div><small>ADS HELPED</small><strong>${state.adContributions}</strong></div></div><section class="default-card"><div><span class="eyebrow light">YOUR DEFAULT</span><strong>${state.plan}</strong><p>One guided rhythm</p></div><button onclick="setView('setup')">Change sets</button></section><button class="replay" onclick="replayOnboarding()">Replay the FitGive intro →</button></div>`+bottomNav('me');
     }
     function replayOnboarding(){state.onboardingStep=0;setView('onboarding')}
-    function resetDemo(){if(!confirm('Reset this app and replay onboarding? This also clears saved workouts and local test data.'))return;try{localStorage.removeItem('fitgive-html-onboarding');localStorage.removeItem('fitgive-html-profile');localStorage.removeItem('fitgive-html-sessions');localStorage.removeItem('fitgive-html-events')}catch(e){}Object.assign(state,{view:'onboarding',onboardingStep:0,plan:'3 × 10',pace:SINGLE_PACE,countdown:3,setIndex:0,repInSet:0,totalReps:0,paused:false,soundOn:true,breakStage:'offer',breakSeconds:8,adWatched:false,adOffered:false,transitioning:false,shared:false,workouts:0,totalSquats:0,totalImpact:0,streak:0,sessionHistory:[],currentSessionId:null,currentSessionStartedAt:null});render()}
+    function resetDemo(){if(!confirm('Reset this app and replay onboarding? This also clears saved workouts and local test data.'))return;try{localStorage.removeItem('fitgive-html-onboarding');localStorage.removeItem('fitgive-html-profile');localStorage.removeItem('fitgive-html-sessions');localStorage.removeItem('fitgive-html-events')}catch(e){}Object.assign(state,{view:'onboarding',onboardingStep:0,plan:'3 × 10',pace:SINGLE_PACE,countdown:3,setIndex:0,repInSet:0,totalReps:0,paused:false,soundOn:true,breakStage:'offer',breakSeconds:8,adWatched:false,adOffered:false,transitioning:false,shared:false,workouts:0,totalSquats:0,totalImpact:0,adContributions:0,streak:0,sessionHistory:[],currentSessionId:null,currentSessionStartedAt:null});render()}
     function exportEvents(){const events=Analytics.read();const text=JSON.stringify(events,null,2);if(navigator.clipboard)navigator.clipboard.writeText(text).then(function(){showToast('Copied '+events.length+' events')}).catch(function(){alert(text)});else alert(text)}
     document.addEventListener('visibilitychange',function(){if(document.hidden&&(state.view==='workout'||state.view==='countdown')&&!state.paused){state.paused=true;BeatEngine.pause();if(state.view==='countdown'){state.view='workout';resyncGrid()}render()}});
     (function boot(){
