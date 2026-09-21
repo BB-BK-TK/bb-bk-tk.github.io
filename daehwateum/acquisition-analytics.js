@@ -122,7 +122,7 @@
       var css=document.createElement('link');css.rel='stylesheet';css.href=ASSET_BASE+'pwa-install-v71.css?v=20260916-2';css.setAttribute('data-dt-install-css','1');document.head.appendChild(css);
     }
     if(!document.querySelector('script[data-dt-install-js]')){
-      var js=document.createElement('script');js.src=ASSET_BASE+'pwa-install-v71.js?v=20260921-3';js.defer=true;js.setAttribute('data-dt-install-js','1');document.head.appendChild(js);
+      var js=document.createElement('script');js.src=ASSET_BASE+'pwa-install-v71.js?v=20260921-4';js.defer=true;js.setAttribute('data-dt-install-js','1');document.head.appendChild(js);
     }
   }
 

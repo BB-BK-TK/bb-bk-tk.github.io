@@ -4,7 +4,7 @@
   "related_applications": [
     {
       "platform": "webapp",
-      "url": "https://bb-bk-tk.github.io/daehwateum/manifest.webmanifest"
+      "url": "https://bb-bk-tk.github.io/daehwateum/app-manifest.webmanifest"
     }
   ]
 }
