@@ -12,16 +12,39 @@ function checkInstalledRelated(){
   if(!navigator.getInstalledRelatedApps)return Promise.resolve(false);
   return navigator.getInstalledRelatedApps().then(function(apps){
     installedRelated=(apps||[]).some(function(app){
-      return app&&app.platform==='webapp'&&String(app.url||'').indexOf('/daehwateum/manifest.webmanifest')>=0;
+      return app&&app.platform==='webapp'&&String(app.url||'').indexOf('/daehwateum/app-manifest.webmanifest')>=0;
     });
     return installedRelated;
   }).catch(function(){installedRelated=false;return false});
 }
 function dismissed(){try{return sessionStorage.getItem(STORAGE)==='1'}catch(e){return false}}
 function markDismissed(){try{sessionStorage.setItem(STORAGE,'1')}catch(e){}}
+function appBase(){return new URL('app/',ASSET_BASE).href}
+function cleanupLegacyWorker(){
+  if(!('serviceWorker'in navigator)||!navigator.serviceWorker.getRegistrations)return Promise.resolve();
+  return navigator.serviceWorker.getRegistrations().then(function(regs){
+    return Promise.all((regs||[]).map(function(reg){
+      if(reg&&reg.scope===ASSET_BASE)return reg.unregister().catch(function(){});
+      return Promise.resolve();
+    }));
+  }).catch(function(){});
+}
 function ensureInstallability(){
-  try{if(!document.querySelector('link[rel="manifest"]')){var l=document.createElement('link');l.rel='manifest';l.href=ASSET_BASE+'manifest.webmanifest';document.head.appendChild(l)}}catch(e){}
-  if('serviceWorker'in navigator){navigator.serviceWorker.register(ASSET_BASE+'sw.js',{scope:ASSET_BASE}).catch(function(){})}
+  if(!inAppScope())return cleanupLegacyWorker();
+  try{
+    var manifest=document.querySelector('link[rel="manifest"]');
+    if(!manifest){
+      manifest=document.createElement('link');
+      manifest.rel='manifest';
+      document.head.appendChild(manifest);
+    }
+    manifest.href=ASSET_BASE+'app-manifest.webmanifest';
+  }catch(e){}
+  if('serviceWorker'in navigator){
+    cleanupLegacyWorker().then(function(){
+      navigator.serviceWorker.register(ASSET_BASE+'sw.js',{scope:appBase()}).catch(function(){});
+    });
+  }
 }
 function remove(){var el=document.querySelector('.dt-install-prompt');if(el)el.remove()}
 function helpText(){if(isIOS())return ko?'Safari의 공유 버튼을 누른 뒤 ‘홈 화면에 추가’를 선택해주세요.':'In Safari, tap Share, then choose Add to Home Screen.';return ko?'브라우저 메뉴(⋮)에서 ‘앱 설치’ 또는 ‘홈 화면에 추가’를 선택해주세요.':'Open the browser menu and choose Install app or Add to Home screen.'}
@@ -36,7 +59,7 @@ function render(){
   el.querySelector('[data-dt-install]').onclick=function(){
     var btn=this;trackInstallClick();
     if(!inAppScope()){
-      location.href=ASSET_BASE+'app/?install=1';
+      location.href=appBase()+'?install=1';
       return;
     }
     if(deferredPrompt){
