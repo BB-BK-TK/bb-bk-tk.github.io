@@ -24,7 +24,7 @@ function guestId(){var id='';try{id=localStorage.getItem(GUEST_KEY)||''}catch(e)
 function rpc(fn,payload){return fetch(SUPA+'/rest/v1/rpc/'+fn,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)}).then(function(r){return r.text().then(function(t){var j=null;try{j=t?JSON.parse(t):null}catch(e){}if(!r.ok)throw Error(j&&j.message?j.message:'Request failed');return j})})}
 function hideAll(){loading.classList.add('hidden');invite.classList.add('hidden');continuation.classList.add('hidden');closed.classList.add('hidden');appInstall.classList.add('hidden');continueWeb.classList.add('hidden')}
 function showClosed(h,b){hideAll();closed.classList.remove('hidden');closedTitle.textContent=h;closedBody.textContent=b}
-function webUrl(){return '../app/?claim='+encodeURIComponent(claim)+'&web=1'}
+function webUrl(){return '../?claim='+encodeURIComponent(claim)+'&web=1'}
 function androidDeepLink(){return 'daehwateum://join?invite='+encodeURIComponent('dtclaim_'+(claim||''))}
 function hideInstallHelp(){installHelp.classList.add('hidden')}
 function rememberClaim(){if(!claim)return;try{localStorage.setItem('dt.pending.inviteClaim.v66',claim)}catch(e){}}
