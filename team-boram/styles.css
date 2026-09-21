@@ -42,7 +42,7 @@ h2 { margin: 0; font-size: 16px; letter-spacing: -.02em; }
 .stat-card { min-width: 0; padding: 12px; border-radius: 14px; border: 1px solid var(--border); background: var(--surface); }
 .stat-card strong { display: block; font-size: 23px; letter-spacing: -.04em; }
 .stat-card span { display: block; margin-top: 2px; font-size: 10px; color: var(--muted); }
-.tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-bottom: 18px; }
+.tabs { display: grid; grid-template-columns: repeat(5, 1fr); gap: 7px; margin-bottom: 18px; }
 .tab { min-height: 44px; border: 0; border-radius: 12px; background: var(--surface-2); color: var(--text); font-size: 11px; font-weight: 850; }
 .tab.active { background: var(--accent); color: #fff; }
 .section-heading { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; margin-bottom: 10px; }
@@ -114,4 +114,26 @@ h2 { margin: 0; font-size: 16px; letter-spacing: -.02em; }
   .hierarchy-connector { max-width: 660px; width: 100%; margin: 0 auto; }
   .stats { max-width: 540px; }
   .stack.two-col { grid-template-columns: 1fr 1fr; }
+}
+
+.ai-card { margin-top: 10px; border: 1px solid var(--border); border-radius: 16px; background: var(--surface); padding: 14px; }
+.ai-card h3 { margin: 0 0 5px; font-size: 15px; }
+.ai-card-head { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: start; }
+.ai-label { margin-top: 0; }
+.ai-inline-btn { min-width: 112px; }
+.ai-status { min-height: 20px; margin-top: 10px; color: var(--muted); font-size: 10px; line-height: 1.45; }
+.ai-question { margin-top: 12px; min-height: 110px; resize: vertical; }
+.ai-actions { display: grid; grid-template-columns: 1fr auto; gap: 8px; margin-top: 10px; }
+.ai-actions .primary-btn { margin: 0; }
+.ai-answer { margin-top: 12px; padding: 13px; border-radius: 12px; background: var(--surface-2); white-space: pre-wrap; font-size: 12px; line-height: 1.58; }
+.ai-memory-refs { margin-top: 14px; display: grid; gap: 7px; }
+.memory-ref { padding: 9px 10px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface-2); }
+.memory-ref b { display: block; font-size: 10px; line-height: 1.35; }
+.memory-ref span { display: block; margin-top: 3px; color: var(--muted); font-size: 9px; }
+button:disabled { cursor: wait; opacity: .55; }
+@media (max-width: 430px) {
+  .tabs { gap: 5px; }
+  .tab { padding: 0 5px; font-size: 10px; }
+  .ai-card-head { grid-template-columns: 1fr; }
+  .ai-inline-btn { width: 100%; }
 }
