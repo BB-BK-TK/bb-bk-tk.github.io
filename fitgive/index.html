@@ -699,7 +699,10 @@
         <div class="setbar">${segs}</div>
         <div class="work-meta"><span><b id="overallDone">${state.totalReps}</b> / 30</span><span id="timeLeft">${mmss(remainingEstimate())} LEFT</span></div>
         <section class="guide-stage"><div class="guide-sprite beat-driven ${state.paused?'paused':''}" id="guideSprite"><video id="guideVideo" class="guide-video" data-guide-src="assets/video/squat-fast-veo.mp4?v=veo1" src="assets/video/squat-fast-veo.mp4?v=veo1" poster="assets/video/squat-poster.jpg" muted playsinline loop preload="auto" disablepictureinpicture aria-label="Squat demonstration"></video></div>${cues}<div class="rep-count"><strong id="repNow">${state.repInSet}</strong><span>/ ${config.reps}</span></div></section>
-        <div class="workout-controls"><button class="round-control" onclick="togglePause()" aria-label="${state.paused?'Resume workout':'Pause workout'}">${state.paused?'▶':'Ⅱ'}</button><div><strong>${state.paused?'Ready when you are':'Follow the guide'}</strong><small>${state.paused?'Tap play to continue':'Down, then up'}</small></div></div>
+        <div class="workout-controls">${state.transitioning
+          ? '<div class="round-control" aria-hidden="true">✓</div><div><strong>Set complete</strong><small>Take your break</small></div>'
+          : '<button class="round-control" onclick="togglePause()" aria-label="'+(state.paused?'Resume workout':'Pause workout')+'">'+(state.paused?'▶':'Ⅱ')+'</button><div><strong>'+(state.paused?'Ready when you are':'Follow the guide')+'</strong><small>'+(state.paused?'Tap play to continue':'Down, then up')+'</small></div>'
+        }</div>
         ${DEV_MODE?'<button class="prototype-skip" onclick="finishSet()">Prototype: finish this set →</button>':''}`;
     }
 
@@ -815,8 +818,15 @@
       BeatEngine.pause();VideoGuide.pause();
       stopBeatLoop();
       render();
-      flowTimer=setTimeout(function(){
+      /* Do not store this handoff in flowTimer. render() intentionally clears
+         flowTimer before rescheduling view-specific clocks, and Android can emit
+         a transient visibilitychange right as a set ends. That extra render used
+         to cancel the set→break handoff and strand the user on 5/5. */
+      const finishedSet=state.setIndex;
+      setTimeout(function(){
+        if(state.view!=='workout'||!state.transitioning||state.setIndex!==finishedSet)return;
         state.transitioning=false;
+        state.paused=false;
         if(state.totalReps>=30)completeWorkout();else startBreak();
       },900);
     }
@@ -1083,7 +1093,7 @@
     function replayOnboarding(){state.onboardingStep=0;setView('onboarding')}
     function resetDemo(){if(!confirm('Reset this app and replay onboarding? This also clears saved workouts and local test data.'))return;try{localStorage.removeItem('fitgive-html-onboarding');localStorage.removeItem('fitgive-html-profile');localStorage.removeItem('fitgive-html-sessions');localStorage.removeItem('fitgive-html-events')}catch(e){}Object.assign(state,{view:'onboarding',onboardingStep:0,plan:'3 × 10',pace:SINGLE_PACE,countdown:3,setIndex:0,repInSet:0,totalReps:0,paused:false,soundOn:true,breakStage:'offer',breakSeconds:8,adWatched:false,adOffered:false,transitioning:false,shared:false,workouts:0,totalSquats:0,totalImpact:0,adContributions:0,streak:0,sessionHistory:[],currentSessionId:null,currentSessionStartedAt:null});render()}
     function exportEvents(){const events=Analytics.read();const text=JSON.stringify(events,null,2);if(navigator.clipboard)navigator.clipboard.writeText(text).then(function(){showToast('Copied '+events.length+' events')}).catch(function(){alert(text)});else alert(text)}
-    document.addEventListener('visibilitychange',function(){if(document.hidden&&(state.view==='workout'||state.view==='countdown')&&!state.paused){state.paused=true;BeatEngine.pause();if(state.view==='countdown'){state.view='workout';resyncGrid()}render()}});
+    document.addEventListener('visibilitychange',function(){if(document.hidden&&(state.view==='workout'||state.view==='countdown')&&!state.paused&&!state.transitioning){state.paused=true;BeatEngine.pause();if(state.view==='countdown'){state.view='workout';resyncGrid()}render()}});
     (function boot(){
       const isFirstLaunch=safeGet('fitgive-html-onboarding')!=='true';
       loadProfile();
