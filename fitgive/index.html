@@ -291,35 +291,40 @@
     .workout-controls .round-control{width:48px;height:48px;background:var(--lime);font-size:17px}
     .workout-controls strong{font-size:12px}.workout-controls small{font-size:9px}
 
-    /* Rest + impact offer */
-    .break-offer{min-height:calc(100dvh - 68px);padding:28px 22px 24px;display:flex;flex-direction:column}
-    .break-sticker{align-self:flex-start;transform:none;border:0;box-shadow:none;background:var(--soft);padding:7px 10px;border-radius:999px;color:var(--muted);font-size:8px}
-    .break-offer h1{margin:25px 0 10px;font-size:44px;line-height:.98;font-weight:740;letter-spacing:-2.5px}
-    .break-offer>p{margin:0;color:var(--muted);font-size:12px;line-height:1.5}
-    .impact-promise{margin:auto 0 14px;padding:17px;border-radius:19px;background:var(--paper)}
-    .mini-seed{width:38px;height:38px;background:var(--lime);color:var(--forest)}
-    .impact-promise strong{font-size:12px}.impact-promise small{font-size:9px;color:var(--muted)}
-    .watch-action{background:var(--ink);color:#fff}
-    .watch-action span:last-child{color:var(--lime)}
-    .text-action{margin:16px auto 0;text-decoration:none;color:var(--muted);font-size:11px}
+    /* Rest + impact offer — open, editorial, one decision */
+    .break-offer{min-height:calc(100dvh - 68px);padding:30px 22px 26px;display:flex;flex-direction:column}
+    .break-sticker{align-self:flex-start;background:transparent;padding:0;border:0;border-radius:0;color:var(--muted);font-size:8px;font-weight:800;letter-spacing:1.2px}
+    .break-offer h1{margin:30px 0 12px;font-size:46px;line-height:.96;font-weight:750;letter-spacing:-2.8px}
+    .break-offer>p{max-width:310px;margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+    .give-note{margin:auto 0 20px;padding:17px 0 0;border-top:1px solid var(--line);display:grid;grid-template-columns:76px 1fr;gap:16px;align-items:start}
+    .give-note-label{font-size:9px;font-weight:850;letter-spacing:1.1px;color:var(--forest)}
+    .give-note strong{display:block;font-size:13px;font-weight:740;color:var(--ink);margin-bottom:4px}
+    .give-note small{display:block;font-size:9px;line-height:1.45;color:var(--muted)}
+    .watch-action{background:var(--ink);color:#fff;min-height:56px;border-radius:16px}
+    .watch-action span:last-child{color:var(--lime);font-size:18px}
+    .text-action{margin:15px auto 0;text-decoration:none;color:var(--muted);font-size:11px}
     .plain-break{min-height:calc(100dvh - 68px);padding:25px}
     .breathing-ring{width:174px;height:174px;border:0;background:var(--soft)}
     .breathing-ring strong{font-size:64px;font-weight:720}
     .plain-break h2{font-family:inherit;font-size:31px;font-weight:720}
     .plain-break p{font-size:11px;color:var(--muted)}
 
-    /* Completion */
-    .complete-screen{padding:72px 22px 30px;background:var(--cream)}
-    .confetti span{font-size:16px}
-    .completion-number{margin-top:28px;font-size:126px;font-weight:780;letter-spacing:-9px;color:var(--forest)}
-    .complete-screen>h1{margin:5px 0 9px;font-size:36px;font-weight:740;letter-spacing:-1.8px}
-    .complete-screen>p{font-size:11px;color:var(--muted);margin-bottom:22px}
-    .result-ticket{border:0;box-shadow:none;border-radius:21px;padding:17px;background:var(--paper)}
-    .result-ticket strong{font-size:21px;font-weight:740}
-    .ticket-progress{height:5px;background:var(--soft)}
-    .share-action{margin-top:18px;background:var(--ink)}
+    /* Completion — one strong moment, then two facts */
+    .complete-screen{min-height:100dvh;padding:66px 22px 30px;background:var(--cream);display:flex;flex-direction:column}
+    .confetti{display:none}
+    .completion-number{margin-top:34px;font-size:132px;line-height:.78;font-weight:790;letter-spacing:-10px;color:var(--forest)}
+    .complete-screen>h1{margin:18px 0 8px;font-size:38px;line-height:.98;font-weight:750;letter-spacing:-2px}
+    .complete-screen>p{max-width:300px;font-size:11px;line-height:1.5;color:var(--muted);margin:0 0 30px}
+    .completion-meta{margin-top:auto;border-top:1px solid var(--line);border-bottom:1px solid var(--line);display:grid;grid-template-columns:1fr 1fr}
+    .completion-meta>div{padding:17px 0}
+    .completion-meta>div+div{padding-left:18px;border-left:1px solid var(--line)}
+    .completion-meta small{display:block;font-size:8px;font-weight:850;letter-spacing:1.1px;color:var(--muted);margin-bottom:6px}
+    .completion-meta strong{display:block;font-size:17px;font-weight:740;color:var(--ink)}
+    .completion-note{margin:11px 0 0;font-size:9px;color:var(--muted)}
+    .share-action{margin-top:20px;background:var(--ink);min-height:56px;border-radius:16px}
     .share-action span:last-child{color:var(--lime)}
-    .completion-links{margin-top:17px}.completion-links button{text-decoration:none;color:var(--muted)}
+    .completion-links{margin-top:14px;display:flex;justify-content:center;gap:22px}
+    .completion-links button{text-decoration:none;color:var(--muted);font-size:10px}
 
     /* Impact and Me */
     .page{padding:18px 18px 94px}
@@ -339,30 +344,29 @@
     .transparency p{font-size:10px;color:var(--muted)}
     .transparency button{color:var(--forest)}
 
-    /* Impact: real contribution ledger, not gamified points */
-    .impact-page .page-title{margin-bottom:18px}
-    .impact-ledger{border-radius:25px;background:var(--forest);color:#fff;padding:20px;min-height:286px;display:flex;flex-direction:column}
-    .impact-ledger-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .impact-ledger-head .eyebrow{color:rgba(255,255,255,.62)}
-    .impact-beta{font-size:8px;font-weight:800;letter-spacing:.9px;padding:6px 8px;border-radius:999px;background:rgba(255,255,255,.10);color:rgba(255,255,255,.72)}
-    .impact-ledger-number{margin-top:34px}
-    .impact-ledger-number strong{display:block;font-size:82px;line-height:.82;letter-spacing:-6px;font-weight:770;color:#fff}
-    .impact-ledger-number span{display:block;margin-top:12px;font-size:11px;font-weight:700;letter-spacing:1.4px;color:rgba(255,255,255,.62);text-transform:uppercase}
-    .impact-ledger-row{margin-top:auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.13);display:grid;grid-template-columns:1fr 1fr;gap:16px}
-    .impact-ledger-row div{display:flex;flex-direction:column;gap:5px}
-    .impact-ledger-row small{font-size:8px;font-weight:800;letter-spacing:1px;color:rgba(255,255,255,.48)}
-    .impact-ledger-row b{font-size:22px;font-weight:720;color:#fff}
-    .giving-card{margin-top:10px;border-radius:21px;background:var(--paper);padding:18px}
-    .giving-card-head{display:flex;align-items:center;justify-content:space-between;gap:12px}
-    .giving-card .eyebrow{color:var(--muted)}
-    .giving-status{font-size:8px;font-weight:800;letter-spacing:.7px;padding:6px 8px;border-radius:999px;background:var(--soft);color:var(--muted)}
-    .giving-amount{display:block;margin-top:15px;font-size:34px;line-height:1;font-weight:760;letter-spacing:-1.4px;color:var(--ink)}
-    .giving-card p{margin:9px 0 0;font-size:10px;line-height:1.5;color:var(--muted)}
-    .cause-card{margin-top:10px;border-radius:21px;background:var(--soft);padding:18px}
-    .cause-card .eyebrow{color:var(--muted)}
-    .cause-card strong{display:block;margin-top:8px;font-size:20px;font-weight:740;color:var(--forest)}
-    .cause-card p{margin:6px 0 0;font-size:10px;line-height:1.5;color:var(--muted)}
-    .impact-details{width:100%;margin-top:10px;border:0;background:transparent;color:var(--forest);padding:13px 4px;text-align:left;font-size:11px;font-weight:750;cursor:pointer}
+    /* Impact — donation first, activity second, no dashboard card stack */
+    .impact-page{padding-top:12px}
+    .impact-page .page-title{margin:10px 0 24px}
+    .giving-hero{position:relative;overflow:hidden;min-height:270px;border-radius:25px;background:var(--forest);color:#fff;padding:22px;display:flex;flex-direction:column}
+    .giving-hero:after{content:"";position:absolute;width:168px;height:168px;border-radius:50%;background:var(--lime);right:-70px;top:-64px;opacity:.98}
+    .giving-hero .eyebrow{position:relative;z-index:1;color:rgba(255,255,255,.58)}
+    .giving-hero-amount{position:relative;z-index:1;margin-top:44px;font-size:76px;line-height:.85;font-weight:780;letter-spacing:-5px;color:#fff}
+    .giving-hero-title{position:relative;z-index:1;margin-top:13px;font-size:14px;font-weight:720;color:#fff}
+    .giving-hero-copy{position:relative;z-index:1;margin:auto 0 0;max-width:290px;font-size:10px;line-height:1.5;color:rgba(255,255,255,.58)}
+    .impact-activity{margin-top:25px}
+    .impact-section-label{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px}
+    .impact-section-label strong{font-size:12px;font-weight:760;color:var(--ink)}
+    .impact-section-label span{font-size:9px;color:var(--muted)}
+    .activity-row{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+    .activity-row div{padding:17px 8px 15px 0}
+    .activity-row div+div{padding-left:14px;border-left:1px solid var(--line)}
+    .activity-row strong{display:block;font-size:24px;line-height:1;font-weight:750;color:var(--ink)}
+    .activity-row small{display:block;margin-top:7px;font-size:8px;font-weight:800;letter-spacing:.75px;color:var(--muted)}
+    .cause-line{margin-top:27px;padding:0 0 22px;border-bottom:1px solid var(--line)}
+    .cause-line small{display:block;font-size:8px;font-weight:850;letter-spacing:1px;color:var(--muted)}
+    .cause-line strong{display:block;margin-top:8px;font-size:22px;font-weight:740;color:var(--forest)}
+    .cause-line p{margin:6px 0 0;max-width:315px;font-size:9px;line-height:1.5;color:var(--muted)}
+    .impact-details{width:100%;margin-top:2px;border:0;background:transparent;color:var(--forest);padding:18px 0;text-align:left;font-size:11px;font-weight:760;cursor:pointer}
     .streak-card{min-height:154px;border:0;border-radius:23px;background:var(--forest);color:#fff;padding:20px}
     .streak-card strong{font-size:23px;font-weight:650}.streak-card strong b{font-size:59px;font-weight:760}
     .streak-card p{color:rgba(255,255,255,.58)}.streak-spark{color:var(--lime);font-size:54px}
@@ -1025,7 +1029,7 @@
     function renderBreak(){
       const config=planConfig[state.plan];
       const header='<header class="topbar"><button class="icon-button" onclick="exitWorkout()">×</button><span class="wordmark small">impact break</span><span class="step-label">'+(state.setIndex+1)+' / '+(config.sets-1)+'</span></header>';
-      if(state.breakStage==='offer')return header+`<div class="break-offer"><span class="break-sticker">OPTIONAL · ONCE PER WORKOUT</span><h1>Catch your<br>breath.</h1><p>Ads keep FitGive free and help fund Give rewards.</p><div class="impact-promise"><span class="mini-seed">✦</span><div><strong>Your break can give back</strong><small>Watch one short ad while you rest. Eligible ad revenue can help fund the monthly giving pool.</small></div></div><button class="primary-action watch-action" onclick="watchAd()"><span>Watch during my break</span><span>→</span></button><button class="text-action" onclick="plainRest()">No thanks, just rest</button></div>`;
+      if(state.breakStage==='offer')return header+`<div class="break-offer"><span class="break-sticker">OPTIONAL · DURING THIS BREAK</span><h1>Rest a little.<br>Give a little.</h1><p>Ads keep FitGive free and help fund Give rewards.</p><div class="give-note"><span class="give-note-label">ONE AD</span><div><strong>Your break can help Give.</strong><small>Watch one short ad while you rest. Eligible ad revenue can help grow the monthly giving pool.</small></div></div><button class="primary-action watch-action" onclick="watchAd()"><span>Watch one short ad</span><span>→</span></button><button class="text-action" onclick="plainRest()">Just rest</button></div>`;
       // the full-screen ad overlay sits on top of this and owns its own clock
       if(state.breakStage==='ad')return header+`<div class="plain-break"><span class="eyebrow">LOADING YOUR REWARD</span><div class="breathing-ring"><strong>✦</strong></div><h2>Rest up.</h2><p>Your workout continues right after.</p></div>`;
       const nextSet=Math.min(state.setIndex+2,config.sets);
@@ -1076,10 +1080,10 @@
     function advanceAfterBreak(){state.setIndex++;state.repInSet=0;state.breakStage='offer';BeatEngine.resume();resyncGrid();setView('workout')}
 
     function completeWorkout(){clearFlow();stopBeatLoop();BeatEngine.stop();Screen.release();buzz([40,80,40,80,60]);state.workouts++;state.totalSquats+=30;persistProfile();const completedAt=new Date().toISOString();const adContribution=state.adWatched?1:0;saveSessionRecord({id:state.currentSessionId,startedAt:state.currentSessionStartedAt,completedAt:completedAt,plan:state.plan,pace:state.pace,completedReps:30,adContribution:adContribution,adOutcome:state.adWatched?'rewarded':(state.adOffered?'declined':'not_offered')});const durationMs=state.currentSessionStartedAt?(new Date(completedAt)-new Date(state.currentSessionStartedAt)):null;Analytics.track('workout_completed',{session_id:state.currentSessionId,duration_ms:durationMs,ad_contribution:adContribution});setView('complete')}
-    function renderComplete(){return `<div class="complete-screen"><div class="confetti"><span>✦</span><span>●</span><span>＋</span><span>✦</span></div><span class="eyebrow">TODAY'S 30 · DONE</span><div class="completion-number">30</div><h1>Nice work.</h1><p>${state.adWatched?'Your break helped support this month\'s Give.':'Your workout is done. Ads are always optional.'}</p><section class="result-ticket"><div><small>GIVING</small><strong>${state.adWatched?'Ad added ✓':'No ad today'}</strong></div><div><small>YOUR STREAK</small><strong>${state.streak} day${state.streak===1?'':'s'}</strong></div><p>${state.adContributions} optional ad${state.adContributions===1?'':'s'} contributed so far</p></section><button class="primary-action share-action" onclick="shareResult()"><span>${state.shared?'Share text copied!':'Share my 30'}</span><span>↗</span></button><div class="completion-links"><button onclick="startWorkout()">Do 30 again</button><button onclick="setView('impact')">See the impact</button></div></div>`}
+    function renderComplete(){return `<div class="complete-screen"><span class="eyebrow">TODAY'S 30 · DONE</span><div class="completion-number">30</div><h1>Done.</h1><p>${state.adWatched?'You moved. Your break helped support this month\'s Give.':'You moved. That\'s enough for today.'}</p><section class="completion-meta"><div><small>GIVING</small><strong>${state.adWatched?'Ad helped ✓':'No ad today'}</strong></div><div><small>STREAK</small><strong>${state.streak} day${state.streak===1?'':'s'}</strong></div></section><p class="completion-note">${state.adContributions} optional ad${state.adContributions===1?'':'s'} helped so far</p><button class="primary-action share-action" onclick="shareResult()"><span>${state.shared?'Share text copied!':'Share my 30'}</span><span>↗</span></button><div class="completion-links"><button onclick="setView('impact')">See impact</button><button onclick="startWorkout()">Do 30 again</button></div></div>`}
     async function shareResult(){const text='I did 30 squats with FitGive — a tiny workout for some real good. 🌱';try{if(navigator.share)await navigator.share({title:'My FitGive 30',text:text});else if(navigator.clipboard)await navigator.clipboard.writeText(text);else throw new Error();state.shared=true;render();showToast('Share text ready');Analytics.track('result_shared',{session_id:state.currentSessionId,result:'completed'})}catch(e){showToast('Copy: '+text);Analytics.track('result_shared',{session_id:state.currentSessionId,result:'cancelled'})}}
 
-    function renderImpact(){return topbar(false)+`<div class="page impact-page"><span class="eyebrow">YOUR IMPACT</span><h1 class="page-title">Small moves.<br><em>Clear giving.</em></h1><section class="impact-ledger"><div class="impact-ledger-head"><span class="eyebrow">YOUR LEDGER</span><span class="impact-beta">BETA</span></div><div class="impact-ledger-number"><strong>${state.totalSquats}</strong><span>squats moved</span></div><div class="impact-ledger-row"><div><small>WORKOUTS</small><b>${state.workouts}</b></div><div><small>ADS CONTRIBUTED</small><b>${state.adContributions}</b></div></div></section><section class="giving-card"><div class="giving-card-head"><span class="eyebrow">THIS MONTH'S GIVING</span><span class="giving-status">NOT LIVE YET</span></div><strong class="giving-amount">₩—</strong><p>When real rewarded ads go live, verified eligible net ad revenue will appear here. FitGive plans to set aside 50% for donation.</p></section><section class="cause-card"><span class="eyebrow">CURRENT CAUSE</span><strong>Children's meals</strong><p>The recipient, donated amount, and receipt will be published here after each monthly donation.</p></section><button class="impact-details" onclick="openGiving()">How the money moves →</button></div>`+bottomNav('impact')}
+    function renderImpact(){return topbar(false)+`<div class="page impact-page"><span class="eyebrow">YOUR IMPACT</span><h1 class="page-title">Small moves.<br><em>Clear giving.</em></h1><section class="giving-hero"><span class="eyebrow">THIS MONTH'S DONATION POOL</span><strong class="giving-hero-amount">₩—</strong><span class="giving-hero-title">Giving starts when ads go live.</span><p class="giving-hero-copy">FitGive plans to set aside 50% of eligible net ad revenue for donation. The final amount is published after each monthly donation.</p></section><section class="impact-activity"><div class="impact-section-label"><strong>Your activity</strong><span>all time</span></div><div class="activity-row"><div><strong>${state.totalSquats}</strong><small>SQUATS</small></div><div><strong>${state.workouts}</strong><small>WORKOUTS</small></div><div><strong>${state.adContributions}</strong><small>ADS HELPED</small></div></div></section><section class="cause-line"><small>CURRENT CAUSE</small><strong>Children's meals</strong><p>Recipient, donated amount and receipt will appear here after the monthly donation.</p></section><button class="impact-details" onclick="openGiving()">How giving works →</button></div>`+bottomNav('impact')}
     function openGiving(){document.getElementById('givingModal').classList.add('open')}function closeGiving(event){if(event&&event.target!==event.currentTarget)return;document.getElementById('givingModal').classList.remove('open')}
 
     function renderMe(){
