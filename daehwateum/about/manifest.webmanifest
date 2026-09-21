@@ -1,0 +1,10 @@
+{
+  "name": "대화틈 소개",
+  "short_name": "대화틈",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://bb-bk-tk.github.io/daehwateum/manifest.webmanifest"
+    }
+  ]
+}
