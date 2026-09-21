@@ -47,6 +47,7 @@
         <button class="tab" data-tab="decisionsPanel" type="button">Decisions</button>
         <button class="tab" data-tab="projectsPanel" type="button">Projects</button>
         <button class="tab" data-tab="stalePanel" type="button">Stale</button>
+        <button class="tab" data-tab="aiPanel" type="button">AI</button>
       </nav>
 
       <section id="agentsPanel" class="panel">
@@ -75,6 +76,36 @@
       <section id="stalePanel" class="panel" hidden>
         <div class="section-heading"><h2>Stale / Blocked</h2><span>Needs cleanup</span></div>
         <div id="staleList" class="stack"></div>
+      </section>
+
+      <section id="aiPanel" class="panel" hidden>
+        <div class="section-heading"><h2>Team BoRam AI</h2><span>Shared memory + Super</span></div>
+
+        <article class="ai-card">
+          <div class="ai-card-head">
+            <div>
+              <div class="label ai-label">MEMORY</div>
+              <h3>Refresh Team Memory</h3>
+              <p class="copy muted">Notion의 활성 Project와 진행/대기 Live Work를 vector memory로 다시 동기화합니다.</p>
+            </div>
+            <button id="syncMemoryBtn" class="secondary-btn ai-inline-btn" type="button">Sync memory</button>
+          </div>
+          <div id="memoryStatus" class="ai-status" aria-live="polite">Ready</div>
+        </article>
+
+        <article class="ai-card">
+          <div class="label ai-label">ASK</div>
+          <h3>Ask Team BoRam</h3>
+          <p class="copy muted">현재 Team BoRam memory에서 관련 맥락을 찾아 Nemotron Super가 답합니다.</p>
+          <textarea id="aiQuestion" class="ai-question" placeholder="예: 지금 내가 직접 해야 할 것과 AI가 대신할 수 있는 일을 구분해줘."></textarea>
+          <div class="ai-actions">
+            <button id="askAiBtn" class="primary-btn" type="button">Ask Team BoRam</button>
+            <button id="clearAiBtn" class="secondary-btn" type="button">Clear</button>
+          </div>
+          <div id="aiRunStatus" class="ai-status" aria-live="polite"></div>
+          <div id="aiAnswer" class="ai-answer" hidden></div>
+          <div id="aiMemoryRefs" class="ai-memory-refs" hidden></div>
+        </article>
       </section>
     </section>
   </main>
