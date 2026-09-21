@@ -15,6 +15,15 @@
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="대화틈 — 하루 한 질문으로 더 가까워지는 대화">
   <meta name="twitter:description" content="연인, 부부, 친구, 가족처럼 가까운 두 사람이 질문과 답으로 서로를 조금 더 알아가는 서비스.">
+  <script>
+  (function(){
+    var ua=navigator.userAgent||'';
+    var installed=/DaehwateumAndroid/i.test(ua)
+      || navigator.standalone===true
+      || (window.matchMedia&&window.matchMedia('(display-mode: standalone)').matches);
+    if(installed) window.location.replace('../');
+  })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;500;600;700&display=swap" rel="stylesheet">
