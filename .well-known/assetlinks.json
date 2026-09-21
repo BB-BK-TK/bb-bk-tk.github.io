@@ -12,5 +12,14 @@
         "98:BE:C9:46:5E:C3:CD:86:14:A4:CB:F4:57:0D:6F:00:78:4A:FC:FB:87:15:82:BF:C7:C8:2F:27:1D:50:29:36"
       ]
     }
+  },
+  {
+    "relation": [
+      "delegate_permission/common.query_webapk"
+    ],
+    "target": {
+      "namespace": "web",
+      "site": "https://bb-bk-tk.github.io/daehwateum-about/manifest.webmanifest"
+    }
   }
 ]
