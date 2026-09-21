@@ -437,9 +437,9 @@
       <div class="ad-bar"><span id="adBar"></span></div>
       <div class="ad-reward" id="adReward">
         <div>
-          <strong>Added to this month's pool</strong>
-          <p>Thanks. Eligible ad revenue from this view can help fund the monthly donation.</p>
-          <button onclick="AdMock.finish()">Back to my workout</button>
+          <strong>Break done. Give helped.</strong>
+          <p>Ads keep FitGive free and help fund Give rewards. Eligible ad revenue from this view supports the monthly giving pool.</p>
+          <button onclick="AdMock.finish()">Start next set</button>
         </div>
       </div>
     </section>
@@ -1015,7 +1015,7 @@
     function renderBreak(){
       const config=planConfig[state.plan];
       const header='<header class="topbar"><button class="icon-button" onclick="exitWorkout()">×</button><span class="wordmark small">impact break</span><span class="step-label">'+(state.setIndex+1)+' / '+(config.sets-1)+'</span></header>';
-      if(state.breakStage==='offer')return header+`<div class="break-offer"><span class="break-sticker">OPTIONAL · ONCE PER WORKOUT</span><h1>Catch your<br>breath.</h1><p>Want this break to help grow this month's giving pool?</p><div class="impact-promise"><span class="mini-seed">✦</span><div><strong>Watch one short ad</strong><small>Eligible ad revenue can help fund the monthly donation. Your workout always continues either way.</small></div></div><button class="primary-action watch-action" onclick="watchAd()"><span>Watch during my break</span><span>→</span></button><button class="text-action" onclick="plainRest()">No thanks, just rest</button></div>`;
+      if(state.breakStage==='offer')return header+`<div class="break-offer"><span class="break-sticker">OPTIONAL · ONCE PER WORKOUT</span><h1>Catch your<br>breath.</h1><p>Ads keep FitGive free and help fund Give rewards.</p><div class="impact-promise"><span class="mini-seed">✦</span><div><strong>Your break can give back</strong><small>Watch one short ad while you rest. Eligible ad revenue can help fund the monthly giving pool.</small></div></div><button class="primary-action watch-action" onclick="watchAd()"><span>Watch during my break</span><span>→</span></button><button class="text-action" onclick="plainRest()">No thanks, just rest</button></div>`;
       // the full-screen ad overlay sits on top of this and owns its own clock
       if(state.breakStage==='ad')return header+`<div class="plain-break"><span class="eyebrow">LOADING YOUR REWARD</span><div class="breathing-ring"><strong>✦</strong></div><h2>Rest up.</h2><p>Your workout continues right after.</p></div>`;
       const nextSet=Math.min(state.setIndex+2,config.sets);
@@ -1041,8 +1041,14 @@
         /* The ad ran *during* the break, so the rest already happened. Showing a
            "Nice. Breathe." rest screen afterwards asks someone to rest twice.
            Only if they bailed out early is there rest genuinely left to take. */
-        const left=REST_SECONDS-Math.round(watchedSec||0);
-        if(left<=6){ advanceAfterBreak(); }
+        if(rewarded){
+          // A completed rewarded ad IS the break. Never ask the user to rest twice.
+          advanceAfterBreak();
+          return;
+        }
+        // Only an early dismissal can leave genuine rest time remaining.
+        const left=Math.max(0,REST_SECONDS-Math.round(watchedSec||0));
+        if(left<=0){ advanceAfterBreak(); }
         else { state.breakStage='rest';state.breakSeconds=left;render(); }
       });
     }
@@ -1060,7 +1066,7 @@
     function advanceAfterBreak(){state.setIndex++;state.repInSet=0;state.breakStage='offer';BeatEngine.resume();resyncGrid();setView('workout')}
 
     function completeWorkout(){clearFlow();stopBeatLoop();BeatEngine.stop();Screen.release();buzz([40,80,40,80,60]);state.workouts++;state.totalSquats+=30;persistProfile();const completedAt=new Date().toISOString();const adContribution=state.adWatched?1:0;saveSessionRecord({id:state.currentSessionId,startedAt:state.currentSessionStartedAt,completedAt:completedAt,plan:state.plan,pace:state.pace,completedReps:30,adContribution:adContribution,adOutcome:state.adWatched?'rewarded':(state.adOffered?'declined':'not_offered')});const durationMs=state.currentSessionStartedAt?(new Date(completedAt)-new Date(state.currentSessionStartedAt)):null;Analytics.track('workout_completed',{session_id:state.currentSessionId,duration_ms:durationMs,ad_contribution:adContribution});setView('complete')}
-    function renderComplete(){return `<div class="complete-screen"><div class="confetti"><span>✦</span><span>●</span><span>＋</span><span>✦</span></div><span class="eyebrow">TODAY'S 30 · DONE</span><div class="completion-number">30</div><h1>Nice work.</h1><p>Your workout is done. The ad was always optional.</p><section class="result-ticket"><div><small>GIVING</small><strong>${state.adWatched?'Ad added ✓':'No ad today'}</strong></div><div><small>YOUR STREAK</small><strong>${state.streak} day${state.streak===1?'':'s'}</strong></div><p>${state.adContributions} optional ad${state.adContributions===1?'':'s'} contributed so far</p></section><button class="primary-action share-action" onclick="shareResult()"><span>${state.shared?'Share text copied!':'Share my 30'}</span><span>↗</span></button><div class="completion-links"><button onclick="startWorkout()">Do 30 again</button><button onclick="setView('impact')">See the impact</button></div></div>`}
+    function renderComplete(){return `<div class="complete-screen"><div class="confetti"><span>✦</span><span>●</span><span>＋</span><span>✦</span></div><span class="eyebrow">TODAY'S 30 · DONE</span><div class="completion-number">30</div><h1>Nice work.</h1><p>${state.adWatched?'Your break helped support this month\'s Give.':'Your workout is done. Ads are always optional.'}</p><section class="result-ticket"><div><small>GIVING</small><strong>${state.adWatched?'Ad added ✓':'No ad today'}</strong></div><div><small>YOUR STREAK</small><strong>${state.streak} day${state.streak===1?'':'s'}</strong></div><p>${state.adContributions} optional ad${state.adContributions===1?'':'s'} contributed so far</p></section><button class="primary-action share-action" onclick="shareResult()"><span>${state.shared?'Share text copied!':'Share my 30'}</span><span>↗</span></button><div class="completion-links"><button onclick="startWorkout()">Do 30 again</button><button onclick="setView('impact')">See the impact</button></div></div>`}
     async function shareResult(){const text='I did 30 squats with FitGive — a tiny workout for some real good. 🌱';try{if(navigator.share)await navigator.share({title:'My FitGive 30',text:text});else if(navigator.clipboard)await navigator.clipboard.writeText(text);else throw new Error();state.shared=true;render();showToast('Share text ready');Analytics.track('result_shared',{session_id:state.currentSessionId,result:'completed'})}catch(e){showToast('Copy: '+text);Analytics.track('result_shared',{session_id:state.currentSessionId,result:'cancelled'})}}
 
     function renderImpact(){return topbar(false)+`<div class="page impact-page"><span class="eyebrow">YOUR IMPACT</span><h1 class="page-title">Small moves.<br><em>Clear giving.</em></h1><section class="impact-ledger"><div class="impact-ledger-head"><span class="eyebrow">YOUR LEDGER</span><span class="impact-beta">BETA</span></div><div class="impact-ledger-number"><strong>${state.totalSquats}</strong><span>squats moved</span></div><div class="impact-ledger-row"><div><small>WORKOUTS</small><b>${state.workouts}</b></div><div><small>ADS CONTRIBUTED</small><b>${state.adContributions}</b></div></div></section><section class="giving-card"><div class="giving-card-head"><span class="eyebrow">THIS MONTH'S GIVING</span><span class="giving-status">NOT LIVE YET</span></div><strong class="giving-amount">₩—</strong><p>When real rewarded ads go live, verified eligible net ad revenue will appear here. FitGive plans to set aside 50% for donation.</p></section><section class="cause-card"><span class="eyebrow">CURRENT CAUSE</span><strong>Children's meals</strong><p>The recipient, donated amount, and receipt will be published here after each monthly donation.</p></section><button class="impact-details" onclick="openGiving()">How the money moves →</button></div>`+bottomNav('impact')}
