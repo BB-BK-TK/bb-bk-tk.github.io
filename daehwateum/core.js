@@ -40,7 +40,7 @@ function inviteWasSent(){return !!(session&&session.inviteSentAt)}
 function reveal(){if(!session||!state)return;session.rev=session.rev||[];if(session.rev.indexOf(state.round_id)<0){session.rev.push(state.round_id);saveSession(session)}}
 function revealed(){return !!(session&&state&&session.rev&&session.rev.indexOf(state.round_id)>=0)}
 function inviteUrl(){return location.origin+base()+'?invite='+encodeURIComponent(session&&session.invite?session.invite:'')}
-function clearQuery(){window.history.replaceState({},'',base())}
+function clearQuery(){var p=location.pathname,target=/\/app\/(?:index\.html)?$/.test(p)?p:base();window.history.replaceState({},'',target)}
 function dateObj(v){var d=v?new Date(v):null;return d&&!isNaN(d.getTime())?d:null}
 function dateLabel(v){var d=dateObj(v);return d?(d.getMonth()+1)+'.'+d.getDate():''}
 function dayKey(d){return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
