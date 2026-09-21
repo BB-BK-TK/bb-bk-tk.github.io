@@ -28,7 +28,9 @@
   }
 
   function pagePath(){
-    var p=location.pathname.replace(/^\/daehwateum/,'/');
+    var raw=location.pathname;
+    if(/^\/daehwateum-about\/?$/.test(raw))return '/about/';
+    var p=raw.replace(/^\/daehwateum/,'/');
     if(p==='/about'||p==='/about/')return '/about/';
     if(p==='/join'||p==='/join/')return '/join/';
     return '/';
