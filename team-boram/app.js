@@ -3,6 +3,7 @@
 (function () {
   const config = window.TEAM_BORAM_CONFIG || {};
   const apiBase = String(config.apiBase || "").replace(/\/$/, "");
+  const aiBase = String(config.aiBase || "").replace(/\/$/, "");
   const state = { key: "", data: null, selectedAgent: null, selectedDecision: {} };
 
   const $ = (id) => document.getElementById(id);
@@ -56,6 +57,14 @@
     const response = await fetch(apiBase + path, { ...options, headers: { ...apiHeaders(), ...(options.headers || {}) } });
     const payload = await response.json().catch(() => ({}));
     if (!response.ok) throw new Error(payload.error || `Request failed (${response.status})`);
+    return payload;
+  }
+
+  async function aiApi(path, options = {}) {
+    if (!aiBase) throw new Error("AI API URL is not configured.");
+    const response = await fetch(aiBase + path, { ...options, headers: { ...apiHeaders(), ...(options.headers || {}) } });
+    const payload = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(payload.error || `AI request failed (${response.status})`);
     return payload;
   }
 
@@ -350,6 +359,75 @@
       <article class="stale-card"><div class="project-meta"><strong>${escapeHtml(item.workItem)}</strong><span class="stage">${escapeHtml(item.reason)}</span></div><p>${escapeHtml(item.output || "No recent output")}</p></article>`).join("") : `<div class="empty">Nothing stale or blocked.</div>`;
   }
 
+  function renderAiAnswer(payload) {
+    const answer = $("aiAnswer");
+    const refs = $("aiMemoryRefs");
+    answer.hidden = false;
+    answer.textContent = payload.answer || "No answer returned.";
+
+    const used = Array.isArray(payload.memoriesUsed) ? payload.memoriesUsed : [];
+    refs.hidden = !used.length;
+    refs.innerHTML = used.length
+      ? `<div class="label ai-label">MEMORY USED · ${used.length}</div>` +
+        used.map((m) => `
+          <div class="memory-ref">
+            <b>${escapeHtml(m.title || m.sourceId || "Memory")}</b>
+            <span>${escapeHtml(m.project || "Team BoRam")} · similarity ${Number(m.similarity || 0).toFixed(3)}</span>
+          </div>`).join("")
+      : "";
+  }
+
+  async function syncMemory() {
+    const button = $("syncMemoryBtn");
+    const status = $("memoryStatus");
+    button.disabled = true;
+    status.textContent = "Syncing Notion → vector memory…";
+    try {
+      const result = await aiApi("/sync/notion", { method: "POST", body: "{}" });
+      status.textContent = `Synced ${result.total || 0} memories · ${result.projects || 0} projects · ${result.liveWork || 0} live work · removed ${result.staleRemoved || 0} stale`;
+    } catch (error) {
+      status.textContent = error.message;
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  async function askTeamBoram() {
+    const question = $("aiQuestion").value.trim();
+    if (!question) {
+      $("aiRunStatus").textContent = "질문을 입력해 주세요.";
+      return;
+    }
+
+    const button = $("askAiBtn");
+    button.disabled = true;
+    $("aiRunStatus").textContent = "Retrieving memory + asking Super…";
+    $("aiAnswer").hidden = true;
+    $("aiMemoryRefs").hidden = true;
+
+    try {
+      const result = await aiApi("/worker", {
+        method: "POST",
+        body: JSON.stringify({ task: question, retrieve: true })
+      });
+      $("aiRunStatus").textContent = `Done · ${result.model || "worker"}`;
+      renderAiAnswer(result);
+    } catch (error) {
+      $("aiRunStatus").textContent = error.message;
+    } finally {
+      button.disabled = false;
+    }
+  }
+
+  function clearAi() {
+    $("aiQuestion").value = "";
+    $("aiRunStatus").textContent = "";
+    $("aiAnswer").textContent = "";
+    $("aiAnswer").hidden = true;
+    $("aiMemoryRefs").innerHTML = "";
+    $("aiMemoryRefs").hidden = true;
+  }
+
   function switchTab(panelId) {
     document.querySelectorAll(".panel").forEach((panel) => { panel.hidden = panel.id !== panelId; });
     document.querySelectorAll(".tab").forEach((tab) => tab.classList.toggle("active", tab.dataset.tab === panelId));
@@ -359,6 +437,12 @@
   $("dashboardKey").addEventListener("keydown", (event) => { if (event.key === "Enter") unlock(); });
   $("refreshBtn").addEventListener("click", () => loadDashboard().catch((error) => setHealth(error.message, "bad")));
   $("lockBtn").addEventListener("click", lock);
+  $("syncMemoryBtn").addEventListener("click", syncMemory);
+  $("askAiBtn").addEventListener("click", askTeamBoram);
+  $("clearAiBtn").addEventListener("click", clearAi);
+  $("aiQuestion").addEventListener("keydown", (event) => {
+    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") askTeamBoram();
+  });
   document.querySelectorAll(".tab").forEach((tab) => tab.addEventListener("click", () => switchTab(tab.dataset.tab)));
 
   const remembered = sessionStorage.getItem("teamBoramKey");
