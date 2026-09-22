@@ -137,3 +137,56 @@ button:disabled { cursor: wait; opacity: .55; }
   .ai-card-head { grid-template-columns: 1fr; }
   .ai-inline-btn { width: 100%; }
 }
+
+html, body {
+  min-height: 100%;
+  overflow-x: hidden;
+}
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  min-height: 100dvh;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-y: auto;
+  touch-action: pan-y pinch-zoom;
+}
+button, .tab, .agent-card, .leadership-card, .option-btn, .primary-btn, .secondary-btn, .icon-btn {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+button {
+  user-select: none;
+  -webkit-user-select: none;
+}
+.panel {
+  contain: layout style;
+}
+.agent-grid, .stack, .team-hierarchy {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 500px;
+}
+#agentDetail {
+  scroll-margin-top: 12px;
+}
+@media (max-width: 640px) {
+  .app-shell {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  .tabs {
+    position: sticky;
+    top: max(0px, env(safe-area-inset-top));
+    z-index: 20;
+    padding: 6px 0;
+    background: var(--bg);
+  }
+  .tab {
+    min-height: 46px;
+  }
+  .agent-card, .leadership-card, .decision-card, .ai-card {
+    transform: translateZ(0);
+  }
+}
