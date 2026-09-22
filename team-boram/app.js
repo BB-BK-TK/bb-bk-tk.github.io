@@ -54,10 +54,23 @@
 
   async function api(path, options = {}) {
     if (!apiBase) throw new Error("API URL is not configured.");
-    const response = await fetch(apiBase + path, { ...options, headers: { ...apiHeaders(), ...(options.headers || {}) } });
-    const payload = await response.json().catch(() => ({}));
-    if (!response.ok) throw new Error(payload.error || `Request failed (${response.status})`);
-    return payload;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), options.timeoutMs || 15000);
+    try {
+      const response = await fetch(apiBase + path, {
+        ...options,
+        signal: controller.signal,
+        headers: { ...apiHeaders(), ...(options.headers || {}) }
+      });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.error || `Request failed (${response.status})`);
+      return payload;
+    } catch (error) {
+      if (error?.name === "AbortError") throw new Error("Notion dashboard request timed out. AI 탭은 계속 사용할 수 있습니다.");
+      throw error;
+    } finally {
+      clearTimeout(timeout);
+    }
   }
 
   async function aiApi(path, options = {}) {
@@ -72,13 +85,15 @@
     const key = $("dashboardKey").value.trim();
     if (!key) { lockMessage.textContent = "Dashboard key를 입력해 주세요."; return; }
     state.key = key;
-    lockMessage.textContent = "Connecting…";
+    lockMessage.textContent = "Checking key…";
     try {
-      await loadDashboard();
+      await api("/health", { timeoutMs: 8000 });
       sessionStorage.setItem("teamBoramKey", key);
       lockScreen.hidden = true;
       dashboard.hidden = false;
       lockMessage.textContent = "";
+      setHealth("Connected · loading Notion…", "");
+      loadDashboard().catch((error) => setHealth(error.message, "bad"));
     } catch (error) {
       state.key = "";
       lockMessage.textContent = error.message;
@@ -455,6 +470,11 @@
   if (remembered) {
     state.key = remembered;
     $("dashboardKey").value = remembered;
-    loadDashboard().then(() => { lockScreen.hidden = true; dashboard.hidden = false; }).catch(() => lock());
+    api("/health", { timeoutMs: 8000 }).then(() => {
+      lockScreen.hidden = true;
+      dashboard.hidden = false;
+      setHealth("Connected · loading Notion…", "");
+      loadDashboard().catch((error) => setHealth(error.message, "bad"));
+    }).catch(() => lock());
   }
 })();
