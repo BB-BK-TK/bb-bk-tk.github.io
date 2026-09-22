@@ -185,8 +185,10 @@
       <span class="role-badge">${escapeHtml(role.badge)}</span>`;
     button.addEventListener("click", () => {
       state.selectedAgent = role.name;
-      renderAgents();
+      document.querySelectorAll(".agent-card, .leadership-card").forEach((el) => el.classList.remove("selected"));
+      button.classList.add("selected");
       renderLeadershipDetail(role);
+      requestAnimationFrame(() => $("agentDetail")?.scrollIntoView({ behavior: "smooth", block: "start" }));
     });
     target.replaceChildren(button);
   }
@@ -210,8 +212,10 @@
         <small>${escapeHtml(agent.summary || "No active work")}</small>`;
       button.addEventListener("click", () => {
         state.selectedAgent = agent.name;
-        renderAgents();
+        document.querySelectorAll(".agent-card, .leadership-card").forEach((el) => el.classList.remove("selected"));
+        button.classList.add("selected");
         renderSpecialistDetail(agent);
+        requestAnimationFrame(() => $("agentDetail")?.scrollIntoView({ behavior: "smooth", block: "start" }));
       });
       grid.appendChild(button);
     });
