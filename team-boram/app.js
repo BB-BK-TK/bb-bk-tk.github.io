@@ -437,12 +437,18 @@
   $("dashboardKey").addEventListener("keydown", (event) => { if (event.key === "Enter") unlock(); });
   $("refreshBtn").addEventListener("click", () => loadDashboard().catch((error) => setHealth(error.message, "bad")));
   $("lockBtn").addEventListener("click", lock);
-  $("syncMemoryBtn").addEventListener("click", syncMemory);
-  $("askAiBtn").addEventListener("click", askTeamBoram);
-  $("clearAiBtn").addEventListener("click", clearAi);
-  $("aiQuestion").addEventListener("keydown", (event) => {
-    if ((event.metaKey || event.ctrlKey) && event.key === "Enter") askTeamBoram();
-  });
+  const syncMemoryBtn = $("syncMemoryBtn");
+  const askAiBtn = $("askAiBtn");
+  const clearAiBtn = $("clearAiBtn");
+  const aiQuestion = $("aiQuestion");
+  if (syncMemoryBtn) syncMemoryBtn.addEventListener("click", syncMemory);
+  if (askAiBtn) askAiBtn.addEventListener("click", askTeamBoram);
+  if (clearAiBtn) clearAiBtn.addEventListener("click", clearAi);
+  if (aiQuestion) {
+    aiQuestion.addEventListener("keydown", (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === "Enter") askTeamBoram();
+    });
+  }
   document.querySelectorAll(".tab").forEach((tab) => tab.addEventListener("click", () => switchTab(tab.dataset.tab)));
 
   const remembered = sessionStorage.getItem("teamBoramKey");
