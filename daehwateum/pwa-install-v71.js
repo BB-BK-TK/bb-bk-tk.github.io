@@ -52,8 +52,8 @@ function trackInstallClick(){try{if(window.DaehwateumAcquisition&&typeof window.
 function render(){
   if(standalone()||nativeApp()||installedRelated||dismissed()||document.querySelector('.dt-install-prompt'))return;
   if(!isMobile()&&!deferredPrompt)return;
-  var el=document.createElement('aside');el.className='dt-install-prompt';el.setAttribute('role','dialog');el.setAttribute('aria-label',ko?'대화틈 앱 설치':'Install Daehwateum');
-  el.innerHTML='<div class="dt-install-row"><div class="dt-install-icon">틈</div><div class="dt-install-copy"><h3>'+(ko?'대화틈을 앱으로 더 편하게':'Use Daehwateum as an app')+'</h3><p>'+(ko?'홈 화면에서 바로 열고, 대화를 놓치지 마세요.':'Open it from your home screen and keep your conversations close.')+'</p></div></div><div class="dt-install-actions"><button type="button" class="secondary" data-dt-install-later>'+(ko?'나중에':'Later')+'</button><button type="button" class="primary" data-dt-install>'+(isIOS()?(ko?'홈 화면에 추가':'Add to Home Screen'):(ko?'앱으로 설치':'Install app'))+'</button></div>';
+  var el=document.createElement('aside');el.className='dt-install-prompt';el.setAttribute('role','dialog');el.setAttribute('aria-label',ko?'도란도란 앱 설치':'Install Dorandoran');
+  el.innerHTML='<div class="dt-install-row"><div class="dt-install-icon">틈</div><div class="dt-install-copy"><h3>'+(ko?'도란도란을 앱으로 더 편하게':'Use Dorandoran as an app')+'</h3><p>'+(ko?'홈 화면에서 바로 열고, 대화를 놓치지 마세요.':'Open it from your home screen and keep your conversations close.')+'</p></div></div><div class="dt-install-actions"><button type="button" class="secondary" data-dt-install-later>'+(ko?'나중에':'Later')+'</button><button type="button" class="primary" data-dt-install>'+(isIOS()?(ko?'홈 화면에 추가':'Add to Home Screen'):(ko?'앱으로 설치':'Install app'))+'</button></div>';
   document.body.appendChild(el);
   el.querySelector('[data-dt-install-later]').onclick=function(){markDismissed();remove()};
   el.querySelector('[data-dt-install]').onclick=function(){

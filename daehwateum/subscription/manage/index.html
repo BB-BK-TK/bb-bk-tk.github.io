@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="ko">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f6f1ea"><title>대화틈 · Premium</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f6f1ea"><title>도란도란 · Premium</title>
 <link rel="stylesheet" href="../../typography-v3.css"><script>(function(){var ua=navigator.userAgent||'';if(/DaehwateumAndroid/.test(ua))document.documentElement.classList.add('native-app');if(/DaehwateumInsets\/2/.test(ua))document.documentElement.classList.add('native-insets-v2')})();</script>
 <style>:root{--b:#f6f1ea;--p:#fffdfa;--i:#292521;--m:#7b746c;--l:#e5ddd3;--g:#405b52;--soft:#eee8df;--safe-top:env(safe-area-inset-top,0px);--safe-bottom:env(safe-area-inset-bottom,0px)}*{box-sizing:border-box}html{background:var(--b)}body{margin:0;background:var(--b);color:var(--i);font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;padding-top:var(--safe-top);padding-bottom:var(--safe-bottom)}.page{width:min(94%,760px);margin:auto;padding-bottom:54px}.top{height:68px;display:flex;align-items:center;gap:10px}.top a{width:40px;height:40px;display:grid;place-items:center;color:var(--i);text-decoration:none;font-size:22px}.card{background:var(--p);border:1px solid var(--l);border-radius:26px;padding:24px;box-shadow:0 20px 60px #4a3b2e10}.card+.card{margin-top:14px}.k{font-size:9px;letter-spacing:.14em;font-weight:900;color:var(--m)}h1{font-family:inherit;font-weight:760;letter-spacing:-.045em;font-size:34px;line-height:1.15;margin:8px 0 12px}h2{font-size:18px;margin:0 0 8px}.lead,.body{color:var(--m);font-size:14px;line-height:1.7}.plan{margin-top:22px;padding-top:20px;border-top:1px solid var(--l);display:flex;justify-content:space-between;gap:16px;align-items:flex-end}.plan small{color:var(--m);font-size:12px;font-weight:800}.plan b{display:block;font-size:25px;margin-top:4px}.period{color:var(--m);font-size:12px;text-align:right}.native-app{--safe-top:max(env(safe-area-inset-top,0px),30px);--safe-bottom:max(env(safe-area-inset-bottom,0px),10px)}.native-app.native-insets-v2{--safe-top:0px;--safe-bottom:0px}.btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:52px;margin-top:18px;border:0;border-radius:999px;background:var(--g);color:#fff;text-decoration:none;font-weight:900}.btn.secondary{background:transparent;color:var(--i);border:1px solid var(--l)}ul{margin:12px 0 0;padding-left:20px}li{font-size:14px;line-height:1.65}li+li{margin-top:8px}.beta-note{margin-top:14px;padding:14px 16px;border-radius:16px;background:var(--soft);color:var(--m);font-size:13px;line-height:1.65}@media(max-width:600px){.card{padding:22px 18px;border-radius:22px}.plan{align-items:flex-start;flex-direction:column}.period{text-align:left}}</style>
 </head>
@@ -55,7 +55,7 @@ function render(){
     title.textContent='Premium을 무료로 이용 중이에요';
     body.textContent='Beta 기간에는 결제 정보 없이 Premium 기능을 모두 사용할 수 있어요. 아래에서 꺼보면 Free 상태를 그대로 확인할 수 있고, 언제든 다시 켤 수 있어요.';
     action.innerHTML='<button type="button" class="btn secondary" data-release>Premium 테스트 해제</button>'+
-      '<a class="btn secondary" href="../../">대화틈으로 돌아가기</a>';
+      '<a class="btn secondary" href="../../">도란도란으로 돌아가기</a>';
     return;
   }
   name.textContent='Free';note.textContent='Beta';
@@ -75,8 +75,8 @@ function confirmPremium(){
 }
 function release(btn){
   var gid=get(GUEST);
-  if(!gid){say('이 기기에서 Premium 정보를 찾지 못했어요. 대화틈으로 돌아갔다가 다시 시도해 주세요.',true);return}
-  if(!window.confirm('Premium을 해제할까요? 내가 방장인 7일 초과 대화틈은 새 질문이 잠시 멈춰요. 기존 대화 기록은 그대로 남습니다.'))return;
+  if(!gid){say('이 기기에서 Premium 정보를 찾지 못했어요. 도란도란으로 돌아갔다가 다시 시도해 주세요.',true);return}
+  if(!window.confirm('Premium을 해제할까요? 내가 방장인 7일 초과 도란도란은 새 질문이 잠시 멈춰요. 기존 대화 기록은 그대로 남습니다.'))return;
   btn.disabled=true;btn.textContent='해제하는 중…';say('');
   rpc('dt_set_guest_premium',{p_app_user_id:gid,p_value:false}).then(function(){
     setPrem(false);premium=false;render();

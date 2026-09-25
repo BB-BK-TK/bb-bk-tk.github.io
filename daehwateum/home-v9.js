@@ -8,7 +8,7 @@ function copy(premium,returning){
       title:'오늘도,<br><em>대화할 틈.</em>',
       body:'평소엔 쉽게 묻지 못했던 것도, 여기선 조금 조심스럽게 꺼내봐요.',
       note:'서로를 조금 더 알아가는 질문을 시작해보세요.',
-      cta:returning?'':'대화틈 만들기 →'
+      cta:returning?'':'도란도란 만들기 →'
     };
   }
   return{

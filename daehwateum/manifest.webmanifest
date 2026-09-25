@@ -1,7 +1,7 @@
 {
   "id": "./",
-  "name": "대화틈 · Daehwateum",
-  "short_name": "대화틈",
+  "name": "도란도란 · Dorandoran",
+  "short_name": "도란도란",
   "lang": "ko",
   "start_url": "./app/",
   "scope": "./app/",

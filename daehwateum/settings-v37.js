@@ -10,16 +10,16 @@ function t(){return KO?{
   notificationBodyOn:'새 질문이 열리거나 서로의 답을 볼 수 있게 되면 알려드려요.',
   notificationBodyOff:'새 질문과 답변 준비 소식을 놓치지 않도록 알림을 켤 수 있어요.',
   notificationEnable:'알림 받기',notificationOpen:'알림 권한 확인',notificationDeviceSettings:'기기 알림 설정 열기',notificationHint:'알림 권한은 기기 설정에서도 언제든 변경할 수 있어요.',
-  notificationChecking:'알림 상태를 확인하고 있어요…',notificationChecked:'알림 상태를 확인했어요.',notificationDenied:'기기 설정에서 대화틈 알림 권한을 허용해 주세요.',
-  appInfoTitle:'앱 정보',version:'버전',how:'대화틈 사용 방법',terms:'이용약관',privacy:'개인정보처리방침'
+  notificationChecking:'알림 상태를 확인하고 있어요…',notificationChecked:'알림 상태를 확인했어요.',notificationDenied:'기기 설정에서 도란도란 알림 권한을 허용해 주세요.',
+  appInfoTitle:'앱 정보',version:'버전',how:'도란도란 사용 방법',terms:'이용약관',privacy:'개인정보처리방침'
 }:{
   notification:'Notifications',subscription:'Manage subscription',recovery:'Conversation recovery',appInfo:'App info',
   notificationTitle:'Notifications',notificationOn:'Notifications are on',notificationOff:'Notifications are off',
   notificationBodyOn:'We’ll let you know when a new question opens or answers are ready to view.',
   notificationBodyOff:'Turn on notifications so you do not miss new questions or answer-ready updates.',
   notificationEnable:'Enable notifications',notificationOpen:'Check notification permission',notificationDeviceSettings:'Open device notification settings',notificationHint:'You can also change notification permission anytime in your device settings.',
-  notificationChecking:'Checking notification status…',notificationChecked:'Notification status checked.',notificationDenied:'Allow Daehwateum notifications in your device settings.',
-  appInfoTitle:'App info',version:'Version',how:'How Daehwateum works',terms:'Terms of use',privacy:'Privacy policy'
+  notificationChecking:'Checking notification status…',notificationChecked:'Notification status checked.',notificationDenied:'Allow Dorandoran notifications in your device settings.',
+  appInfoTitle:'App info',version:'Version',how:'How Dorandoran works',terms:'Terms of use',privacy:'Privacy policy'
 }}
 function esc(s){return String(s==null?'':s).replace(/[&<>"']/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]})}
 function closeSettingsPage(){var x=document.getElementById('settings-page-overlay');if(x)x.remove()}
@@ -48,7 +48,7 @@ function requestNotifications(){
   }
   feedback(c.notificationDenied);
 }
-function appInfoBody(){var c=t();return '<section class="settings-page-card app-info-card"><div class="app-info-brand">◉ 대화틈</div><div class="app-info-version"><span>'+esc(c.version)+'</span><b>'+esc(VERSION)+'</b></div></section><section class="settings-page-list"><button type="button" data-settings-action="about">'+esc(c.how)+'<span>›</span></button><a href="./legal/terms/?from=app-info">'+esc(c.terms)+'<span>›</span></a><a href="./legal/privacy/?from=app-info">'+esc(c.privacy)+'<span>›</span></a></section>'}
+function appInfoBody(){var c=t();return '<section class="settings-page-card app-info-card"><div class="app-info-brand">◉ 도란도란</div><div class="app-info-version"><span>'+esc(c.version)+'</span><b>'+esc(VERSION)+'</b></div></section><section class="settings-page-list"><button type="button" data-settings-action="about">'+esc(c.how)+'<span>›</span></button><a href="./legal/terms/?from=app-info">'+esc(c.terms)+'<span>›</span></a><a href="./legal/privacy/?from=app-info">'+esc(c.privacy)+'<span>›</span></a></section>'}
 function openAppInfo(){page(t().appInfoTitle,appInfoBody())}
 function openPremiumFromQuery(){var p=new URLSearchParams(location.search);if(p.get('premium')!=='1')return;history.replaceState({},'',location.pathname+location.hash);setTimeout(function(){var app=document.getElementById('app');if(!app)return;var b=document.createElement('button');b.type='button';b.hidden=true;b.setAttribute('data-a','premium');b.setAttribute('data-feature','bundle');app.appendChild(b);b.click();b.remove()},80)}
 /* Room-scoped entries belong together at the bottom, next to the destructive
@@ -74,7 +74,7 @@ function ensureMenu(){
 /* Rebuild synchronously from the observer callback, which runs as a microtask
    before the browser paints. Deferring to the next animation frame let the
    popover be painted first with the entries the other modules add — About,
-   내 대화틈 and a second subscription row all flashed up before being replaced. */
+   내 도란도란 and a second subscription row all flashed up before being replaced. */
 function patch(){if(patching)return;patching=true;try{ensureMenu()}finally{patching=false}}
 var previousNativePushPermission=window.DaehwateumNativePushPermission;
 window.DaehwateumNativePushPermission=function(granted){

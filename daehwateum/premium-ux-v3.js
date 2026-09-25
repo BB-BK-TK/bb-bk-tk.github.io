@@ -3,7 +3,7 @@ var syncing=false,patched=false;
 function lang(){return (navigator.language||'ko').toLowerCase().indexOf('ko')===0?'ko':'en'}
 function copy(){return lang()==='ko'?{
   bannerTitle:'조금 더 자유롭게 대화해볼까요?',
-  bannerBody:'직접 질문하고, 최대 5명과 더 많은 대화틈을 만들 수 있어요.',
+  bannerBody:'직접 질문하고, 최대 5명과 더 많은 도란도란을 만들 수 있어요.',
   bannerCta:'Premium 보기'
 }:{
   bannerTitle:'Want a little more freedom?',

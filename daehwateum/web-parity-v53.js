@@ -51,7 +51,7 @@ function patchIOSNotificationSettings(){
   if(!card)return;
   var h=card.querySelector('h1'),p=card.querySelector('p'),b=card.querySelector('[data-notification-request]'),small=card.querySelector('small');
   if(h)h.textContent=KO?'홈 화면에서 알림을 받을 수 있어요':'Notifications work from the Home Screen app';
-  if(p)p.textContent=KO?'Safari에서 대화틈을 홈 화면에 추가한 뒤 그 아이콘으로 열면 알림을 켤 수 있어요.':'Add Daehwateum to your Home Screen from Safari, then open it from that icon to enable notifications.';
+  if(p)p.textContent=KO?'Safari에서 도란도란을 홈 화면에 추가한 뒤 그 아이콘으로 열면 알림을 켤 수 있어요.':'Add Dorandoran to your Home Screen from Safari, then open it from that icon to enable notifications.';
   if(b)b.textContent=KO?'추가 방법 보기':'How to add it';
   if(small)small.textContent=KO?'Safari에서 열기 → 공유 버튼 → 홈 화면에 추가':'Open in Safari → Share → Add to Home Screen';
 }
@@ -76,6 +76,6 @@ document.addEventListener('click',function(e){
   e.preventDefault();
   e.stopImmediatePropagation();
   var feedback=document.getElementById('notification-feedback');
-  if(feedback)feedback.textContent=KO?'Safari에서 대화틈을 연 뒤 공유 버튼 → 홈 화면에 추가를 선택해 주세요.':'Open Daehwateum in Safari, then choose Share → Add to Home Screen.';
+  if(feedback)feedback.textContent=KO?'Safari에서 도란도란을 연 뒤 공유 버튼 → 홈 화면에 추가를 선택해 주세요.':'Open Dorandoran in Safari, then choose Share → Add to Home Screen.';
 },true);
 })();

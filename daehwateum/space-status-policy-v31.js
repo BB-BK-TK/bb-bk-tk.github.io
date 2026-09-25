@@ -2,7 +2,7 @@
 var ko=(navigator.language||'ko').toLowerCase().indexOf('ko')===0,patching=false,syncing=false,syncPromise=null,lastSync=0,scheduled=false;
 var SUPA='https://kacvynoegfpvgdpqtjdi.supabase.co',APIKEY='sb_publishable_SeG92zfrAeh5zECaVbztkw_qb0C91D6';
 function esc(v){return window.DT&&DT.esc?DT.esc(v):String(v==null?'':v)}
-function copy(){return ko?{active:'내 대화틈',waiting:'초대 대기 중',waitingBody:'상대방이 들어오면 대화가 시작돼요.',waitingState:'아직 시작 전 · 상대방 참여 대기',invite:'초대하기',newSpace:'새로운 대화틈 만들기'}:{active:'My spaces',waiting:'Waiting for someone to join',waitingBody:'The conversation starts when someone joins your invitation.',waitingState:'Not started · Waiting for someone to join',invite:'Invite',newSpace:'Create another space'}}
+function copy(){return ko?{active:'내 도란도란',waiting:'초대 대기 중',waitingBody:'상대방이 들어오면 대화가 시작돼요.',waitingState:'아직 시작 전 · 상대방 참여 대기',invite:'초대하기',newSpace:'새로운 도란도란 만들기'}:{active:'My spaces',waiting:'Waiting for someone to join',waitingBody:'The conversation starts when someone joins your invitation.',waitingState:'Not started · Waiting for someone to join',invite:'Invite',newSpace:'Create another space'}}
 function pending(s){var names=Array.isArray(s&&s.memberNames)?s.memberNames.filter(Boolean):[];if(names.length)return names.length<2;return !(s&&s.partnerName)}
 function signature(list){return list.map(function(s){var n=Array.isArray(s.memberNames)?s.memberNames.filter(Boolean).length:(s.partnerName?2:1);return s.room+':'+n+':'+(s.lastRound||1)+':'+(s.freeDay||'')+':'+(s.freePeriodEnded?'1':'0')+':'+(s.isPremium?'1':'0')+':'+(s.homeAnswerStatus||'')+':'+(s.homeAnswerArrived?'1':'0')}).join('|')}
 function hasAnswered(p){return !!(p&&(p.answered===true||(typeof p.answer==='string'&&p.answer.trim().length>0)))}
