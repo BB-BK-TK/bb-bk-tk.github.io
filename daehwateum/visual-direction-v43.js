@@ -44,7 +44,7 @@ function ensureRelationshipHero(d,w){
   var top=w.querySelector(':scope > .top');
   if(!top)return;
   var brand=top.querySelector('.brand');
-  if(brand&&brand.textContent.trim()!==(ko?'대화틈':'Daehwateum'))brand.textContent=ko?'대화틈':'Daehwateum';
+  if(brand&&brand.textContent.trim()!==(ko?'도란도란':'Dorandoran'))brand.textContent=ko?'도란도란':'Dorandoran';
   var old=w.querySelector(':scope > .relationship-hero-v43');
   var parts=Array.isArray(d.participants)?d.participants:[];
   var sig=parts.map(function(p){return[p.name,p.avatar_url||p.photo_url||p.image_url||''].join(':')}).join('|');
@@ -193,13 +193,13 @@ function decorateReflection(w){
 
 function decorateQueueScreen(w){
   var screen=w.querySelector('.question-queue-screen');if(!screen)return;
-  var brand=w.querySelector('.top .brand');if(brand)brand.textContent=ko?'대화틈':'Daehwateum';
+  var brand=w.querySelector('.top .brand');if(brand)brand.textContent=ko?'도란도란':'Dorandoran';
   var back=screen.querySelector(':scope > [data-a="room"]');
   if(back){back.textContent=copy('back');back.setAttribute('aria-label',copy('back'))}
 }
 
 function decorateHome(w){
-  var brand=w.querySelector('.top .brand');if(brand)brand.textContent=ko?'대화틈':'Daehwateum';
+  var brand=w.querySelector('.top .brand');if(brand)brand.textContent=ko?'도란도란':'Dorandoran';
   var spaces=w.querySelector('.spaces');if(!spaces)return;
   Array.prototype.forEach.call(spaces.querySelectorAll('.spacecard'),function(card){
     if(card.getAttribute('data-v44-home-card')==='1')return;
