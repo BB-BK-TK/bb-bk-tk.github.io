@@ -21,7 +21,7 @@ function copy(k){
     review:['답변 다시 보기','Review answers'],
     next:['다음 질문까지','Until the next question'],
     ready:['다음 질문이 준비됐어요','The next question is ready'],
-    freeDone:['무료 대화를 마쳤어요','Your free conversation period is complete'],
+    freeDone:['첫 7일의 대화를 마쳤어요','Your first 7 days are complete'],
     freeDoneBody:['계속 대화하려면 Premium이 필요해요.','Premium is required to keep the conversation going.'],
     continue:['계속 대화하기','Keep talking'],
     back:['돌아가기','Back'],
