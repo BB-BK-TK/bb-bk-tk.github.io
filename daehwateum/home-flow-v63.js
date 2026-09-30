@@ -18,7 +18,7 @@ function isReady(d){
 function countdownLabel(d){
   if(!d)return'';
   if(isReady(d))return isKo()?'다음 대화가 준비됐어요':'Next conversation is ready';
-  if(d.is_paused)return isKo()?'무료 7일이 끝나 잠시 쉬고 있어요':'Paused after the free 7 days';
+  if(d.is_paused)return isKo()?'무료 이용이 끝나 잠시 쉬고 있어요':'Paused after free access';
   if(Number(d.participant_count||0)<Number(d.max_participants||2))
     return isKo()?'상대방이 들어오면 다음 대화가 열려요':'The next conversation opens once everyone has joined';
   var due=d.next_round_at?new Date(d.next_round_at):null;
