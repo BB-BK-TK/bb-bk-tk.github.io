@@ -20,7 +20,7 @@ function patchPremiumBanner(){
     var k=el.querySelector('.k'),b=el.querySelector('.premium-banner-copy b'),small=el.querySelector('.premium-banner-copy small'),btn=el.querySelector('[data-a="premium"]');
     if(k)k.textContent='BETA · PREMIUM';
     if(b)b.textContent=text('Beta에서는 Premium을 무료로 써볼 수 있어요','Premium is free during Beta');
-    if(small)small.textContent=text('직접 질문하고, 질문을 예약하고, 최대 5명과 7일 이후에도 대화를 이어가세요.','Ask and schedule your own questions, invite up to 5 people, and keep the conversation going beyond 7 days.');
+    if(small)small.textContent=text('직접 질문하고, 질문을 예약하고, 최대 5명과 계속 대화를 이어가세요.','Ask and schedule your own questions, invite up to 5 people, and keep the conversation going.');
     if(btn)btn.textContent=text('무료로 시작하기','Try free');
   });
 }
