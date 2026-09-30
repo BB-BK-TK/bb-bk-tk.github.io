@@ -22,7 +22,7 @@ function normalizeLegacy(s){var legacy=s&&(s.homeAnswerStatus==='7일 대화가 
 function progressLabel(s){
   var rounds=Math.max(1,Number(s&&s.lastRound||1));
   if(s&&s.isPremium)return ko?rounds+'개의 대화':rounds+(rounds===1?' conversation':' conversations');
-  if(s&&s.freePeriodEnded)return ko?'첫 7일 완료':'First 7 days complete';
+  if(s&&s.freePeriodEnded)return ko?'무료 이용 완료':'Free access complete';
   var freeDay=Math.max(0,Number(s&&s.freeDay||0));
   if(freeDay)return ko?freeDay+'일째':'Day '+freeDay;
   return ko?rounds+'개의 대화':rounds+(rounds===1?' conversation':' conversations');

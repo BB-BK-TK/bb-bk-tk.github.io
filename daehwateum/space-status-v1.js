@@ -11,7 +11,7 @@ function answerStatus(x){
   if(x.can_start_next)return{label:ko?'새 질문 도착':'New question ready',arrived:true};
   var seq=Number(x.round_sequence||0),limit=Number(x.round_limit||7);
   if(x.challenge_complete&&x.is_premium&&seq<=limit)return{label:ko?'다음 질문을 기다리는 중':'Waiting for the next question',arrived:false};
-  if(x.challenge_complete&&!x.is_premium)return{label:ko?'7일 대화가 완료됐어요':'Your 7-day conversation is complete',arrived:true};
+  if(x.challenge_complete&&!x.is_premium)return{label:ko?'무료 대화가 완료됐어요':'Your free conversation is complete',arrived:true};
   var me=x.me||null;
   if(me&&!hasAnswered(me))return{label:ko?'새 질문 도착':'New question ready',arrived:true};
   var myName=me&&me.name?me.name:'',parts=Array.isArray(x.participants)?x.participants:[];
