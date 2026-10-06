@@ -2,14 +2,15 @@
 var CURRENT=(document.querySelector('meta[name="dt-build"]')||{}).content||'';
 var checking=false,lastCheck=0,pendingRemote='';
 function loadAccountLifecycle(){
-  if(!document.querySelector('link[data-dt-account-lifecycle]')){
+  if(!document.querySelector('link[href*="account-lifecycle-v67.css"]')){
     var l=document.createElement('link');l.rel='stylesheet';l.href='./account-lifecycle-v67.css?v=20260916-1125';l.setAttribute('data-dt-account-lifecycle','1');document.head.appendChild(l);
   }
-  if(!document.querySelector('script[data-dt-account-lifecycle]')){
+  if(!document.querySelector('script[src*="account-lifecycle-v67.js"]')){
     var s=document.createElement('script');s.src='./account-lifecycle-v67.js?v=20260916-1125';s.defer=true;s.setAttribute('data-dt-account-lifecycle','1');document.head.appendChild(s);
   }
 }
 function isDrafting(){
+  if(document.getElementById('my-info-overlay'))return true;
   if(window.DT&&typeof DT.isDraftingV72==='function')return DT.isDraftingV72();
   var app=document.getElementById('app'),active=document.activeElement;
   return !!(app&&(app.querySelector('.answer-open-v43 #af')||(active&&app.contains(active)&&active.matches&&active.matches('textarea,input,[contenteditable="true"]'))));
@@ -48,3 +49,4 @@ document.addEventListener('focusout',function(){setTimeout(checkPending,100)});
 document.addEventListener('submit',function(){setTimeout(checkPending,250)});
 setTimeout(check,3000);
 })();
+

@@ -1,4 +1,5 @@
 (function(){'use strict';
+if(window.__dtAccountLifecycleV67)return;window.__dtAccountLifecycleV67=true;
 var SUPA='https://kacvynoegfpvgdpqtjdi.supabase.co';
 var KEY='sb_publishable_SeG92zfrAeh5zECaVbztkw_qb0C91D6';
 var GUEST='dt.guest.v1',AUTH='dt.auth.session.v1',OAUTH_INTENT='dt.auth.oauth.intent.v1';

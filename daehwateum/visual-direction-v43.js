@@ -150,7 +150,7 @@ function questionText(d){return !ko&&d&&d.question_en?d.question_en:(d&&d.questi
 function reviewAnswer(p){
   var mine=p&&p.is_me,photo=p&&(p.avatar_url||p.photo_url||p.image_url);
   var avatar=photo?'<img src="'+esc(photo)+'" alt="">':esc(initial(p&&p.name));
-  return '<article class="v44-review-answer '+(mine?'mine':'other')+'"><header><span class="v44-review-avatar">'+avatar+'</span><b>'+esc(p&&p.name)+(mine?(ko?' · 나':' · Me'):'')+'</b></header><p>'+nl(p&&p.answer||'')+'</p></article>';
+  return '<article class="v44-review-answer '+(mine?'mine':'other')+'"><header><span class="v44-review-avatar">'+avatar+'</span><b>'+DT.nameHTML(p)+(mine?(ko?' · 나':' · Me'):'')+'</b></header><p>'+nl(p&&p.answer||'')+'</p></article>';
 }
 
 function closeAnswerReview(){
@@ -287,3 +287,4 @@ new MutationObserver(schedule).observe(app,{childList:true,subtree:true});
 setInterval(function(){var w=app.querySelector(':scope > .w'),d=state();if(d&&w&&w.querySelector('.post-reveal-summary'))decorateComplete(d,w)},60000);
 schedule();
 })();
+

@@ -3,6 +3,7 @@ if(!window.DT||typeof DT.refresh!=='function'||DT.__runtimeStabilityV73)return;
 DT.__runtimeStabilityV73=true;
 var originalRefresh=DT.refresh,deferredRender=false,lastServerSignature=null;
 var nativeFetch=window.fetch,homeStateCache={},openingRoomUntil=0;
+DT.invalidateHomeStateCache=function(){homeStateCache={}};
 
 function app(){return document.getElementById('app')}
 function isDrafting(){
@@ -103,3 +104,4 @@ DT.refresh=function(){
   };
 });
 })();
+

@@ -64,6 +64,7 @@ function ensureMenu(){
   var danger=m.querySelector('.danger-menu');var c=t();
   Array.from(m.querySelectorAll('button')).forEach(function(b){if(b!==danger&&!b.hasAttribute('data-owner-transfer-menu'))b.remove()});
   function add(label,attr,val){var b=document.createElement('button');b.type='button';b.setAttribute(attr,val||'1');b.textContent=label;m.insertBefore(b,danger||null)}
+  add(KO?'내 정보':'My info','data-my-info','1');
   add(c.notification,'data-settings-notification','1');
   add(c.subscription,'data-settings-subscription','1');
   add(c.recovery,'data-recovery-settings','1');
