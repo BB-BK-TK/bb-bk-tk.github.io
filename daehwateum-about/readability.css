@@ -1,0 +1,27 @@
+/* Readability pass: clearer hierarchy and comfortable mobile reading */
+:root{--qe-muted:#525b53}
+body{font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%}
+.hero .lede,.product-definition p,.question-design-copy>p,.premium-copy p,.faq-intro p{color:#414b43!important;line-height:1.75!important}
+.microcopy,.before,.step-label,.question-principles p,.question-path small{color:#515b53!important}
+.question-design-copy{column-gap:54px!important}
+.question-design-copy .research-note{color:#4c574e!important;font-size:15px!important;line-height:1.75!important;margin-top:0!important}
+.question-principles h3{line-height:1.4!important}
+.question-principles p{font-size:15px!important;color:#455047!important}
+.question-path span{font-family:var(--qe-sans)!important;font-size:18px!important;font-weight:600!important}
+.premium-copy .definition-kicker{font-size:12px!important;letter-spacing:.08em!important;color:#234d38!important}
+.premium-main p,.pricing p{color:#3e493f!important;line-height:1.7!important}
+.faq-list details p{line-height:1.8!important}
+@media(max-width:767px){
+  .hero h1{font-size:clamp(38px,10vw,48px)!important;line-height:1.28!important;letter-spacing:-.045em!important}
+  .hero .lede{font-size:16px!important;line-height:1.75!important}
+  .copy-block h2,.section-intro h2,.ritual-copy h2,.memory-copy h2,.premium-copy h2,.question-design-copy h2{font-size:clamp(30px,8vw,38px)!important;line-height:1.35!important;letter-spacing:-.04em!important}
+  .question-design-copy>p,.premium-copy p{font-size:16px!important}
+  .question-design-copy .research-note{font-size:14px!important;margin-top:22px!important}
+  .question-principles h3{margin:12px 0 8px!important}
+  .question-principles p{font-size:15px!important}
+  .question-path span{font-size:17px!important;line-height:1.6!important}
+  .premium-card .premium-main,.premium-card .pricing{padding:28px 24px!important}
+  .premium-card .pricing p{font-size:15px!important}
+  .faq-list summary{line-height:1.55!important}
+  .faq-list details p{font-size:15px!important}
+}
