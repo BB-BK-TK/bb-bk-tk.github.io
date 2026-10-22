@@ -25,3 +25,20 @@ body{font-size:16px;line-height:1.65;-webkit-text-size-adjust:100%}
   .faq-list summary{line-height:1.55!important}
   .faq-list details p{font-size:15px!important}
 }
+
+/* Launch QA: visible keyboard focus, restrained motion, reduced-motion support */
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #276443!important;outline-offset:4px!important}
+html{scroll-behavior:smooth;scroll-padding-top:84px}
+.pill{transition:background-color .18s ease,opacity .18s ease!important}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto!important}
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
+@media(max-width:767px){
+  .topbar nav{display:none!important}
+  .topbar .pill.small{font-size:13px!important;white-space:nowrap!important}
+  .hero-copy{padding-top:52px!important;padding-bottom:50px!important}
+  .hero{min-height:0!important}
+  .hero-scene{min-height:390px!important}
+  .product-definition,.examples,.question-design,.premium,.faq,.final-cta{padding-top:68px!important;padding-bottom:68px!important}
+}
