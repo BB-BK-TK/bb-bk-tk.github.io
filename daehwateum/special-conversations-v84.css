@@ -74,9 +74,18 @@
   display:block!important;padding:17px 18px!important;
   text-align:left;white-space:normal;
 }
+.visual-room-v43 .hist.v84-history .hist-day details.item summary::after{
+  content:none!important;
+}
 .visual-room-v43 .hist.v84-history .hist-day .hist-question{
-  display:block;font-size:16px;line-height:1.5;font-weight:850;
+  display:block;position:relative;padding-right:30px;
+  font-size:16px;line-height:1.5;font-weight:850;
   color:#203129;letter-spacing:-.035em;margin:0 0 12px;
+}
+.visual-room-v43 .hist.v84-history .hist-day .hist-question::after{
+  content:"›";position:absolute;right:0;top:50%;
+  transform:translateY(-50%);color:#346951;
+  font-size:25px;font-weight:400;line-height:1;
 }
 .v84-previews{
   display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
