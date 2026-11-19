@@ -1,0 +1,137 @@
+/* v84 — Special conversations: presentation only, never modifies answers or persistence. */
+.visual-room-v43 .q.v84-question{
+  padding:24px 22px 25px!important;
+  border-radius:24px!important;
+  background:linear-gradient(148deg,#fffefa 72%,#f8f1e9)!important;
+}
+.visual-room-v43 .q.v84-question>.k{display:none!important}
+.visual-room-v43 .q.v84-question .v84-top-note{
+  display:flex;align-items:center;gap:7px;margin-bottom:22px;
+  color:#346951;font-size:11px;font-weight:850;
+}
+.v84-top-note:before{content:"";width:6px;height:6px;border-radius:50%;background:#719981}
+.visual-room-v43 .q.v84-question .v84-eyebrow{
+  margin:0 0 11px;color:#88857e;font-size:11px;font-weight:750;
+}
+.visual-room-v43 .q.v84-question h1{
+  margin:0!important;color:#1a231f;font-size:clamp(25px,6.5vw,31px);
+  line-height:1.38;letter-spacing:-.06em;word-break:keep-all;
+}
+.visual-room-v43 .q.v84-question .v84-quote{
+  margin:21px 0 0;padding:17px 0 0;border-top:1px solid #e7e7df;
+  color:#617a6a;font-size:12px;line-height:1.75;
+}
+.visual-room-v43 .q.v84-question:has(+.stage #af){padding-bottom:25px!important}
+.visual-room-v43 .q.v84-question+.stage:has(#af):not(.answer-open-v43){
+  margin:13px 0 0!important;padding:0 0 6px!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+}
+.visual-room-v43 .q.v84-question+.stage .answer-entry-v43{
+  border-radius:16px;min-height:53px;font-size:14px;
+}
+.visual-room-v43 .v84-reveal-intro{
+  background:linear-gradient(155deg,#eaf2ec,#fffefa);
+  padding:24px 20px 20px;margin:0 0 12px;
+  border:1px solid #e1e9df;border-radius:24px;color:#235441;
+}
+.v84-intro-kicker{color:#668575;font-size:11px;font-weight:850}
+.visual-room-v43 .v84-reveal-intro h2{
+  margin:10px 0 7px;font-size:clamp(22px,6vw,26px);
+  line-height:1.35;letter-spacing:-.05em;color:#235441;
+}
+.visual-room-v43 .v84-reveal-intro p{
+  margin:0;font-size:12px;line-height:1.7;color:#6a8374;
+}
+.visual-room-v43 .q.v84-revealed{
+  margin:0 0 12px!important;padding:20px 19px!important;
+  border-radius:21px!important;background:var(--v43-paper)!important;
+}
+.visual-room-v43 .q.v84-revealed>.k,.visual-room-v43 .v84-reveal-section>.c{display:none!important}
+.visual-room-v43 .q.v84-revealed .v84-question-label{
+  display:block;font-size:11px;color:#668575;font-weight:850;margin-bottom:9px;
+}
+.visual-room-v43 .q.v84-revealed h1{
+  font-size:clamp(16px,4.5vw,19px)!important;
+  font-weight:800;line-height:1.55;margin:0!important;letter-spacing:-.035em;
+}
+.visual-room-v43 .v84-reveal-section .group-answers{
+  display:grid!important;grid-template-columns:1fr!important;gap:10px!important;
+}
+.visual-room-v43 .v84-reveal-section .group-answers .v84-answer-card{
+  min-height:0!important;padding:19px!important;border-radius:20px!important;
+  box-shadow:none!important;
+}
+.visual-room-v43 .v84-reveal-section .group-answers .v84-answer-card.me{background:#eaf2ec!important}
+.visual-room-v43 .v84-reveal-section .group-answers .v84-answer-card.them{background:#f7e7df!important}
+.visual-room-v43 .v84-reveal-section .group-answers .v84-answer-card p{
+  font-size:14px;line-height:1.75;white-space:pre-wrap;
+}
+.visual-room-v43 .hist.v84-history .hist-day details.item{
+  border-radius:22px!important;background:#fffefa!important;
+  border:1px solid #e8e2d9!important;overflow:hidden;
+}
+.visual-room-v43 .hist.v84-history .hist-day details.item summary{
+  display:block!important;padding:17px 18px!important;
+  text-align:left;white-space:normal;
+}
+.visual-room-v43 .hist.v84-history .hist-day .hist-question{
+  display:block;font-size:16px;line-height:1.5;font-weight:850;
+  color:#203129;letter-spacing:-.035em;margin:0 0 12px;
+}
+.v84-previews{
+  display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;
+  width:100%;margin-top:11px;
+}
+.v84-preview{
+  min-width:0;min-height:75px;border-radius:13px;
+  padding:11px;background:#eaf2ec;text-align:left;
+}
+.v84-preview.second{background:#f7e7df}
+.v84-preview-name{display:block;font-size:10px;color:#203129;margin-bottom:7px}
+.v84-preview-text{
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;
+  overflow:hidden;word-break:break-word;margin:0!important;
+  font-size:11px!important;line-height:1.55!important;color:#536258!important;
+}
+.v84-history-detail .v84-detail-label{
+  color:#397152;font-size:11px;font-weight:800;margin:0 0 9px;
+}
+.v84-history-detail .history-detail-question{
+  background:linear-gradient(148deg,#fffefa,#f8f1e9);
+}
+.v84-history-detail .history-detail-answer{
+  border-radius:20px;
+}
+.v84-history-detail .history-detail-answer.mine{background:#eaf2ec}
+.v84-history-detail .history-detail-answer.other{background:#f7e7df}
+@media(max-width:370px){
+  .visual-room-v43 .q.v84-question{padding:20px 17px!important}
+  .v84-previews{gap:5px}.v84-preview{padding:9px}
+}
+
+/* The existing completed-answer review dialog gets the same reveal hierarchy. */
+.v84-review .v84-review-intro{
+  margin:0 0 12px;padding:24px 21px;
+  border:1px solid #e1e9df;border-radius:24px;
+  background:linear-gradient(155deg,#eaf2ec,#fffefa);
+}
+.v84-review .v84-review-intro h2{
+  margin:10px 0 7px;color:#235441;
+  font-size:clamp(23px,6vw,27px);line-height:1.35;letter-spacing:-.05em;
+}
+.v84-review .v84-review-intro p{color:#6a8374;font-size:12px;line-height:1.7;margin:0}
+.v84-review .v44-review-heading{display:none!important}
+.v84-review .v44-review-question{
+  border-radius:21px;background:#fffefa;margin:0 0 12px;
+}
+.v84-review .v44-review-question h1{
+  font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo",sans-serif;
+  font-size:clamp(17px,4.5vw,20px);font-weight:850;line-height:1.5;
+}
+.v84-review .v44-review-answers{display:grid;grid-template-columns:1fr;gap:10px}
+.v84-review .v44-review-answer{border-radius:20px;padding:19px}
+.v84-review .v44-review-answer.mine{background:#eaf2ec}
+.v84-review .v44-review-answer.other{background:#f7e7df}
+
+/* Room uses explicit flex ordering; place reveal intro immediately before its question. */
+.visual-room-v43 #app>.w>.v84-reveal-intro{order:2!important}
