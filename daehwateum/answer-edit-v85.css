@@ -1,0 +1,35 @@
+/* v85 — edit only before another participant submits; uses the existing room. */
+.visual-room-v43 #app>.w>.dt-edit-preview-v85{
+  margin-top:15px;padding:15px 16px;border:1px solid #e0e8df;border-radius:17px;background:#f1f7f2;
+}
+.dt-edit-preview-label-v85{display:block;font-size:11px;font-weight:850;color:#3a6b55;margin-bottom:7px}
+.visual-room-v43 .dt-edit-preview-body-v85{
+  margin:0;color:#27342c;font-size:13px;line-height:1.7;white-space:pre-wrap;word-break:break-word;
+  display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden;
+}
+.visual-room-v43 .dt-edit-open-v85{
+  display:block;margin-top:12px;border:0;padding:5px 0;background:transparent;
+  color:#1f5d46;font-size:12px;font-weight:850;text-align:left;cursor:pointer;
+}
+.visual-room-v43 .dt-edit-hidden-v85{display:none}
+.visual-room-v43 #app>.w>.dt-edit-preview-v85{order:3!important}
+.visual-room-v43 #app>.w>.dt-edit-panel-v85{order:3!important}
+.visual-room-v43 .dt-edit-panel-v85{
+  margin:13px 0!important;padding:20px 18px!important;border-radius:23px!important;
+  border:1px solid #e8e2d9;background:#fffefa;box-shadow:0 14px 40px #342b220e;
+}
+.dt-edit-panel-k-v85{color:#587965;font-size:11px;font-weight:850}
+.dt-edit-panel-title-v85{margin:8px 0 17px;font-size:19px;color:#203129;line-height:1.45;letter-spacing:-.035em}
+.dt-edit-form-v85{display:grid;gap:10px}
+.dt-edit-textarea-v85{
+  width:100%;min-height:160px;padding:14px;resize:vertical;background:#fff;border:1px solid #dbe4da;
+  border-radius:16px;color:#203129;font:inherit;font-size:15px;line-height:1.65;
+}
+.dt-edit-textarea-v85[readonly]{background:#f8f4ed}
+.dt-edit-hint-v85{color:#6b7f72;font-size:11px;line-height:1.6;margin:0}
+.dt-edit-notice-v85{color:#9a4b3c;font-size:12px;line-height:1.6;margin:0}
+.dt-edit-notice-v85:empty{display:none}
+.dt-edit-actions-v85{display:flex;flex-direction:column;gap:8px}
+.dt-edit-save-v85,.dt-edit-copy-v85{min-height:48px;width:100%;border-radius:14px}
+.dt-edit-cancel-v85{align-self:center;min-height:40px}
+.dt-edit-save-v85[hidden],.dt-edit-copy-v85[hidden]{display:none!important}
